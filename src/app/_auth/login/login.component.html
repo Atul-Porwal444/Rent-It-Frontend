@@ -1,1 +1,52 @@
-<p>login works!</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-5">
+            
+            <h3 class="text-center fw-bold mb-4">Welcome Back</h3>
+  
+            <form (ngSubmit)="onSubmit()" #f="ngForm">
+              
+              <div class="mb-3">
+                <label class="form-label text-muted small fw-bold">Email Address</label>
+                <input 
+                  type="email" 
+                  class="form-control form-control-lg bg-light" 
+                  name="email"
+                  [(ngModel)]="form.email" 
+                  required
+                  placeholder="name@example.com">
+              </div>
+  
+              <div class="mb-4">
+                <label class="form-label text-muted small fw-bold">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control form-control-lg bg-light" 
+                  name="password"
+                  [(ngModel)]="form.password" 
+                  required
+                  placeholder="••••••••">
+              </div>
+  
+              <div class="alert alert-danger" *ngIf="isLoginFailed">
+                {{ errorMessage }}
+              </div>
+  
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg fw-bold">Login</button>
+              </div>
+  
+              <div class="text-center mt-4">
+                <small class="text-muted">Don't have an account? <a routerLink="/register" class="text-decoration-none">Sign up</a></small>
+              </div>
+  
+            </form>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
