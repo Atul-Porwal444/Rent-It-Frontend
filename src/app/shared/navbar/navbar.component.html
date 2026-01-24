@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-3 shadow-sm">
+    <div class="container-fluid">
+      
+      <a class="navbar-brand fw-bold fs-3 text-warning" routerLink="/">RentIt</a>
+  
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center gap-4">
+          
+          <li class="nav-item">
+            <a class="nav-link fw-semibold active" routerLink="/">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" routerLink="/rooms">Find Rooms</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" routerLink="/roommates">Find Roommates</a>
+          </li>
+  
+          <li class="nav-item" *ngIf="authService.isLoggedIn(); else loginBtn">
+            <a routerLink="/profile" class="nav-link text-white">
+              <i class="bi bi-person-circle fs-3"></i>
+            </a>
+          </li>
+  
+          <ng-template #loginBtn>
+            <li class="nav-item">
+              <button class="btn btn-warning fw-bold px-4" routerLink="/login">Login</button>
+            </li>
+          </ng-template>
+        </ul>
+      </div>
+    </div>
+  </nav>

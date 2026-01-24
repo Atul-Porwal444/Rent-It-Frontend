@@ -1,0 +1,23 @@
+<div class="card h-100 shadow-sm border-0" (click)="handleClick()" style="cursor: pointer;">
+  
+    <img src="https://placehold.co/600x400?text=RentIt+Property" class="card-img-top" alt="Listing" style="height: 200px; object-fit: cover;">
+  
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h5 class="card-title fw-bold">₹{{ data.rentAmount }}</h5>
+        <span class="badge bg-secondary">{{ data.location }}</span>
+      </div>
+      
+      <p class="card-text text-muted mt-2 text-truncate">
+        {{ data.description }}
+      </p>
+  
+      <div *ngIf="type === 'ROOM'" class="small text-secondary">
+        <i class="bi bi-house-door"></i> {{ data.bhkType }} | {{ data.furnished ? 'Furnished' : 'Unfurnished' }}
+      </div>
+  
+      <div *ngIf="type === 'ROOMMATE'" class="small text-secondary">
+        <i class="bi bi-people"></i> Looking for: {{ data.lookingForGender }}
+      </div>
+    </div>
+  </div>
