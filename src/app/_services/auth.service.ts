@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,7 +6,10 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-  constructor() { }
+  private readonly API_URL = 'http://localhost:8080/api/auth/';
+
+
+  constructor(private http: HttpClient) { }
 
   isLoggedIn() : boolean {
     return !!localStorage.getItem('token');
