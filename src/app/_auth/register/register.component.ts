@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';
+import { from } from 'rxjs';
+import { response } from 'express';
 
 @Component({
   selector: 'app-register',
@@ -14,16 +16,25 @@ export class RegisterComponent {
   form : any = {
     name: '',
     email: '',
-    password: '',
-    role : 'USER'
+    password: ''
   }
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() : void {
-    console.log('From Data: ' + this.form);
+    this.authService.register(this.form).subscribe({
+      next: (response) => {
+        console.log("User registered successfully");
 
-    this.router.navigate(['/login']);
+        this.router.navigate(['/verify-otp'], {
+          queryParams: {email : this.form.email}
+        });
+      },
+      error: (err) => {
+        console.log(err);
+        alert("Registration failed " + err.error.message);
+      }
+    })
   }
 
 }
