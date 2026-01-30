@@ -21,8 +21,8 @@ export class AuthService {
   }
 
   // for verification of account
-  verifyOtp(email: string, otp: string) : Observable<any> {
-    return this.http.post(this.API_URL + "verify", {email, otp}, this.httpOptions);
+  verifyOtp(verificationData: any) : Observable<any> {
+    return this.http.post(this.API_URL + "verify-otp", verificationData, this.httpOptions);
   }
 
   // for the login

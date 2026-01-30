@@ -11,10 +11,16 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './verify-otp.component.css'
 })
 export class VerifyOtpComponent {
+  form: any = {
+    email:  '',
+    otp: ''
+  }
+
   email: string = '';
   otp: string = '';
   errorMessage = '';
   isVerified: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,25 +30,37 @@ export class VerifyOtpComponent {
 
   ngOnInit() : void {
     // the email will be passed from the register page
-    this.email = this.route.snapshot.queryParams['email'];
+    this.form.email = this.route.snapshot.queryParams['email'];
+
+    // this prevent anyone from direct accessing the page
+    if(!this.form.email) {
+      this.router.navigate(['/login']);
+      return;
+    }
   }
 
   onSubmit() : void {
-    if(!this.otp && this.otp.length < 6) {
+    this.isLoading = true;
+
+    if(!this.form.otp && this.form.otp.length < 6) {
       this.errorMessage = 'Please enter a valid 6-digit code';
+      this.isLoading = false;
       return;
     }
 
-    this.auth.verifyOtp(this.email, this.otp).subscribe({
+    this.auth.verifyOtp(this.form).subscribe({
       next: (res) => {
         console.log("Account verification successfull");
 
         this.isVerified = true;
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login'], {
+            replaceUrl: true
+          });
         }, 2000)
       },
       error: (err) => {
+        this.isLoading = false;
         this.errorMessage = 'Invalid or Expired OTP. Please try again.'
       }
     });

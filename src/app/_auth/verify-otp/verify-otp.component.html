@@ -24,7 +24,7 @@
                 <input 
                   type="text" 
                   class="form-control form-control-lg text-center fw-bold letter-spacing-2" 
-                  [(ngModel)]="otp" 
+                  [(ngModel)]="form.otp" 
                   name="otp" 
                   placeholder="XXXXXX" 
                   maxlength="6"
@@ -36,7 +36,15 @@
               </div>
   
               <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg fw-bold">Verify Account</button>
+                <button 
+                  type="submit" 
+                  class="btn btn-success btn-lg fw-bold" 
+                  [disabled]="isLoading"> <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  
+                  <span *ngIf="isLoading">Verifying Otp...</span>
+                  <span *ngIf="!isLoading">Verify</span>
+                  
+                </button>
               </div>
   
             </form>
