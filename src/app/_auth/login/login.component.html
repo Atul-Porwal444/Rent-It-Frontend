@@ -1,52 +1,68 @@
 <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6 col-lg-4">
-        
-        <div class="card shadow-lg border-0 rounded-4">
-          <div class="card-body p-5">
-            
-            <h3 class="text-center fw-bold mb-4">Welcome Back</h3>
-  
-            <form (ngSubmit)="onSubmit()" #f="ngForm">
-              
-              <div class="mb-3">
-                <label class="form-label text-muted small fw-bold">Email Address</label>
-                <input 
-                  type="email" 
-                  class="form-control form-control-lg bg-light" 
-                  name="email"
-                  [(ngModel)]="form.email" 
-                  required
-                  placeholder="name@example.com">
-              </div>
-  
-              <div class="mb-4">
-                <label class="form-label text-muted small fw-bold">Password</label>
-                <input 
-                  type="password" 
-                  class="form-control form-control-lg bg-light" 
-                  name="password"
-                  [(ngModel)]="form.password" 
-                  required
-                  placeholder="••••••••">
-              </div>
-  
-              <div class="alert alert-danger" *ngIf="isLoginFailed">
-                {{ errorMessage }}
-              </div>
-  
-              <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg fw-bold">Login</button>
-              </div>
-  
-              <div class="text-center mt-4">
-                <small class="text-muted">Don't have an account? <a routerLink="/register" class="text-decoration-none">Sign up</a></small>
-              </div>
-  
-            </form>
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-5">
+          
+          <div class="text-center mb-4">
+            <h3 class="fw-bold">Welcome Back</h3>
+            <p class="text-muted small">Login to continue to RentIt</p>
           </div>
+
+          <form (ngSubmit)="onSubmit()" #f="ngForm">
+            
+            <div class="mb-3">
+              <label class="form-label text-muted small fw-bold">Email Address</label>
+              <input 
+                type="email" 
+                class="form-control form-control-lg bg-light" 
+                name="email"
+                [(ngModel)]="form.email" 
+                required
+                email
+                placeholder="name@example.com">
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label text-muted small fw-bold">Password</label>
+              <input 
+                type="password" 
+                class="form-control form-control-lg bg-light" 
+                name="password"
+                [(ngModel)]="form.password" 
+                required
+                placeholder="••••••••">
+            </div>
+
+            <div class="alert alert-danger d-flex align-items-center" *ngIf="isLoginFailed && !isUnverified">
+              <i class="bi bi-exclamation-circle-fill me-2"></i>
+              <div>{{ errorMessage }}</div>
+            </div>
+
+            <div class="alert alert-warning text-center" *ngIf="isUnverified">
+              <p class="mb-2 fw-bold"><i class="bi bi-shield-lock"></i> Email Not Verified</p>
+              <button type="button" class="btn btn-warning btn-sm w-100" (click)="navigateToVerify()">
+                Enter OTP Code
+              </button>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg fw-bold" [disabled]="f.invalid || isLoading">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                <span *ngIf="!isLoading">Login</span>
+                <span *ngIf="isLoading">Verifying...</span>
+              </button>
+            </div>
+
+            <div class="text-center mt-4">
+              <small class="text-muted">Don't have an account? <a routerLink="/register" class="text-decoration-none fw-bold">Sign up</a></small>
+            </div>
+
+          </form>
         </div>
-  
       </div>
+
     </div>
   </div>
+</div>

@@ -17,18 +17,22 @@ export class LoginComponent {
     password: ''
   }
 
+  isLoading: boolean = false;
   isLoginFailed : boolean = false;
   errorMessage : string = '';
+  isUnverified: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() : void {
-    console.log('Form Data:' + this.form);
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.isLoginFailed = true;
+    this.isUnverified = false;
+  }
 
-    if(this.form.email && this.form.password) {
-      localStorage.setItem('token', 'fake-jwt-token');
-      this.router.navigate(['/'])
-    }
+  navigateToVerify() : void {
+    this.router.navigate(['/verify-otp']);
   }
 
 }
