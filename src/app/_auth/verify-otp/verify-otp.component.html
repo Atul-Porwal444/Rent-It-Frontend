@@ -48,6 +48,26 @@
               </div>
   
             </form>
+
+            <div class="text-center mt-4">
+              <p class="text-muted small mb-1">Didn't receive the code?</p>
+              
+              <button 
+                class="btn btn-link text-decoration-none fw-bold" 
+                (click)="onResend()" 
+                [disabled]="isResending">
+                
+                <span *ngIf="isResending" class="spinner-border spinner-border-sm me-1"></span>
+                
+                {{ isResending ? 'Sending...' : 'Resend OTP' }}
+              </button>
+            
+              <div *ngIf="resendMessage" class="small mt-2 fw-bold" 
+                   [class.text-success]="resendMessage.includes('sent')"
+                   [class.text-danger]="!resendMessage.includes('sent')">
+                {{ resendMessage }}
+              </div>
+            </div>
   
           </div>
         </div>

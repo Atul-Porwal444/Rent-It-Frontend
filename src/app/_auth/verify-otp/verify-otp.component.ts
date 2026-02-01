@@ -21,6 +21,8 @@ export class VerifyOtpComponent {
   errorMessage = '';
   isVerified: boolean = false;
   isLoading: boolean = false;
+  isResending = false;
+  resendMessage = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -62,6 +64,22 @@ export class VerifyOtpComponent {
       error: (err) => {
         this.isLoading = false;
         this.errorMessage = 'Invalid or Expired OTP. Please try again.'
+      }
+    });
+  }
+
+  onResend() {
+    this.isResending = true;
+    this.resendMessage = '';
+  
+    this.auth.resendOtp(this.form.email).subscribe({
+      next: () => {
+        this.isResending = false;
+        this.resendMessage = "New code sent! Check your inbox.";
+      },
+      error: (err) => {
+        this.isResending = false;
+        this.resendMessage = "Failed to send code. Try again later.";
       }
     });
   }

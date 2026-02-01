@@ -27,12 +27,49 @@ export class LoginComponent {
   onSubmit() : void {
     this.isLoading = true;
     this.errorMessage = '';
-    this.isLoginFailed = true;
+    this.isLoginFailed = false;
     this.isUnverified = false;
+
+    this.authService.login(this.form).subscribe({
+      next: (response: any) => {
+        
+        if (response.success && response.data?.token) {
+          localStorage.setItem('token', response.data.token);
+          
+          this.router.navigate(['/']);
+        } else {
+          this.isLoginFailed = true;
+          this.errorMessage = "Login succeeded but token was missing.";
+          this.isLoading = false;
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.isLoginFailed = true;
+        
+        const serverMessage = err.error?.message || "Login failed";
+
+        if (err.status === 403 && serverMessage === "Unverified account") {
+          this.isUnverified = true;
+          this.errorMessage = serverMessage;
+        } 
+        else if (err.status === 404) {
+          this.errorMessage = "User does not exist.";
+        }
+        else if (err.status === 401) {
+          this.errorMessage = "Invalid email or password.";
+        } 
+        else {
+          this.errorMessage = serverMessage;
+        }
+      }
+    });
   }
 
   navigateToVerify() : void {
-    this.router.navigate(['/verify-otp']);
+    this.router.navigate(['/verify-otp'], {
+      queryParams: {email : this.form.email}
+    });
   }
 
 }

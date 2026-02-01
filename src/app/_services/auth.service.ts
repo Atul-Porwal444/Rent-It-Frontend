@@ -25,6 +25,15 @@ export class AuthService {
     return this.http.post(this.API_URL + "verify-otp", verificationData, this.httpOptions);
   }
 
+  resendOtp(email: string): Observable<any> {
+    console.log(email)
+    return this.http.post(
+      this.API_URL + 'resend-otp', 
+      { "email" : email }, 
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    );
+  }
+
   // for the login
   login(credentials : any) : Observable<any> {
     return this.http.post(this.API_URL + "login", credentials, this.httpOptions);
