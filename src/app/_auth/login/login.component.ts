@@ -35,6 +35,15 @@ export class LoginComponent {
         
         if (response.success && response.data?.token) {
           localStorage.setItem('token', response.data.token);
+
+          const userDetails = {
+            id : response.data.id,
+            name : response.data.name,
+            email: response.data.email,
+            profileUrl: response.data.profileUrl
+          }
+
+          localStorage.setItem('user', JSON.stringify(userDetails));
           
           this.router.navigate(['/']);
         } else {

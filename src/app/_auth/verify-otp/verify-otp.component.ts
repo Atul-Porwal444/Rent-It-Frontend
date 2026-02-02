@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
 import { NgIf } from '@angular/common';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './verify-otp.component.html',
   styleUrl: './verify-otp.component.css'
 })
-export class VerifyOtpComponent {
+export class VerifyOtpComponent implements OnInit {
   form: any = {
     email:  '',
     otp: ''
