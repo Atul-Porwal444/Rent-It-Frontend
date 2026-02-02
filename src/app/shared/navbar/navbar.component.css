@@ -1,0 +1,76 @@
+/* 1. The Main Dropdown Container */
+.custom-dropdown {
+    width: 340px;          /* Match the width from the image */
+    background-color: #1e1e1e; /* Dark background (almost black) */
+    border-radius: 16px;   /* Smooth rounded corners */
+    margin-top: 10px;      /* Gap from navbar */
+    animation: slideIn 0.2s ease-out;
+  }
+  
+  /* 2. The Grid Layout (3 items in a row) */
+  .grid-menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Equal Columns */
+    gap: 10px;
+  }
+  
+  /* 3. The Square Grid Items */
+  .grid-item {
+    background-color: #2c2c2c; /* Slightly lighter dark for cards */
+    border-radius: 12px;
+    padding: 15px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+    cursor: pointer;
+  
+    /* Text Style */
+    span {
+      color: #b0b3b8; /* Light grey text */
+      font-size: 0.8rem;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+  
+    /* Hover Effect */
+    &:hover {
+      background-color: #3a3a3a; /* Lighten on hover */
+      transform: translateY(-2px); /* Slight lift */
+      
+      span { color: #fff; }
+    }
+  }
+  
+  /* 4. The Icon Circles inside Grid Items */
+  .icon-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%; /* Circle shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+  
+  /* 5. The List Buttons (Logout) */
+  .list-btn {
+    background: transparent;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: #2c2c2c; /* Dark hover */
+      .text-white-50 { color: #fff !important; } /* Brighten text */
+    }
+  
+    &.text-danger-hover:hover {
+      i { color: #dc3545 !important; } /* Make icon red on hover */
+    }
+  }
+  
+  /* Animation */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }

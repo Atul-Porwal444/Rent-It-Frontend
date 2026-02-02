@@ -1,1 +1,122 @@
+<div class="profile-page">
+  
+    <div class="profile-header text-white">
+      <div class="container py-4">
+        <div class="d-flex align-items-end gap-4">
+          
+          <div class="avatar-container" style="border: 3px solid white;  border-radius: 10px;">
+            <img [src]="user.avatar" alt="User" class="profile-avatar shadow-lg">
+          </div>
+  
+          <div class="mb-2">
+            <h2 class=" mb-0">{{ user.name }}</h2>
+            <small class="text-secondary">{{ user.username }}</small>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="container mt-4">
+      <div class="row g-4">
+        
+        <div class="col-md-3">
+          <div class="card sidebar-card border-0 shadow-sm">
+            <div class="card-body p-2">
+              
+              <div class="nav flex-column nav-pills">
+                <button class="nav-link d-flex align-items-center gap-3" 
+                        [class.active]="activeTab === 'basic'" 
+                        (click)="setActiveTab('basic')">
+                  <i class="bi bi-person-vcard fs-5"></i> Basic Info
+                </button>
+                
+                <button class="nav-link d-flex align-items-center gap-3" 
+                        [class.active]="activeTab === 'account'" 
+                        (click)="setActiveTab('account')">
+                  <i class="bi bi-shield-lock fs-5"></i> Account
+                </button>
+                
+                <button class="nav-link d-flex align-items-center gap-3" 
+                        [class.active]="activeTab === 'posts'" 
+                        (click)="setActiveTab('posts')">
+                  <i class="bi bi-list-check fs-5"></i> My Posts
+                </button>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-9">
+          <div class="card content-card border-0 shadow-sm">
+            <div class="card-header bg-transparent border-bottom border-secondary pt-4 pb-3">
+              <h5 class="fw-bold text-white mb-0">Basic Info</h5>
+            </div>
+            
+            <div class="card-body p-4">
+              
+              <div class="info-row">
+                <div class="label" style="color: grey;">Name</div>
+                <div class="value text-white">{{ user.name }}</div>
+                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+              </div>
 
+              <div class="info-row">
+                <div class="label" style="color: grey;">Email</div>
+                <div class="value text-white text-truncate-2">
+                  {{ user.email || 'Write something about yourself...' }}
+                </div>
+                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+              </div>
+
+  
+              <div class="info-row">
+                <div class="label" style="color: grey;">Gender</div>
+                <div class="value text-white">Male</div>
+                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+              </div>
+  
+              <div class="info-row">
+                <div class="label" style="color: grey;">Location</div>
+                <div class="value text-white">{{ user.location || 'Add Location' }}</div>
+                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+              </div>
+  
+              <div class="info-row">
+                <div class="label" style="color: grey;">Birthday</div>
+                <div class="value text-white">{{ user.birthday || 'Add Birthday' }}</div>
+                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+              </div>
+  
+              <div class="info-row">
+                <div class="label" style="color: grey;">Phone</div>
+                <div class="value text-white text-truncate-2">
+                  {{ user.phoneNumber || 'Write something about yourself...' }}
+                </div>
+                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+              </div>
+
+              <div class="info-row">
+                <div class="label" style="color: grey;">Occupation</div>
+                <div class="value text-white text-truncate-2">
+                  {{ user.occoupation || 'Write something about yourself...' }}
+                </div>
+                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+              </div>
+
+              <div class="info-row">
+                <div class="label" style="color: grey;">Summary</div>
+                <div class="value text-white text-truncate-2">
+                  {{ user.bio || 'Write something about yourself...' }}
+                </div>
+                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+</div>

@@ -13,6 +13,7 @@ import { Router, RouterLink } from '@angular/router';
 export class NavbarComponent implements OnInit {
 
   userName: String = '';
+  userImage: String = '';
 
   constructor(public authService : AuthService, private router: Router) {}
 
@@ -24,7 +25,9 @@ export class NavbarComponent implements OnInit {
     const userStr = localStorage.getItem('user');
     if(userStr) {
       const user = JSON.parse(userStr);
-      this.userName = user.data.name;
+      this.userName = user.name;
+
+      this.userImage = user.profileUrl || "public/default-avatar.ico";
     }
   }
 

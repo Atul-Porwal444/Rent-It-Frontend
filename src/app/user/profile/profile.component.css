@@ -1,0 +1,103 @@
+/* 1. Global Page Background */
+.profile-page {
+    background-color: #1a1a1a; /* Very dark grey background */
+    min-height: 100vh;
+    padding-bottom: 50px;
+  }
+  
+  /* 2. Header Banner */
+  .profile-header {
+    background: linear-gradient(180deg, #2c2c2c 0%, #1a1a1a 100%);
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333;
+  }
+  
+  /* 3. Avatar Styling */
+  .avatar-container {
+    position: relative;
+  }
+  
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 16px; /* Squircle shape like the image */
+    object-fit: cover;
+    border: 4px solid #1a1a1a; /* Creates a cutout effect */
+  }
+  
+  /* 4. Card Common Styles */
+  .sidebar-card, .content-card {
+    background-color: #282828; /* Lighter dark for cards */
+    border-radius: 12px;
+  }
+  
+  /* 5. Sidebar Navigation */
+  .nav-pills .nav-link {
+    color: #b0b3b8; /* Muted text */
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+  
+    &:hover {
+      background-color: #3a3a3a;
+      color: #fff;
+    }
+  
+    &.active {
+      background-color: #3a3a3a; /* Dark active state */
+      color: #fff;
+      border-left: 4px solid #0d6efd; /* Blue accent bar */
+    }
+  
+    i {
+      opacity: 0.7;
+    }
+  }
+  
+  /* 6. Info Rows (The grid inside the card) */
+  .info-row {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #3a3a3a; /* Dark divider */
+  
+    &:last-child {
+      border-bottom: none;
+    }
+  
+    .label {
+      width: 150px; /* Fixed width for labels */
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  
+    .value {
+      flex-grow: 1;
+      font-size: 0.95rem;
+      padding-right: 20px;
+    }
+  
+    /* Edit Button */
+    .btn-icon {
+      background: transparent;
+      border: none;
+      color: #0d6efd; /* Blue edit icon */
+      font-size: 1rem;
+      padding: 5px;
+      border-radius: 50%;
+      transition: background 0.2s;
+  
+      &:hover {
+        background-color: rgba(13, 110, 253, 0.1);
+      }
+    }
+  }
+  
+  /* Utility: Limit text to 2 lines */
+  .text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
