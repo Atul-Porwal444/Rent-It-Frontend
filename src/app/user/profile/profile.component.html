@@ -1,122 +1,254 @@
 <div class="profile-page">
   
-    <div class="profile-header text-white">
-      <div class="container py-4">
-        <div class="d-flex align-items-end gap-4">
-          
-          <div class="avatar-container" style="border: 3px solid white;  border-radius: 10px;">
-            <img [src]="user.avatar" alt="User" class="profile-avatar shadow-lg">
-          </div>
-  
-          <div class="mb-2">
-            <h2 class=" mb-0">{{ user.name }}</h2>
-            <small class="text-secondary">{{ user.username }}</small>
-          </div>
-  
+  <div class="profile-header text-white">
+    <div class="container py-4">
+      <div class="d-flex align-items-end gap-4">
+        <div class="avatar-container" style="border: 3px solid white; border-radius: 10px;">
+          <img [src]="user.avatar" alt="User" class="profile-avatar shadow-lg">
+        </div>
+        <div class="mb-2">
+          <h2 class="mb-0">{{ user.name }}</h2>
+          <small class="text-secondary">{{ user.username }}</small>
         </div>
       </div>
     </div>
-  
-    <div class="container mt-4">
-      <div class="row g-4">
-        
-        <div class="col-md-3">
-          <div class="card sidebar-card border-0 shadow-sm">
-            <div class="card-body p-2">
+  </div>
+
+  <div class="container mt-4">
+    <div class="row g-4">
+      
+      <div class="col-md-3">
+        <div class="card sidebar-card border-0 shadow-sm">
+          <div class="card-body p-2">
+            <div class="nav flex-column nav-pills">
               
-              <div class="nav flex-column nav-pills">
-                <button class="nav-link d-flex align-items-center gap-3" 
-                        [class.active]="activeTab === 'basic'" 
-                        (click)="setActiveTab('basic')">
-                  <i class="bi bi-person-vcard fs-5"></i> Basic Info
-                </button>
-                
-                <button class="nav-link d-flex align-items-center gap-3" 
-                        [class.active]="activeTab === 'account'" 
-                        (click)="setActiveTab('account')">
-                  <i class="bi bi-shield-lock fs-5"></i> Account
-                </button>
-                
-                <button class="nav-link d-flex align-items-center gap-3" 
-                        [class.active]="activeTab === 'posts'" 
-                        (click)="setActiveTab('posts')">
-                  <i class="bi bi-list-check fs-5"></i> My Posts
-                </button>
-              </div>
-  
+              <button class="nav-link d-flex align-items-center gap-3" 
+                      [class.active]="activeTab === 'basic'" 
+                      (click)="setActiveTab('basic')">
+                <i class="bi bi-person-vcard fs-5"></i> Basic Info
+              </button>
+              
+              <button class="nav-link d-flex align-items-center gap-3" 
+                      [class.active]="activeTab === 'account'" 
+                      (click)="setActiveTab('account')">
+                <i class="bi bi-shield-lock fs-5"></i> Account
+              </button>
+
             </div>
           </div>
         </div>
-  
-        <div class="col-md-9">
-          <div class="card content-card border-0 shadow-sm">
+      </div>
+
+      <div class="col-md-9">
+        <div class="card content-card border-0 shadow-sm">
+          
+          <div *ngIf="activeTab === 'basic'">
             <div class="card-header bg-transparent border-bottom border-secondary pt-4 pb-3">
               <h5 class="fw-bold text-white mb-0">Basic Info</h5>
             </div>
             
             <div class="card-body p-4">
-              
+
               <div class="info-row">
-                <div class="label" style="color: grey;">Name</div>
-                <div class="value text-white">{{ user.name }}</div>
-                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
+                <div class="label grey-color">Name</div>
+
+                <ng-container *ngIf="editingField !== 'name'">
+                  <div class="value text-white">{{ user.name }}</div>
+                  <div class="action">
+                    <button class="btn-icon" (click)="startEdit('name')"><i class="bi bi-pencil"></i></button>
+                  </div>
+                </ng-container>
+
+                <div *ngIf="editingField === 'name'" class="flex-grow-1">
+                  <input type="text" class="form-control bg-dark text-white border-secondary mb-2" [(ngModel)]="tempValue">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-primary" (click)="saveEdit('name')" [disabled]="isUpdating">
+                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+                  </div>
+                </div>
               </div>
 
               <div class="info-row">
-                <div class="label" style="color: grey;">Email</div>
-                <div class="value text-white text-truncate-2">
-                  {{ user.email || 'Write something about yourself...' }}
+                <div class="label grey-color">Email</div>
+                <div class="value text-white">{{ user.email }}</div>
                 </div>
-                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
-              </div>
 
-  
               <div class="info-row">
-                <div class="label" style="color: grey;">Gender</div>
-                <div class="value text-white">Male</div>
-                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
-              </div>
-  
-              <div class="info-row">
-                <div class="label" style="color: grey;">Location</div>
-                <div class="value text-white">{{ user.location || 'Add Location' }}</div>
-                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
-              </div>
-  
-              <div class="info-row">
-                <div class="label" style="color: grey;">Birthday</div>
-                <div class="value text-white">{{ user.birthday || 'Add Birthday' }}</div>
-                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
-              </div>
-  
-              <div class="info-row">
-                <div class="label" style="color: grey;">Phone</div>
-                <div class="value text-white text-truncate-2">
-                  {{ user.phoneNumber || 'Write something about yourself...' }}
+                <div class="label grey-color">Phone</div>
+
+                <ng-container *ngIf="editingField !== 'phone'">
+                  <div class="value text-white">{{ user.phone || 'Add Phone Number' }}</div>
+                  <div class="action">
+                    <button class="btn-icon" (click)="startEdit('phone')"><i class="bi bi-pencil"></i></button>
+                  </div>
+                </ng-container>
+
+                <div *ngIf="editingField === 'phone'" class="flex-grow-1">
+                  <input type="text" class="form-control bg-dark text-white border-secondary mb-2" [(ngModel)]="tempValue">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-primary" (click)="saveEdit('phone')" [disabled]="isUpdating">
+                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+                  </div>
                 </div>
-                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
               </div>
 
               <div class="info-row">
-                <div class="label" style="color: grey;">Occupation</div>
-                <div class="value text-white text-truncate-2">
-                  {{ user.occoupation || 'Write something about yourself...' }}
+                <div class="label grey-color">Gender</div>
+
+                <ng-container *ngIf="editingField !== 'gender'">
+                  <div class="value text-white">{{ user.gender || 'Add Gender' }}</div>
+                  <div class="action">
+                    <button class="btn-icon" (click)="startEdit('gender')"><i class="bi bi-pencil"></i></button>
+                  </div>
+                </ng-container>
+
+                <div *ngIf="editingField === 'gender'" class="flex-grow-1">
+                  <select class="form-select bg-dark text-white border-secondary mb-2" [(ngModel)]="tempValue">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-primary" (click)="saveEdit('gender')" [disabled]="isUpdating">
+                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+                  </div>
                 </div>
-                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
               </div>
 
               <div class="info-row">
-                <div class="label" style="color: grey;">Summary</div>
-                <div class="value text-white text-truncate-2">
-                  {{ user.bio || 'Write something about yourself...' }}
+                <div class="label grey-color">Location</div>
+
+                <ng-container *ngIf="editingField !== 'location'">
+                  <div class="value text-white">{{ user.location || 'Add Location' }}</div>
+                  <div class="action">
+                    <button class="btn-icon" (click)="startEdit('location')"><i class="bi bi-pencil"></i></button>
+                  </div>
+                </ng-container>
+
+                <div *ngIf="editingField === 'location'" class="flex-grow-1">
+                  <input type="text" class="form-control bg-dark text-white border-secondary mb-2" [(ngModel)]="tempValue">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-primary" (click)="saveEdit('location')" [disabled]="isUpdating">
+                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+                  </div>
                 </div>
-                <div class="action"><button class="btn-icon"><i class="bi bi-pencil"></i></button></div>
               </div>
-  
+
+              <div class="info-row">
+                <div class="label grey-color">Birthday</div>
+
+                <ng-container *ngIf="editingField !== 'birthday'">
+                  <div class="value text-white">{{ user.birthday || 'Add Birthday' }}</div>
+                  <div class="action">
+                    <button class="btn-icon" (click)="startEdit('birthday')"><i class="bi bi-pencil"></i></button>
+                  </div>
+                </ng-container>
+
+                <div *ngIf="editingField === 'birthday'" class="flex-grow-1">
+                  <input type="date" class="form-control bg-dark text-white border-secondary mb-2" [(ngModel)]="tempValue">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-primary" (click)="saveEdit('birthday')" [disabled]="isUpdating">
+                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="label grey-color">Occupation</div>
+
+                <ng-container *ngIf="editingField !== 'occupation'">
+                  <div class="value text-white">{{ user.occupation || 'Add Occupation' }}</div>
+                  <div class="action">
+                    <button class="btn-icon" (click)="startEdit('occupation')"><i class="bi bi-pencil"></i></button>
+                  </div>
+                </ng-container>
+
+                <div *ngIf="editingField === 'occupation'" class="flex-grow-1">
+                  <input type="text" class="form-control bg-dark text-white border-secondary mb-2" [(ngModel)]="tempValue">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-primary" (click)="saveEdit('occupation')" [disabled]="isUpdating">
+                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <div class="label grey-color">Summary</div>
+
+                <ng-container *ngIf="editingField !== 'bio'">
+                  <div class="value text-white text-truncate-2">
+                    {{ user.bio || 'Write something about yourself...' }}
+                  </div>
+                  <div class="action">
+                    <button class="btn-icon" (click)="startEdit('bio')"><i class="bi bi-pencil"></i></button>
+                  </div>
+                </ng-container>
+
+                <div *ngIf="editingField === 'bio'" class="flex-grow-1">
+                  <input type="text" class="form-control bg-dark text-white border-secondary mb-2" [(ngModel)]="tempValue">
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-primary" (click)="saveEdit('bio')" [disabled]="isUpdating">
+                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
+          <div *ngIf="activeTab === 'account'">
+            <div class="card-header bg-transparent border-bottom border-secondary pt-4 pb-3">
+              <h5 class="fw-bold text-white mb-0">Account Settings</h5>
+            </div>
+            
+            <div class="card-body p-4">
+              
+              <div class="info-row">
+                <div class="label grey-color">Name</div>
+                <div class="value text-white">{{ user.name }}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="label grey-color">Email</div>
+                <div class="value text-white">{{ user.email }}</div>
+                </div>
+
+              <div class="info-row">
+                <div class="label grey-color">Phone</div>
+                <div class="value text-white">{{ user.phone || 'Add Phone Number' }}</div>
+              </div>
+
+              <div class="info-row mt-3">
+                <div class="label grey-color">Password</div>
+                <div class="value text-white">••••••••••••••</div>
+                <div class="action">
+                  <button class="btn btn-outline-primary btn-sm rounded-pill px-3">Change Password</button>
+                </div>
+              </div>
+
+              <div class="mt-5 pt-4 border-top border-danger border-opacity-25">
+                <button class="btn btn-danger btn-sm fw-bold">Delete Account</button>
+              </div>
+
+            </div>
+          </div>
+
         </div>
-  
       </div>
+
     </div>
+  </div>
 </div>

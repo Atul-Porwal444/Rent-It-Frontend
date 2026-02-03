@@ -39,6 +39,12 @@ export class AuthService {
     return this.http.post(this.API_URL + "login", credentials, this.httpOptions);
   }
 
+  updateProfile(data : any) : Observable<any> {
+    return this.http.put(this.API_URL + '/user/update/profile', data, {
+      headers: new HttpHeaders({ 'Content-Type' : 'appilcation/json' })
+    })
+  }
+
   isLoggedIn() : boolean {
     return !!localStorage.getItem('token');
   }
