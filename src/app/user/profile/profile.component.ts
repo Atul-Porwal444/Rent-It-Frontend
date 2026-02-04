@@ -3,6 +3,8 @@ import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../_services/auth.service';
+import { ProfileService } from '../../_services/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,25 +21,20 @@ export class ProfileComponent implements OnInit {
   isUpdating: boolean = false;
 
   user: any = {
-    name: 'Atul Porwal',
-    username: '@atul_porwal444',
-    gender: "Male",
-    email: 'atul@example.com',
-    location: 'Indore, Madhya Pradesh, India',
-    bio: 'They will resist.',
-    birthday: 'June 28, 2005',
-    phone: "+91-1234567890",
-    occupation: "Hacker",
-    website: '',
-    github: 'github.com/atul',
-    linkedin: '',
-    twitter: '',
-    avatar: 'https://ui-avatars.com/api/?background=random&name=Atul+Porwal' // Fallback
+    name: '',
+    gender: "",
+    email: '',
+    location: '',
+    bio: '',
+    birthday: '',
+    phone: "",
+    occupation: "",
+    avatar: 'https://ui-avatars.com/api/?background=random&name=User' // Fallback
   };
 
   activeTab: string = 'basic'; // Controls which sidebar item is active
 
-  constructor(private router: Router) { }
+  constructor(private profileService: ProfileService, private router: Router) { }
 
   ngOnInit(): void {
     // TODO: Fetch real user data from AuthService here later
@@ -46,7 +43,12 @@ export class ProfileComponent implements OnInit {
       const u = JSON.parse(storedUser);
       this.user.name = u.name;
       this.user.email = u.email;
-      if(u.imageUrl) this.user.avatar = u.imageUrl;
+      this.user.gender = u.gender;
+      this.user.location = u.location;
+      this.user.bio = u.bio;
+      this.user.birthday = u.birthday;
+      this.user.phone = u.phone;
+      this.user.occupation = u.occupation;
     }
   }
 
@@ -66,16 +68,32 @@ export class ProfileComponent implements OnInit {
 
   saveEdit(field : string) {
     this.isUpdating = true;
+    console.log(field);
 
-    const updatedPayLoad = { ...this.user, [field]: this.tempValue };
-    
+    const payload: any = { ...this.user };
+    delete payload.email;
+    console.log(JSON.stringify(payload));
+    payload[field] = this.tempValue;
 
-    setTimeout(() => {
-      this.user[field] = this.tempValue;
-      this.editingField = null;
-      this.isUpdating = false;
+    this.profileService.updateProfile(payload).subscribe({
+      next: (res) => {
+        this.user[field] = this.tempValue;
 
-      localStorage.setItem('user', JSON.stringify(this.user));
-    }, 1000);
+        this.isUpdating = false;
+        this.editingField = null;
+
+        if (field === 'name') {
+          const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+          currentUser.name = this.tempValue;
+          localStorage.setItem('user', JSON.stringify(currentUser));
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to update. Please try again.');
+        this.isUpdating = false;
+      }
+    })
+    console.log("leaving fun")
   }
 }

@@ -97,3 +97,19 @@
   .grey-color {
     color: grey;
   }
+
+  /* Add to your existing SCSS */
+
+.form-control, .form-select {
+  &:focus {
+    background-color: #333; /* Keep it dark on focus */
+    color: white;
+    border-color: #0d6efd; /* Blue border focus */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+}
+
+/* Ensure the edit container takes full width */
+.flex-grow-1 {
+  flex-grow: 1;
+}

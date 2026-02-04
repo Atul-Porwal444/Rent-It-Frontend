@@ -32,6 +32,8 @@ export class LoginComponent {
 
     this.authService.login(this.form).subscribe({
       next: (response: any) => {
+
+        console.log(JSON.stringify(response));
         
         if (response.success && response.data?.token) {
           localStorage.setItem('token', response.data.token);
@@ -40,7 +42,13 @@ export class LoginComponent {
             id : response.data.id,
             name : response.data.name,
             email: response.data.email,
-            profileUrl: response.data.profileUrl
+            profileUrl: response.data.profileUrl,
+            location: response.data.location,
+            gender: response.data.gender,
+            occupation: response.data.occupation,
+            birthday: response.data.dob,
+            bio: response.data.bio,
+            phone: response.data.phone
           }
 
           localStorage.setItem('user', JSON.stringify(userDetails));
