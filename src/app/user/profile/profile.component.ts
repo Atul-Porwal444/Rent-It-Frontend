@@ -82,11 +82,9 @@ export class ProfileComponent implements OnInit {
         this.isUpdating = false;
         this.editingField = null;
 
-        if (field === 'name') {
-          const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-          currentUser.name = this.tempValue;
-          localStorage.setItem('user', JSON.stringify(currentUser));
-        }
+        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        currentUser[field] = this.tempValue;
+        localStorage.setItem('user', JSON.stringify(currentUser));
       },
       error: (err) => {
         console.error(err);
