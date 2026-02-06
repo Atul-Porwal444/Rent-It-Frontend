@@ -4,11 +4,10 @@
     <div class="container py-4">
       <div class="d-flex align-items-end gap-4">
         <div class="avatar-container" style="border: 3px solid white; border-radius: 10px;">
-          <img [src]="user.avatar" alt="User" class="profile-avatar shadow-lg">
+          <img [src]="user.profileUrl" alt="User" class="profile-avatar shadow-lg">
         </div>
         <div class="mb-2">
           <h2 class="mb-0">{{ user.name }}</h2>
-          <small class="text-secondary">{{ user.username }}</small>
         </div>
       </div>
     </div>
@@ -143,19 +142,19 @@
               </div>
 
               <div class="info-row">
-                <div class="label grey-color">Birthday</div>
+                <div class="label grey-color">DOB</div>
 
-                <ng-container *ngIf="editingField !== 'birthday'">
-                  <div class="value text-white">{{ user.birthday || 'Add Birthday' }}</div>
+                <ng-container *ngIf="editingField !== 'dob'">
+                  <div class="value text-white">{{ user.dob || 'Add dob' }}</div>
                   <div class="action">
-                    <button class="btn-icon" (click)="startEdit('birthday')"><i class="bi bi-pencil"></i></button>
+                    <button class="btn-icon" (click)="startEdit('dob')"><i class="bi bi-pencil"></i></button>
                   </div>
                 </ng-container>
 
-                <div *ngIf="editingField === 'birthday'" class="flex-grow-1">
+                <div *ngIf="editingField === 'dob'" class="flex-grow-1">
                   <input type="date" class="form-control bg-dark text-white border-secondary mb-2" [(ngModel)]="tempValue">
                   <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-primary" (click)="saveEdit('birthday')" [disabled]="isUpdating">
+                    <button class="btn btn-sm btn-primary" (click)="saveEdit('dob')" [disabled]="isUpdating">
                       <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
                     </button>
                     <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>

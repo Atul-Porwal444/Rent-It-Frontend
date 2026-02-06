@@ -1,10 +1,9 @@
 import { NgIf } from '@angular/common';
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../_services/auth.service';
 import { ProfileService } from '../../_services/profile.service';
+import { UserProfile } from '../../_models/user-profile';
 
 @Component({
   selector: 'app-profile',
@@ -14,51 +13,45 @@ import { ProfileService } from '../../_services/profile.service';
 })
 export class ProfileComponent implements OnInit {
 
-  editingField: String | null = null;
-
-  tempValue: any = '';
-
+  activeTab: string = 'basic'; // Controls which sidebar item is active
+  editingField: keyof UserProfile | null = null;
   isUpdating: boolean = false;
+  tempValue: string = '';
 
-  user: any = {
+
+  user: UserProfile = {
     name: '',
     gender: "",
     email: '',
     location: '',
     bio: '',
-    birthday: '',
+    dob: '',
     phone: "",
     occupation: "",
-    avatar: 'https://ui-avatars.com/api/?background=random&name=User' // Fallback
+    profileUrl: 'https://ui-avatars.com/api/?background=random&name=User' // Fallback
   };
-
-  activeTab: string = 'basic'; // Controls which sidebar item is active
 
   constructor(private profileService: ProfileService, private router: Router) { }
 
   ngOnInit(): void {
-    // TODO: Fetch real user data from AuthService here later
+    this.loadUserData();
+  }
+
+  loadUserData() : void {
     const storedUser = localStorage.getItem('user');
     if(storedUser) {
-      const u = JSON.parse(storedUser);
-      this.user.name = u.name;
-      this.user.email = u.email;
-      this.user.gender = u.gender;
-      this.user.location = u.location;
-      this.user.bio = u.bio;
-      this.user.birthday = u.birthday;
-      this.user.phone = u.phone;
-      this.user.occupation = u.occupation;
+      this.user = { ...this.user, ...JSON.parse(storedUser) };
     }
   }
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
+    this.cancelEdit();
   }
 
-  startEdit(field : string) {
+  startEdit(field : keyof UserProfile) {
     this.editingField = field;
-    this.tempValue = this.user[field];
+    this.tempValue = this.user[field] || '';
   }
 
   cancelEdit() {
@@ -66,15 +59,18 @@ export class ProfileComponent implements OnInit {
     this.tempValue = '';
   }
 
-  saveEdit(field : string) {
+  saveEdit(field : keyof UserProfile) {
+
+    if(this.tempValue === this.user[field]) {
+      this.cancelEdit();
+      return;
+    }
     this.isUpdating = true;
-    console.log(field);
 
-    const payload: any = { ...this.user };
-    delete payload.email;
+    const payload = { ...this.user, [field]: this.tempValue };
+
+    delete (payload as any).email;
     console.log(JSON.stringify(payload));
-    payload[field] = this.tempValue;
-
     this.profileService.updateProfile(payload).subscribe({
       next: (res) => {
         this.user[field] = this.tempValue;
@@ -82,16 +78,17 @@ export class ProfileComponent implements OnInit {
         this.isUpdating = false;
         this.editingField = null;
 
-        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-        currentUser[field] = this.tempValue;
-        localStorage.setItem('user', JSON.stringify(currentUser));
+        this.updateLocalStorage(this.user);
       },
       error: (err) => {
         console.error(err);
         alert('Failed to update. Please try again.');
         this.isUpdating = false;
       }
-    })
-    console.log("leaving fun")
+    });
+  }
+
+  private updateLocalStorage(user : UserProfile) {
+    localStorage.setItem('user', JSON.stringify(user));
   }
 }
