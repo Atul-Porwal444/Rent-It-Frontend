@@ -21,7 +21,14 @@ export class ProfileService {
   constructor(private http: HttpClient) { }
 
   updateProfile(data : any) : Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http.put(this.API_URL + 'profile', data, this.httpOptions);
+  }
+
+  changePassword(data: any) : Observable<any> {
+    return this.http.post(this.API_URL + 'password', data, this.httpOptions);
+  }
+
+  deleteAccount() : Observable<any> {
+    return this.http.delete(this.API_URL + 'delete-account', this.httpOptions);
   }
 }

@@ -46,7 +46,7 @@ export class LoginComponent {
             location: response.data.location,
             gender: response.data.gender,
             occupation: response.data.occupation,
-            birthday: response.data.dob,
+            dob: response.data.dob,
             bio: response.data.bio,
             phone: response.data.phone
           }

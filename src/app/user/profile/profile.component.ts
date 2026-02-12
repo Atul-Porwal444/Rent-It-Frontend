@@ -31,6 +31,15 @@ export class ProfileComponent implements OnInit {
     profileUrl: 'https://ui-avatars.com/api/?background=random&name=User' // Fallback
   };
 
+  showPasswordModal : boolean = false;
+  showDeleteModal : boolean = false;
+  isLoading : boolean = false;
+
+  passwordData = {
+    oldPassword: '',
+    newPassword: ''
+  }
+
   constructor(private profileService: ProfileService, private router: Router) { }
 
   ngOnInit(): void {
@@ -90,5 +99,60 @@ export class ProfileComponent implements OnInit {
 
   private updateLocalStorage(user : UserProfile) {
     localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  openPasswordModal() {
+    this.showPasswordModal = true;
+    this.passwordData = { oldPassword: '', newPassword: '' };
+  }
+
+  closePasswordModal() {
+    this.showPasswordModal = false;
+  }
+
+  onChangePassword() {
+    if (!this.passwordData.oldPassword || !this.passwordData.newPassword) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    this.isLoading = true;
+    
+    this.profileService.changePassword(this.passwordData).subscribe({
+      next: (res) => {
+        alert("Password Changed Successfully");
+        this.isLoading = false;
+        this.closePasswordModal();
+      },
+      error: (err) => {
+        alert(err.error?.message || "Failed to change password");
+        this.isLoading = false;
+      }
+    });
+  }
+
+  openDeleteModal() {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+  }
+
+  onDeleteAccount() {
+    this.isLoading = true;
+
+    this.profileService.deleteAccount().subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        localStorage.clear();
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        alert("Failed to delete account");
+        this.isLoading = false;
+        this.closeDeleteModal();
+      }
+    });
   }
 }

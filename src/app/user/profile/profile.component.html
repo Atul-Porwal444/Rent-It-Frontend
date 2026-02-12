@@ -214,34 +214,80 @@
             </div>
             
             <div class="card-body p-4">
-              
               <div class="info-row">
-                <div class="label grey-color">Name</div>
-                <div class="value text-white">{{ user.name }}</div>
-              </div>
-
-              <div class="info-row">
-                <div class="label grey-color">Email</div>
-                <div class="value text-white">{{ user.email }}</div>
-                </div>
-
-              <div class="info-row">
-                <div class="label grey-color">Phone</div>
-                <div class="value text-white">{{ user.phone || 'Add Phone Number' }}</div>
+                 <div class="label grey-color">Email</div>
+                 <div class="value text-white">{{ user.email }}</div>
               </div>
 
               <div class="info-row mt-3">
                 <div class="label grey-color">Password</div>
                 <div class="value text-white">••••••••••••••</div>
                 <div class="action">
-                  <button class="btn btn-outline-primary btn-sm rounded-pill px-3">Change Password</button>
+                  <button class="btn btn-outline-primary btn-sm rounded-pill px-3" 
+                          (click)="openPasswordModal()">
+                    Change Password
+                  </button>
                 </div>
               </div>
 
               <div class="mt-5 pt-4 border-top border-danger border-opacity-25">
-                <button class="btn btn-danger btn-sm fw-bold">Delete Account</button>
+                <div class="d-flex justify-content-between align-items-center p-3 rounded" style="background: rgba(220, 53, 69, 0.1);">
+                  <div>
+                    <strong class="text-danger d-block">Delete Account</strong>
+                    <small class="text-white-50">Once deleted, there is no going back.</small>
+                  </div>
+                  <button class="btn btn-danger btn-sm fw-bold" (click)="openDeleteModal()">Delete Account</button>
+                </div>
               </div>
 
+            </div>
+          </div>
+
+          <div class="modal-backdrop" *ngIf="showPasswordModal">
+            <div class="custom-modal card bg-dark text-white border-secondary shadow-lg">
+              <div class="card-body p-4">
+                <h4 class="fw-bold mb-4">Change Password</h4>
+                
+                <div class="mb-3">
+                  <label class="form-label text-muted small">Old Password</label>
+                  <input type="password" class="form-control bg-black text-white border-secondary" 
+                         [(ngModel)]="passwordData.oldPassword">
+                </div>
+        
+                <div class="mb-4">
+                  <label class="form-label text-muted small">New Password</label>
+                  <input type="password" class="form-control bg-black text-white border-secondary" 
+                         [(ngModel)]="passwordData.newPassword">
+                </div>
+        
+                <div class="d-flex justify-content-end gap-2">
+                  <button class="btn btn-outline-secondary" (click)="closePasswordModal()">Cancel</button>
+                  <button class="btn btn-primary" (click)="onChangePassword()" [disabled]="isLoading">
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span> Change
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="modal-backdrop" *ngIf="showDeleteModal">
+            <div class="custom-modal card bg-dark text-white border-danger shadow-lg">
+              <div class="card-body p-4 text-center">
+                <div class="mb-3 text-danger">
+                  <i class="bi bi-exclamation-triangle-fill fs-1"></i>
+                </div>
+                <h4 class="fw-bold">Are you sure?</h4>
+                <p class="text-white-50 mb-4">
+                  This action cannot be undone. All your data, posts, and history will be permanently erased.
+                </p>
+        
+                <div class="d-flex justify-content-center gap-3">
+                  <button class="btn btn-secondary px-4" (click)="closeDeleteModal()">Cancel</button>
+                  <button class="btn btn-danger px-4 fw-bold" (click)="onDeleteAccount()" [disabled]="isLoading">
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span> Delete Forever
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

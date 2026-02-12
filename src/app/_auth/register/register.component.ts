@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule, NgModel } from '@angular/forms';
-import { from } from 'rxjs';
-import { response } from 'express';
 import { NgIf } from '@angular/common';
 
 @Component({
