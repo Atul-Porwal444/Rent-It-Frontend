@@ -19,6 +19,29 @@
           <li class="nav-item">
             <a class="nav-link fw-semibold" routerLink="/roommates">Find Roommates</a>
           </li>
+
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-2">
+
+            <li class="nav-item">
+              <button class="btn btn-outline-primary fw-bold d-flex align-items-center gap-2" (click)="openPostModal('room')">
+                <i class="bi bi-house-add-fill"></i> 
+                <span class="d-none d-lg-inline">Post Room</span> </button>
+            </li>
+          
+            <li class="nav-item">
+              <button class="btn btn-outline-info fw-bold d-flex align-items-center gap-2" (click)="openPostModal('roommate')">
+                <i class="bi bi-people-fill"></i>
+                <span class="d-none d-lg-inline">Post Roommate</span>
+              </button>
+            </li>
+          
+            </ul>
+          
+          <app-post-ad 
+            *ngIf="showPostModal" 
+            [adType]="currentAdType" 
+            (close)="showPostModal = false">
+          </app-post-ad>
   
           <li class="nav-item dropdown" *ngIf="authService.isLoggedIn(); else loginBtn">
   
