@@ -74,3 +74,106 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* 1. Global Navbar Styling */
+.custom-navbar {
+  background-color: #0c0c0c; /* Deep, sleek black */
+  border-bottom: 1px solid #222; /* Subtle divider */
+  /* Optional: Add a nice modern font if you have one imported */
+  /* font-family: 'Inter', system-ui, sans-serif; */ 
+}
+
+/* 2. Smaller, Sleek Nav Links with Dynamic Underline */
+.custom-link {
+  font-size: 0.85rem;
+  color: #888888 !important; /* Muted grey */
+  font-weight: 400;
+  position: relative;
+  padding: 0.5rem 0.1rem !important; /* Tight horizontal padding */
+  margin: 0 0.5rem;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #e0e0e0 !important;
+  }
+
+  /* The Underline setup */
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    border-radius: 2px;
+  }
+
+  /* Active State (Triggered by Angular routerLinkActive) */
+  &.active-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    
+    &::after {
+      width: 100%; /* Expands to full width */
+    }
+  }
+}
+
+/* 3. Modern Monochrome Buttons */
+.custom-btn-outline {
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #333;
+  color: #b0b0b0;
+  border-radius: 8px; /* Slightly squared edge */
+  background: transparent;
+  transition: all 0.2s;
+  
+  &:hover {
+    background-color: #1a1a1a;
+    border-color: #555;
+    color: #ffffff;
+  }
+}
+
+.custom-btn-filled {
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  background-color: #e2e2e2;
+  color: #000000;
+  border: 3px solid #e2e2e2;
+  border-radius: 8px;
+  transition: all 0.2s;
+  
+  &:hover {
+    background-color: #ffffff;
+    border-color: #f200ff;
+  }
+}
+
+/* 4. Small Premium Profile Icon */
+.profile-icon {
+  width: 32px; /* Smaller size */
+  height: 32px;
+  object-fit: cover;
+  border: 1px solid #e2e2e2; /* Thin light border */
+  padding: 2px; /* This creates a premium gap between the image and the border */
+  background-color: #0c0c0c;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    border-color: #ffffff;
+  }
+}
+
+/* 5. Dropdown Adjustments (bringing it up closer to smaller navbar) */
+.custom-dropdown {
+  margin-top: 10px;
+  background-color: #141414; /* Match deep theme */
+  border: 1px solid #2a2a2a !important;
+  border-radius: 12px;
+}
