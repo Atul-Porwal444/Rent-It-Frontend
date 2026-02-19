@@ -10,7 +10,7 @@
     </div>
 
     <div class="modal-body p-3 text-white">
-      <form (ngSubmit)="onSubmit()" #adForm="ngForm">
+      <form (ngSubmit)="onSubmit()" #adForm="ngForm" autocomplete="off">
 
         <div class="mb-3">
           <label class="form-label grey-color fw-bold" style="font-size: 0.75rem;">Upload Photos (Max 5)</label>
@@ -30,6 +30,17 @@
         </div>
 
         <div class="row g-2 mb-2">
+
+          <div class="col-md-6">
+            <label class="form-label grey-color" style="font-size: 0.75rem;">State</label>
+            <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" 
+                   [(ngModel)]="formData.state" name="state" required 
+                   placeholder="Select State..." list="stateList">
+            <datalist id="stateList">
+              <option *ngFor="let state of indianStates" [value]="state"></option>
+            </datalist>
+          </div>
+
           <div class="col-md-6">
             <label class="form-label grey-color" style="font-size: 0.75rem;">City</label>
             <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" 
@@ -45,6 +56,15 @@
             <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" 
                    [(ngModel)]="formData.location" name="loc" required 
                    placeholder="e.g. Vijay Nagar" maxlength="40">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label grey-color" style="font-size: 0.75rem;">Pincode</label>
+            <input type="number" class="form-control form-control-sm bg-dark text-white border-secondary" 
+                   [(ngModel)]="formData.pincode" name="pincode" required 
+                   placeholder="e.g. 452010" 
+                   min="100000" max="999999" 
+                   (keydown)="preventNegative($event)">
           </div>
 
           <div class="col-md-6" *ngIf="adType === 'room'">
@@ -71,37 +91,73 @@
                    class="form-control form-control-sm bg-dark text-white border-secondary" 
                    [(ngModel)]="formData.rentAmount" name="rent" 
                    (keydown)="preventNegative($event)" required>
+            
+            <small class="text-danger d-block" *ngIf="formData.rentAmount > 1000000">
+              Rent amount should be less than 1,000,000
+            </small>
           </div>
-          <small class="text-danger" *ngIf="formData.rentAmount > 1000000">Rent amount should be less than 1000000</small>
-        </div>
 
-        <div *ngIf="adType === 'room'" class="row g-2 mb-2">
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="adType === 'room'">
             <label class="form-label grey-color" style="font-size: 0.75rem;">Security Deposit (₹)</label>
             <input type="number" min="0" max="1000000"
                    class="form-control form-control-sm bg-dark text-white border-secondary" 
                    [(ngModel)]="formData.securityDeposit" name="deposit"
                    (keydown)="preventNegative($event)" required>
+            
+            <small class="text-danger d-block" *ngIf="formData.securityDeposit > 1000000">
+              Deposit amount should be less than 1,000,000
+            </small>
           </div>
-          <small class="text-danger" *ngIf="formData.securityDeposit > 1000000">Security deposit amount should be less than 1000000</small>
         </div>
 
         <div *ngIf="adType === 'roommate'" class="row g-2 mb-2">
+          
           <div class="col-md-6">
-            <label class="form-label grey-color" style="font-size: 0.75rem;">Looking For</label>
+            <label class="form-label grey-color" style="font-size: 0.75rem;">Looking For (Gender)</label>
             <select class="form-select form-select-sm bg-dark text-white border-secondary" [(ngModel)]="formData.lookingForGender" name="gender">
-              <option value="Any">Any</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
           </div>
+
           <div class="col-md-6">
+            <label class="form-label grey-color" style="font-size: 0.75rem;">Dietary Preference</label>
+            <select class="form-select form-select-sm bg-dark text-white border-secondary" [(ngModel)]="formData.dietaryPreference" name="diet">
+              <option value="No Preference">No Preference</option>
+              <option value="Vegetarian">Vegetarian</option>
+              <option value="Non-Vegetarian">Non-Vegetarian</option>
+              <option value="Vegan">Vegan</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label grey-color" style="font-size: 0.75rem;">Religion Preference</label>
+            <select class="form-select form-select-sm bg-dark text-white border-secondary" [(ngModel)]="formData.religionPreference" name="religion">
+              <option value="No Preference">No Preference</option>
+              <option value="Hindu">Hindu</option>
+              <option value="Muslim">Muslim</option>
+              <option value="Sikh">Sikh</option>
+              <option value="Christian">Christian</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="col-md-3 col-6">
             <label class="form-label grey-color" style="font-size: 0.75rem;">Current Roommates</label>
-            <input type="number" min="0" 
+            <input type="number" min="0" max="10"
                    class="form-control form-control-sm bg-dark text-white border-secondary" 
                    [(ngModel)]="formData.currentRoommates" name="curr"
-                   (keydown)="preventNegative($event)">
+                   (keydown)="preventNegative($event)" required>
           </div>
+
+          <div class="col-md-3 col-6">
+            <label class="form-label grey-color" style="font-size: 0.75rem;">Needed Roommates</label>
+            <input type="number" min="1" max="10"
+                   class="form-control form-control-sm bg-dark text-white border-secondary" 
+                   [(ngModel)]="formData.neededRoommates" name="needed"
+                   (keydown)="preventNegative($event)" required>
+          </div>
+
         </div>
 
         <div class="mb-3">
