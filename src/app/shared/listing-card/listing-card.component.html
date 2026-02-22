@@ -31,7 +31,7 @@
         ₹{{ data.rentAmount || '0' }}
         <span class="text-secondary fw-normal" style="font-size: 0.75rem;">/mo</span>
       </h5>
-      <span class="custom-badge"><i class="bi bi-geo-alt me-1"></i>{{ data.location || 'Location' }}</span>
+      <span class="custom-badge"><i class="bi bi-geo-alt me-1"></i>{{ data.city || 'Location' }}</span>
     </div>
     
     <p class="card-text text-secondary mt-1 mb-3 text-truncate-2" style="font-size: 0.8rem; line-height: 1.5;">
@@ -44,11 +44,12 @@
       <div *ngIf="type === 'ROOM'" class="text-muted d-flex align-items-center gap-2" style="font-size: 0.75rem;">
         <span class="d-flex align-items-center gap-1 text-light"><i class="bi bi-house-door"></i> {{ data.bhkType || 'BHK' }}</span>
         <span class="text-secondary">•</span>
-        <span>{{ data.isFurnished ? 'Furnished' : 'Unfurnished' }}</span>
+        <span class="text-secondary">{{ data.isFurnished ? 'Furnished' : 'Unfurnished' }}</span>
       </div>
       <div *ngIf="type === 'ROOMMATE'" class="text-muted d-flex align-items-center gap-2" style="font-size: 0.75rem;">
-        <span class="d-flex align-items-center gap-1"><i class="bi bi-people"></i> Looking for:</span>
-        <span class="text-light fw-medium">{{ data.lookingForGender || 'Any' }}</span>
+        <span class="d-flex align-items-center gap-1 text-light"><i class="bi bi-people"></i> Looking for</span>
+        <span class="text-secondary">•</span>
+        <span class="fw-medium text-secondary">{{ data.lookingForGender || 'Any' }}</span>
       </div>
     </div>
   </div>
