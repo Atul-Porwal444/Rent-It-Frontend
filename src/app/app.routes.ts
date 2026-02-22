@@ -4,6 +4,8 @@ import { LoginComponent } from './_auth/login/login.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { RegisterComponent } from './_auth/register/register.component';
 import { VerifyOtpComponent } from './_auth/verify-otp/verify-otp.component';
+import { RoomsComponent } from './_listings/rooms/rooms.component';
+import { RoommatesComponent } from './_listings/roommates/roommates.component';
 
 export const routes: Routes = [
     { path : '', component: DashboardComponent},
@@ -11,5 +13,7 @@ export const routes: Routes = [
     { path : 'login', component: LoginComponent},
     { path : 'profile', component: ProfileComponent},
     { path : 'register', component: RegisterComponent},
-    { path : 'verify-otp', component: VerifyOtpComponent}
+    { path : 'verify-otp', component: VerifyOtpComponent},
+    { path : 'rooms', component: RoomsComponent},
+    { path : 'roommates', component: RoommatesComponent}
 ];

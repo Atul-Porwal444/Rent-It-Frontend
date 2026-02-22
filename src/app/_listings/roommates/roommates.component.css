@@ -1,0 +1,60 @@
+.page-wrapper {
+    background-color: #121212;
+    min-height: calc(100vh - 65px);
+    color: #e0e0e0;
+  }
+  
+  /* Filter Bar */
+  .filter-bar {
+    background-color: #181818;
+    border: 1px solid #2a2a2a;
+  }
+  
+  .custom-input {
+    background-color: #121212;
+    color: #fff;
+    border: 1px solid #333;
+    transition: all 0.2s;
+  }
+  
+  .custom-input:focus {
+    background-color: #000;
+    border-color: #666;
+    color: #fff;
+    box-shadow: none;
+  }
+  
+  /* Custom Pagination */
+  .custom-pagination .page-link {
+    background-color: #181818;
+    color: #a0a0a0;
+    border: 1px solid #333;
+    border-radius: 8px !important; /* Rounded square buttons */
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .custom-pagination .page-link:hover {
+    background-color: #2a2a2a;
+    color: #fff;
+  }
+  
+  .custom-pagination .page-item.active .page-link {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+    font-weight: bold;
+  }
+  
+  .custom-pagination .page-item.disabled .page-link {
+    background-color: #121212;
+    color: #444;
+    border-color: #222;
+    cursor: not-allowed;
+  }
+  
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }

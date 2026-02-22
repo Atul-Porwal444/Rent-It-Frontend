@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ListingCardComponent } from '../shared/listing-card/listing-card.component';
 import { NgFor } from '@angular/common';
+import { ListingService } from '../_services/listing.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,18 +11,33 @@ import { NgFor } from '@angular/common';
 })
 export class DashboardComponent {
 
-  // Fake data to test the UI (Before we connect backend)
-  featuredRooms = [
-    { id: 1, rentAmount: 12000, location: 'Vijay Nagar', description: 'Nice 2BHK near metro', bhkType: '2BHK', furnished: true },
-    { id: 2, rentAmount: 8000, location: 'Bhawarkua', description: 'Student friendly room', bhkType: '1RK', furnished: false },
-    { id: 3, rentAmount: 15000, location: 'Palasia', description: 'Luxury apartment', bhkType: '3BHK', furnished: true },
-    { id: 4, rentAmount: 5000, location: 'Rau', description: 'Budget stay', bhkType: '1BHK', furnished: false },
-  ];
+  featuredRooms : any[] = [];
+  featuredRoommates : any[] = [];
 
-  featuredRoommates = [
-    { id: 101, rentAmount: 4000, location: 'Vijay Nagar', description: 'Need a roommate for 2BHK', lookingForGender: 'Male' },
-    { id: 102, rentAmount: 3500, location: 'Bhawarkua', description: 'Shared room available', lookingForGender: 'Female' },
-    { id: 103, rentAmount: 6000, location: 'LIG Colony', description: 'Chill flatmate needed', lookingForGender: 'Any' },
-    { id: 104, rentAmount: 2500, location: 'Indore', description: 'Urgent requirement', lookingForGender: 'Male' },
-  ];
+  constructor(private listingService: ListingService) {}
+
+  ngOnInit(): void {
+    // Fetch page 0, size 10 
+    this.listingService.getRooms(0, 10, 'postedOn', 'desc').subscribe(res => {
+      this.featuredRooms = res.content;
+    });
+
+    this.listingService.getRoommates(0, 10, 'postedOn', 'desc').subscribe(res => {
+      this.featuredRoommates = res.content;
+    });
+  }
+
+  // Horizontal Scroll Logic
+  scroll(element: HTMLElement, direction: 'left' | 'right') {
+    const scrollAmount = 320; // Roughly the width of one card + gap
+    
+    // Remove .nativeElement since it's already a raw HTML element
+    const currentScroll = element.scrollLeft; 
+    
+    element.scrollTo({
+      left: direction === 'left' ? currentScroll - scrollAmount : currentScroll + scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+
 }

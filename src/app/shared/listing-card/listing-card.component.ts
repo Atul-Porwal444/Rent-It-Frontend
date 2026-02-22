@@ -1,29 +1,53 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-listing-card',
-  imports: [NgIf],
+  imports: [NgIf, NgFor],
   templateUrl: './listing-card.component.html',
   styleUrl: './listing-card.component.css'
 })
-export class ListingCardComponent {
+export class ListingCardComponent implements OnInit {
   // Data passed from the parent (Dashboard)
   @Input() data: any;
   @Input() type : 'ROOM' | 'ROOMMATE' = 'ROOM';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  currentImageIndex = 0;
+
+  constructor(private authService: AuthService, private router: Router) {}
+  
+  ngOnInit(): void {}
+
+  // Get the current image or a placeholder if none exist
+  get currentImage(): string {
+    if (this.data?.imageUrls && this.data.imageUrls.length > 0) {
+      return this.data.imageUrls[this.currentImageIndex];
+    }
+    return 'https://placehold.co/600x400/1e1e1e/888888?text=No+Image';
+  }
+
+  nextImage(event: Event) {
+    event.stopPropagation(); // Prevents triggering the card's handleClick
+    if (this.data?.imageUrls && this.currentImageIndex < this.data.imageUrls.length - 1) {
+      this.currentImageIndex++;
+    }
+  }
+
+  prevImage(event: Event) {
+    event.stopPropagation(); // Prevents triggering the card's handleClick
+    if (this.currentImageIndex > 0) {
+      this.currentImageIndex--;
+    }
+  }
 
   handleClick() {
-    if(this.auth.isLoggedIn()) {
-      // If logged in then go to details (build later)
-      alert(`Navigating to ${this.type} ID: ${this.data.id}`);
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
     } else {
-      // If NOT logged in, go to login
-      const confirmLogin = confirm("You must be logged in to view details. Go to Login?");
-      if(confirmLogin) this.router.navigate(['/login']);
+      const route = this.type === 'ROOM' ? '/rooms' : '/roommates';
+      this.router.navigate([route, this.data.id]);
     }
   }
 
