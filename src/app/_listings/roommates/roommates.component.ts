@@ -27,7 +27,7 @@ export class RoommatesComponent implements OnInit {
 
   filters = {
     searchQuery: '',
-    bhkType: '', // For Rooms
+    bhkType: '', // For both
     lookingForGender: '', // For Roommates
     dietaryPreference: '', // For Roommates
     religionPreference: '', // For Roommates

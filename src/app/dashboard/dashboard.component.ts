@@ -18,11 +18,11 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     // Fetch page 0, size 10 
-    this.listingService.getRooms(0, 10, 'postedOn', 'desc').subscribe(res => {
+    this.listingService.getRooms({} , 0, 10, 'postedOn', 'desc').subscribe(res => {
       this.featuredRooms = res.content;
     });
 
-    this.listingService.getRoommates(0, 10, 'postedOn', 'desc').subscribe(res => {
+    this.listingService.getRoommates({}, 0, 10, 'postedOn', 'desc').subscribe(res => {
       this.featuredRoommates = res.content;
     });
   }
