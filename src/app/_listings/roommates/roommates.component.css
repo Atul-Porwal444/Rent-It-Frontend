@@ -58,3 +58,115 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
+
+  .page-wrapper {
+    background-color: #121212;
+    min-height: calc(100vh - 65px);
+    color: #e0e0e0;
+  }
+  
+  .max-w-custom {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .custom-border {
+    border-color: #222 !important;
+  }
+  
+  .bg-darker {
+    background-color: #0c0c0c;
+  }
+  
+  /* Big Top Search Input */
+  .custom-search-input {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: #fff;
+    font-size: 1rem;
+  }
+  .custom-search-input:focus {
+    background-color: #000;
+    border-color: #555;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Sidebar Styles */
+  .filter-sidebar {
+    background-color: #181818;
+    border: 1px solid #222;
+  }
+  
+  .tracking-wide {
+    letter-spacing: 0.05em;
+  }
+  
+  /* Sidebar Inputs */
+  .custom-input {
+    background-color: #121212;
+    color: #fff;
+    border: 1px solid #333;
+    transition: all 0.2s;
+  }
+  .custom-input:focus {
+    background-color: #000;
+    border-color: #666;
+    color: #fff;
+    box-shadow: none;
+  }
+  
+  /* Custom Checkboxes */
+  .custom-checkbox .form-check-input {
+    background-color: #121212;
+    border-color: #444;
+    cursor: pointer;
+  }
+  .custom-checkbox .form-check-input:checked {
+    background-color: #fff;
+    border-color: #fff;
+  }
+  .custom-checkbox .form-check-label {
+    cursor: pointer;
+  }
+  
+  /* Custom Buttons (matching Navbar) */
+  .custom-btn-filled {
+    background-color: #e2e2e2;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .custom-btn-filled:hover {
+    background-color: #fff;
+    transform: translateY(-1px);
+  }
+  
+  /* Custom Pagination */
+  .custom-pagination .page-link {
+    background-color: #181818;
+    color: #a0a0a0;
+    border: 1px solid #333;
+    border-radius: 8px !important; 
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .custom-pagination .page-link:hover {
+    background-color: #2a2a2a;
+    color: #fff;
+  }
+  .custom-pagination .page-item.active .page-link {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+    font-weight: bold;
+  }
+  .custom-pagination .page-item.disabled .page-link {
+    background-color: #121212;
+    color: #444;
+    border-color: #222;
+    cursor: not-allowed;
+  }

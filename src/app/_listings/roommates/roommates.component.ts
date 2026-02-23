@@ -24,13 +24,49 @@ export class RoommatesComponent implements OnInit {
 
   // Filter Variables (For UI - you can connect these to backend later)
   searchCity = '';
-  sortBy = 'postedOn';
+
+  filters = {
+    searchQuery: '',
+    bhkType: '', // For Rooms
+    lookingForGender: '', // For Roommates
+    dietaryPreference: '', // For Roommates
+    religionPreference: '', // For Roommates
+    minRent: null,
+    maxRent: null,
+    isFurnished: false,
+    hasParking: false,
+    waterSupply24x7: false,   // NEW
+    electricityBackup: false, // NEW
+    sortBy: 'postedOn'
+  };
 
   constructor(private listingService: ListingService) {}
 
   ngOnInit(): void {
     this.loadRoommates();
   }
+
+  applyFilters() {
+    this.currentPage = 0; // Always reset to page 1 when filtering
+  }
+
+  // 3. Clear all filters
+  resetFilters() {
+    this.filters = {
+      searchQuery: '', bhkType: '', lookingForGender: '', dietaryPreference: '', religionPreference: '', 
+      minRent: null, maxRent: null, isFurnished: false, hasParking: false, 
+      waterSupply24x7: false, electricityBackup: false, // NEW
+      sortBy: 'postedOn'
+    };
+    this.applyFilters();
+  }
+
+  preventNegative(event: any) {
+    if (event.key === '-' || event.key === 'e' || event.key === '+') {
+      event.preventDefault();
+    }
+  }
+
 
   loadRoommates() {
     // this.isLoading = true;

@@ -24,12 +24,41 @@ export class RoomsComponent implements OnInit {
 
   // Filter Variables (For UI - you can connect these to backend later)
   searchCity = '';
-  sortBy = 'postedOn';
+
+  filters = {
+    searchQuery: '',
+    bhkType: '',
+    minRent: null,
+    maxRent: null,
+    isFurnished: false,
+    hasParking: false,
+    waterSupply24x7: false,
+    electricityBackup: false,
+    sortBy: 'postedOn'
+  }
 
   constructor(private listingService: ListingService) {}
 
   ngOnInit(): void {
     this.loadRooms();
+  }
+
+  applyFilters() {
+    this.currentPage = 0; // Always reset to page 1 when filtering
+  }
+
+  resetFilters() {
+    this.filters = {
+      searchQuery: '', bhkType: '', minRent: null, maxRent: null,
+      isFurnished: false, hasParking: false, waterSupply24x7: false, electricityBackup: false, sortBy: 'postedOn'
+    };
+    this.applyFilters();
+  }
+
+  preventNegative(event: any) {
+    if (event.key === '-' || event.key === 'e' || event.key === '+') {
+      event.preventDefault();
+    }
   }
 
   loadRooms() {
