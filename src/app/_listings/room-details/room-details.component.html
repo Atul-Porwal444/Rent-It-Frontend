@@ -1,0 +1,118 @@
+<div class="page-wrapper py-5">
+    <div class="container max-w-custom">
+      
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-secondary"></div>
+      </div>
+  
+      <div class="row g-5" *ngIf="!isLoading && room">
+        
+        <div class="col-lg-8">
+          
+          <div class="mb-4">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge bg-dark border border-secondary text-light">{{ room.bhkType }}</span>
+              <span class="badge" [ngClass]="room.availabilityStatus === 'Available' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
+                {{ room.availabilityStatus }}
+              </span>
+              <span class="text-secondary small ms-auto"><i class="bi bi-clock text-success"></i> Posted on {{ room.postedOn | date }}</span>
+            </div>
+            <h2 class="text-white fw-bold mb-1">₹{{ room.rentAmount }} <span class="text-secondary fs-5 fw-normal">/ month</span></h2>
+            <p class="text-secondary fs-10"><i class="bi bi-geo-alt-fill text-danger me-2"></i>{{ room.location }}, {{ room.city }}, {{ room.state }}, {{room.pincode}}</p>
+          </div>
+  
+          <div class="gallery-section mb-5">
+            <div class="main-image-wrapper rounded-4 overflow-hidden border custom-border mb-3 shadow-lg">
+              <img [src]="room.imageUrls?.[currentImageIndex] || 'https://placehold.co/800x500/1e1e1e/888888?text=No+Image'" 
+                   class="w-100 object-fit-cover" style="height: 450px;" alt="Room">
+            </div>
+            
+            <div class="d-flex gap-2 overflow-auto hide-scrollbar" *ngIf="room.imageUrls?.length > 1">
+              <div *ngFor="let img of room.imageUrls; let i = index" 
+                   class="thumbnail-wrapper rounded-3 overflow-hidden border custom-border"
+                   [class.border-white]="i === currentImageIndex"
+                   (click)="setMainImage(i)">
+                <img [src]="img" class="w-100 h-100 object-fit-cover" alt="Thumbnail">
+              </div>
+            </div>
+          </div>
+  
+          <h4 class="text-white fw-bold mb-3 border-bottom custom-border pb-2">Overview</h4>
+          <div class="row g-4 mb-5">
+            <div class="col-6 col-md-3">
+              <div class="overview-box p-3 rounded-3 text-center border custom-border">
+                <i class="bi bi-building fs-3 text-primary mb-2"></i>
+                <p class="text-secondary small mb-0">Floor</p>
+                <h6 class="text-white fw-bold mb-0">{{ room.floorNumber }}</h6>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="overview-box p-3 rounded-3 text-center border custom-border">
+                <i class="bi bi-shield-check fs-3 text-success mb-2"></i>
+                <p class="text-secondary small mb-0">Deposit</p>
+                <h6 class="text-white fw-bold mb-0">₹{{ room.securityDeposit }}</h6>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="overview-box p-3 rounded-3 text-center border custom-border">
+                <i class="bi bi-lamp fs-3 text-danger mb-2"></i>
+                <p class="text-secondary small mb-0">Furnishing</p>
+                <h6 class="text-white fw-bold mb-0">{{ room.furnished ? 'Furnished' : 'Unfurnished' }}</h6>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="overview-box p-3 rounded-3 text-center border custom-border">
+                <i class="bi bi-car-front fs-3 text-warning mb-2"></i>
+                <p class="text-secondary small mb-0">Parking</p>
+                <h6 class="text-white fw-bold mb-0">{{ room.hasParking ? 'Available' : 'None' }}</h6>
+              </div>
+            </div>
+          </div>
+  
+          <h4 class="text-white fw-bold mb-3 border-bottom custom-border pb-2">Description</h4>
+          <p class="text-secondary lh-lg mb-5" style="white-space: pre-line;">{{ room.description }}</p>
+  
+          <h4 class="text-white fw-bold mb-3 border-bottom custom-border pb-2">Amenities</h4>
+          <div class="row g-3 mb-5">
+            <div class="col-md-6 d-flex align-items-center gap-3">
+              <i class="bi fs-4" [ngClass]="room.waterSupply24x7 ? 'bi-check-circle-fill text-success' : 'bi-x-circle text-danger'"></i>
+              <span class="text-light">24x7 Water Supply</span>
+            </div>
+            <div class="col-md-6 d-flex align-items-center gap-3">
+              <i class="bi fs-4" [ngClass]="room.electricityBackup ? 'bi-check-circle-fill text-success' : 'bi-x-circle text-danger'"></i>
+              <span class="text-light">Power Backup</span>
+            </div>
+          </div>
+  
+        </div>
+  
+        <div class="col-lg-4">
+          <div class="sticky-top" style="top: 85px;">
+            <div class="card bg-18 border custom-border rounded-4 p-4 shadow-lg">
+              
+              <h5 class="text-white fw-bold mb-4">Posted By</h5>
+              
+              <div class="d-flex align-items-center gap-3 mb-4">
+                <img [src]="room.userProfileImageUrl || 'https://ui-avatars.com/api/?background=random&name=' + room.userName" 
+                     alt="Profile" class="rounded-circle border border-secondary" style="width: 60px; height: 60px; object-fit: cover;">
+                <div>
+                  <h6 class="text-white fw-bold mb-0">{{ room.userName }}</h6>
+                  <small class="text-secondary">RentIt Verified Member</small>
+                </div>
+              </div>
+  
+              <button class="btn btn-light w-100 fw-bold py-2 mb-3 d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-telephone-fill"></i> Show Contact Details
+              </button>
+  
+              <button class="btn btn-outline-secondary w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-heart"></i> Save Post
+              </button>
+  
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
