@@ -1,0 +1,45 @@
+.page-wrapper {
+    background-color: #121212;
+    min-height: calc(100vh - 65px);
+  }
+  .max-w-custom {
+    max-width: 1200px;
+  }
+  .custom-border {
+    border-color: #2a2a2a !important;
+  }
+  .bg-18 {
+    background-color: #181818;
+  }
+  
+  /* Thumbnail Gallery */
+  .thumbnail-wrapper {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .thumbnail-wrapper:hover, .thumbnail-wrapper.border-white {
+    opacity: 1;
+  }
+  
+  /* Hide scrollbar for thumbnails */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  /* Overview boxes */
+  .overview-box {
+    background-color: #1a1a1a;
+    transition: transform 0.2s;
+  }
+  .overview-box:hover {
+    transform: translateY(-5px);
+    background-color: #222;
+  }
