@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingService } from '../../_services/listing.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-room-details',
@@ -16,10 +17,16 @@ export class RoomDetailsComponent implements OnInit {
   currentImageIndex = 0;
   showContact: boolean = false;
 
+  // NEW: Tracking save state
+  isSaved: boolean = false; 
+  isSaving: boolean = false; // Prevents spam clicking
+
   constructor(
     private route: ActivatedRoute,
     private listingServie: ListingService,
-    private router: Router
+    private router: Router,
+    private listingService: ListingService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +36,46 @@ export class RoomDetailsComponent implements OnInit {
       } else {
         this.router.navigate(['/rooms']);
       }
+  }
+
+  checkIfSaved(id: number) {
+    // if (this.authService.isLoggedIn()) {
+    //   this.listingService.checkSaveStatus('room', id).subscribe({
+    //     next: (status) => this.isSaved = status
+    //   });
+    // }
+    this.isSaved = true;
+  }
+
+  toggleSave() {
+    // 1. Redirect if not logged in
+    // if (!this.authService.isLoggedIn()) {
+    //   this.router.navigate(['/login']);
+    //   return;
+    // }
+
+    // 2. Prevent spam clicks
+    // if (this.isSaving) return; 
+
+    this.isSaving = true;
+    
+    // 3. Optimistic UI update (feels instant to the user)
+    this.isSaved = !this.isSaved;
+
+    // 4. API Call
+    // this.listingService.toggleSave('room', this.room.id).subscribe({
+    //   next: () => {
+    //     this.isSaving = false;
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //     // Revert if API fails
+    //     this.isSaved = !this.isSaved;
+    //     this.isSaving = false;
+    //     alert("Failed to save post");
+    //   }
+    // });
+    this.isSaving = false;
   }
 
   loadRoomDetails(id: number) {
@@ -63,6 +110,7 @@ export class RoomDetailsComponent implements OnInit {
       "waterSupply24x7" : false
     }
     this.isLoading = false;
+    this.checkIfSaved(id); // Check status after loading details
     window.scrollTo(0, 0);
   }
 

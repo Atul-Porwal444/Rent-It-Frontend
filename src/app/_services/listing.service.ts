@@ -7,8 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class ListingService {
 
-  // Replace with your actual backend base URL if different
-  private API_URL = 'http://localhost:8080/user/list/';
+  private readonly API_URL = 'http://localhost:8080/user/list/';
+
+  private readonly SAVED_API_URL = 'http://localhost:8080/user/save/';
 
   constructor(private http: HttpClient) { }
 
@@ -70,5 +71,13 @@ export class ListingService {
     if (filters.electricityBackup) params = params.set('electricityBackup', 'true');
 
     return this.http.get(this.API_URL + 'roommates', { params });
+  }
+
+  toggleSave(type: 'room' | 'roommate', postId: number): Observable<any> {
+    return this.http.post(`${this.SAVED_API_URL}${type}/${postId}`, {});
+  }
+
+  checkSaveStatus(type: 'room' | 'roommate', postId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.SAVED_API_URL}${type}/${postId}/status`);
   }
 }

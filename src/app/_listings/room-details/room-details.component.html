@@ -131,8 +131,14 @@
 
             </div>
 
-            <button class="btn btn-outline-secondary w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2">
-              <i class="bi bi-heart"></i> Save Post
+            <button class="btn w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2 transition-all"
+                    [ngClass]="isSaved ? 'btn-danger' : 'btn-outline-secondary'"
+                    [disabled]="isSaving"
+                    (click)="toggleSave()">
+              
+              <i class="bi" [ngClass]="isSaved ? 'bi-heart-fill text-white' : 'bi-heart'"></i> 
+              {{ isSaved ? 'Saved to Favorites' : 'Save Post' }}
+              
             </button>
   
             </div>

@@ -16,6 +16,9 @@ export class RoommateDetailsComponent implements OnInit {
   currentImageIndex = 0;
   showContact: boolean = false;
 
+  isSaved: boolean = false;
+  isSaving: boolean = false;
+
   constructor(
       private route: ActivatedRoute,
       private listingService: ListingService,
@@ -29,6 +32,45 @@ export class RoommateDetailsComponent implements OnInit {
       } else {
         this.router.navigate(['/roommates']);
       }
+  }
+  checkIfSaved(id: number) {
+    // if (this.authService.isLoggedIn()) {
+    //   this.listingService.checkSaveStatus('roommate', id).subscribe({
+    //     next: (status) => this.isSaved = status
+    //   });
+    // }
+    this.isSaved = true;
+  }
+
+  toggleSave() {
+    // 1. Redirect if not logged in
+    // if (!this.authService.isLoggedIn()) {
+    //   this.router.navigate(['/login']);
+    //   return;
+    // }
+
+    // 2. Prevent spam clicks
+    // if (this.isSaving) return; 
+
+    this.isSaving = true;
+    
+    // 3. Optimistic UI update (feels instant to the user)
+    this.isSaved = !this.isSaved;
+
+    // 4. API Call
+    // this.listingService.toggleSave('room', this.roommate.id).subscribe({
+    //   next: () => {
+    //     this.isSaving = false;
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //     // Revert if API fails
+    //     this.isSaved = !this.isSaved;
+    //     this.isSaving = false;
+    //     alert("Failed to save post");
+    //   }
+    // });
+    this.isSaving = false;
   }
 
   loadRoommateDetails(id: number) {
@@ -66,6 +108,7 @@ export class RoommateDetailsComponent implements OnInit {
       "waterSupply24x7" : true
     }
     this.isLoading = false;
+    this.checkIfSaved(id);
     window.scrollTo(0, 0);
   }
 
