@@ -1,8 +1,7 @@
 /* 1. Main Background Wrapper */
 .dashboard-wrapper {
-    background-color: #121212; /* Off-black / deep grey. Slightly lighter than navbar */
-    min-height: calc(100vh - 65px); /* Ensures it fills the screen below navbar */
-    color: #e0e0e0;
+  background-color: transparent; 
+  min-height: calc(100vh - 65px);
   }
   
   /* 2. Hero Section */

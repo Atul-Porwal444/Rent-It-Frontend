@@ -1,26 +1,33 @@
-/* 1. Main Card Styling */
 .custom-card {
-    background-color: #181818; /* Marginally lighter than dashboard to pop out */
-    border: 1px solid #2a2a2a; /* Thin subtle border */
-    border-radius: 12px; /* Smooth corners */
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
+  /* 1. Semi-transparent dark background */
+  background-color: rgba(24, 24, 24, 0.45); 
   
-    /* Hover Animation: Lift up and add glow/shadow */
-    &:hover {
-      transform: translateY(-6px);
-      border-color: #444; /* Lighten border on hover */
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
-      
-      /* Triggers the image zoom */
-      .card-img-top {
-        transform: scale(1.05);
-      }
-    }
-  }
+  /* 2. The Glossy Glass Effect (Blurs whatever is behind the card) */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* For Safari support */
+  
+  /* 3. A subtle "frosted" border to catch the light */
+  border: 1px solid rgba(255, 255, 255, 0.08); 
+  
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  
+  /* Subtle drop shadow to lift it off the page */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover Animation: Lift up and glow */
+.custom-card:hover {
+  transform: translateY(-6px);
+  /* Brighter frosted border on hover */
+  border-color: rgba(255, 255, 255, 0.2); 
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  background-color: rgba(30, 30, 30, 0.6);
+}
   
   /* 2. Image Wrapper & Animation */
   .card-img-wrapper {

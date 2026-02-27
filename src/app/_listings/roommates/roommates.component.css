@@ -1,7 +1,6 @@
 .page-wrapper {
-    background-color: #121212;
-    min-height: calc(100vh - 65px);
-    color: #e0e0e0;
+  background-color: transparent; 
+  min-height: calc(100vh - 65px);
   }
   
   /* Filter Bar */
@@ -59,11 +58,6 @@
     white-space: nowrap;
   }
 
-  .page-wrapper {
-    background-color: #121212;
-    min-height: calc(100vh - 65px);
-    color: #e0e0e0;
-  }
   
   .max-w-custom {
     max-width: 1400px;
@@ -102,19 +96,6 @@
     letter-spacing: 0.05em;
   }
   
-  /* Sidebar Inputs */
-  .custom-input {
-    background-color: #121212;
-    color: #fff;
-    border: 1px solid #333;
-    transition: all 0.2s;
-  }
-  .custom-input:focus {
-    background-color: #000;
-    border-color: #666;
-    color: #fff;
-    box-shadow: none;
-  }
   
   /* Custom Checkboxes */
   .custom-checkbox .form-check-input {

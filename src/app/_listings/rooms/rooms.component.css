@@ -1,9 +1,4 @@
-.page-wrapper {
-    background-color: #121212;
-    min-height: calc(100vh - 65px);
-    color: #e0e0e0;
-  }
-  
+
   /* Filter Bar */
   .filter-bar {
     background-color: #181818;
@@ -60,9 +55,8 @@
   }
 
   .page-wrapper {
-    background-color: #121212;
+    background-color: transparent; 
     min-height: calc(100vh - 65px);
-    color: #e0e0e0;
   }
   
   .max-w-custom {

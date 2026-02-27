@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    /* A deep, premium dark gradient */
+    background: radial-gradient(circle at 50% 0%, #222222 0%, #080808 100%);
+    
+    /* THIS IS THE MAGIC LINE - It locks the background in place */
+    background-attachment: fixed;
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    color: #e0e0e0;
+  }
