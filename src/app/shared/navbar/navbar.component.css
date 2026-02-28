@@ -5,6 +5,12 @@
     border-radius: 16px;   /* Smooth rounded corners */
     margin-top: 10px;      /* Gap from navbar */
     animation: slideIn 0.2s ease-out;
+    z-index: 1050 !important;
+  }
+
+  .navbar {
+    position: relative;
+    z-index: 1040 !important; 
   }
   
   /* 2. The Grid Layout (3 items in a row) */

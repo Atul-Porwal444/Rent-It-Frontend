@@ -1,0 +1,74 @@
+<div class="page-wrapper">
+  
+    <div class="header-section pt-5 pb-4 px-4 border-bottom custom-border">
+      <div class="container max-w-custom">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          
+          <div>
+            <h2 class="fw-bold text-white mb-1">
+              <i class="bi bi-heart-fill text-danger me-2"></i> Saved Posts
+            </h2>
+            <p class="text-secondary small mb-0">Manage your favorite properties and potential roommates.</p>
+          </div>
+  
+          <div class="custom-tabs d-flex p-1 rounded-pill">
+            <button class="btn custom-tab-btn rounded-pill px-4 fw-medium" 
+                    [class.active]="activeTab === 'rooms'" 
+                    (click)="setTab('rooms')">
+              Saved Rooms ({{ savedRooms.length }})
+            </button>
+            <button class="btn custom-tab-btn rounded-pill px-4 fw-medium" 
+                    [class.active]="activeTab === 'roommates'" 
+                    (click)="setTab('roommates')">
+              Saved Roommates ({{ savedRoommates.length }})
+            </button>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="container max-w-custom py-5">
+      
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-secondary" role="status"></div>
+      </div>
+  
+      <div *ngIf="!isLoading && activeTab === 'rooms'">
+        <div class="row g-4" *ngIf="savedRooms.length > 0">
+          <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let room of savedRooms">
+            <app-listing-card [data]="room" type="ROOM"></app-listing-card>
+          </div>
+        </div>
+        
+        <div *ngIf="savedRooms.length === 0" class="text-center py-5 my-5 glass-card rounded-4 p-5">
+          <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" 
+               style="width: 80px; height: 80px; background-color: rgba(220, 53, 69, 0.1); color: #ea868f;">
+            <i class="bi bi-heartbreak-fill" style="font-size: 2.5rem;"></i>
+          </div>
+          <h4 class="text-white fw-bold">No Saved Rooms</h4>
+          <p class="text-secondary">You haven't saved any property listings yet.</p>
+          <button class="btn btn-outline-light mt-2 px-4 rounded-pill" routerLink="/rooms">Explore Rooms</button>
+        </div>
+      </div>
+  
+      <div *ngIf="!isLoading && activeTab === 'roommates'">
+        <div class="row g-4" *ngIf="savedRoommates.length > 0">
+          <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let person of savedRoommates">
+            <app-listing-card [data]="person" type="ROOMMATE"></app-listing-card>
+          </div>
+        </div>
+        
+        <div *ngIf="savedRoommates.length === 0" class="text-center py-5 my-5 glass-card rounded-4 p-5">
+          <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" 
+               style="width: 80px; height: 80px; background-color: rgba(220, 53, 69, 0.1); color: #ea868f;">
+            <i class="bi bi-heartbreak-fill" style="font-size: 2.5rem;"></i>
+          </div>
+          <h4 class="text-white fw-bold">No Saved Roommates</h4>
+          <p class="text-secondary">You haven't saved any roommate requests yet.</p>
+          <button class="btn btn-outline-light mt-2 px-4 rounded-pill" routerLink="/roommates">Find Roommates</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>

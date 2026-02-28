@@ -8,6 +8,7 @@ import { RoomsComponent } from './_listings/rooms/rooms.component';
 import { RoommatesComponent } from './_listings/roommates/roommates.component';
 import { RoomDetailsComponent } from './_listings/room-details/room-details.component';
 import { RoommateDetailsComponent } from './_listings/roommate-details/roommate-details.component';
+import { SavedPostsComponent } from './user/saved-posts/saved-posts.component';
 
 export const routes: Routes = [
     { path : '', component: DashboardComponent},
@@ -19,5 +20,6 @@ export const routes: Routes = [
     { path : 'rooms', component: RoomsComponent},
     { path : 'roommates', component: RoommatesComponent},
     { path: 'rooms/:id', component: RoomDetailsComponent},
-    { path: 'roommates/:id', component: RoommateDetailsComponent}
+    { path: 'roommates/:id', component: RoommateDetailsComponent},
+    { path: 'saved-posts', component: SavedPostsComponent }
 ];

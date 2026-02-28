@@ -80,4 +80,12 @@ export class ListingService {
   checkSaveStatus(type: 'room' | 'roommate', postId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.SAVED_API_URL}${type}/${postId}/status`);
   }
+
+  getMySavedRooms(): Observable<any> {
+    return this.http.get(this.SAVED_API_URL + 'rooms');
+  }
+
+  getMySavedRoommates(): Observable<any> {
+    return this.http.get(this.SAVED_API_URL + 'roommates');
+  }
 }
