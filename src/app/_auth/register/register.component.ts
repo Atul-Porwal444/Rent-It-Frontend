@@ -24,26 +24,22 @@ export class RegisterComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() : void {
-    // this.isLoading = true;
-    // this.authService.register(this.form).subscribe({
-    //   next: (response) => {
-    //     console.log("User registered successfully");
+    this.isLoading = true;
+    this.authService.register(this.form).subscribe({
+      next: (response) => {
+        console.log("User registered successfully");
       
-    //     this.router.navigate(['/verify-otp'], {
-    //       queryParams: {email : this.form.email},
-    //       replaceUrl: true
-    //     });
-    //   },
-    //   error: (err) => {
-    //     this.isLoading = false;
-    //     console.log(err);
-    //     alert("Registration failed " + err.error.message);
-    //   }
-    // })
-    this.router.navigate(['/verify-otp'], {
-      queryParams: {email : this.form.email},
-      replaceUrl: true
-    });
+        this.router.navigate(['/verify-otp'], {
+          queryParams: {email : this.form.email},
+          replaceUrl: true
+        });
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.log(err);
+        alert("Registration failed " + err.error.message);
+      }
+    })
   }
 
 }

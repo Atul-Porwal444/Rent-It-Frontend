@@ -1,160 +1,154 @@
-/* 1. Global Page Background */
+/* Ensure no solid backgrounds to let global fixed gradient show through */
 .profile-page {
-    background-color: #1a1a1a; /* Very dark grey background */
-    min-height: 100vh;
-    padding-bottom: 50px;
-  }
-  
-  /* 2. Header Banner */
-  .profile-header {
-    background: linear-gradient(180deg, #2c2c2c 0%, #1a1a1a 100%);
-    padding-bottom: 20px;
-    border-bottom: 1px solid #333;
-  }
-  
-  /* 3. Avatar Styling */
-  .avatar-container {
-    position: relative;
-  }
-  
-  .profile-avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 16px; /* Squircle shape like the image */
-    object-fit: cover;
-    border: 4px solid #1a1a1a; /* Creates a cutout effect */
-  }
-  
-  /* 4. Card Common Styles */
-  .sidebar-card, .content-card {
-    background-color: #282828; /* Lighter dark for cards */
-    border-radius: 12px;
-  }
-  
-  /* 5. Sidebar Navigation */
-  .nav-pills .nav-link {
-    color: #b0b3b8; /* Muted text */
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.2s;
-  
-    &:hover {
-      background-color: #3a3a3a;
-      color: #fff;
-    }
-  
-    &.active {
-      background-color: #3a3a3a; /* Dark active state */
-      color: #fff;
-      border-left: 4px solid #0d6efd; /* Blue accent bar */
-    }
-  
-    i {
-      opacity: 0.7;
-    }
-  }
-  
-  /* 6. Info Rows (The grid inside the card) */
-  .info-row {
-    display: flex;
-    align-items: center;
-    padding: 16px 0;
-    border-bottom: 1px solid #3a3a3a; /* Dark divider */
-  
-    &:last-child {
-      border-bottom: none;
-    }
-  
-    .label {
-      width: 150px; /* Fixed width for labels */
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-  
-    .value {
-      flex-grow: 1;
-      font-size: 0.95rem;
-      padding-right: 20px;
-    }
-  
-    /* Edit Button */
-    .btn-icon {
-      background: transparent;
-      border: none;
-      color: #0d6efd; /* Blue edit icon */
-      font-size: 1rem;
-      padding: 5px;
-      border-radius: 50%;
-      transition: background 0.2s;
-  
-      &:hover {
-        background-color: rgba(13, 110, 253, 0.1);
-      }
-    }
-  }
-
-  .grey-color {
-    color: grey;
-  }
-
-  /* Add to your existing SCSS */
-
-.form-control, .form-select {
-  &:focus {
-    background-color: #333; /* Keep it dark on focus */
-    color: white;
-    border-color: #0d6efd; /* Blue border focus */
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  }
+  background-color: transparent; 
+  min-height: calc(100vh - 65px);
 }
 
-/* Ensure the edit container takes full width */
-.flex-grow-1 {
+/* Subtle gradient header */
+.profile-header {
+  background: linear-gradient(180deg, rgba(30, 30, 30, 0.6) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 1rem;
+}
+
+/* 1. GLASSMORPHIC CARD CLASS */
+.glass-card {
+  background-color: rgba(20, 20, 20, 0.6) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px;
+}
+
+/* Avatar Styling */
+.avatar-container {
+  position: relative;
+  border-radius: 20px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 16px; /* Squircle */
+  object-fit: cover;
+}
+
+/* Custom Navigation Pills */
+.custom-nav-link {
+  color: #a0a0a0;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  text-align: left;
+}
+.custom-nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+.custom-nav-link.active {
+  background-color: rgba(13, 110, 253, 0.15); /* Blue tint */
+  color: #fff;
+  border-left: 4px solid #0d6efd;
+}
+
+/* Info Rows */
+.info-row {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.info-row:last-child {
+  border-bottom: none;
+}
+.info-row .label {
+  width: 140px; 
+  flex-shrink: 0;
+}
+.info-row .value {
   flex-grow: 1;
+  padding-right: 20px;
 }
 
-/* ... existing styles ... */
+.tracking-wide {
+  letter-spacing: 0.05em;
+}
 
-/* 1. The Backdrop (Dark overlay behind the modal) */
+/* Edit Icon Button */
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: #6ea8fe; 
+  font-size: 1rem;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.btn-icon:hover {
+  background-color: rgba(13, 110, 253, 0.15);
+  color: #0d6efd;
+}
+
+/* CUSTOM GLOWING INPUTS (Matches Auth Pages) */
+.custom-profile-input {
+  background-color: #0a0a0a !important; 
+  border: 1px solid #333;
+  color: #ffffff !important;
+  font-size: 0.95rem;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+.custom-profile-input:focus {
+  background-color: #000 !important;
+  border-color: #0d6efd; 
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); 
+}
+.custom-profile-input::placeholder {
+  color: #555555;
+}
+
+/* Primary Button */
+.primary-btn {
+  background-color: #1a73e8; 
+  border: none;
+  transition: background-color 0.2s ease;
+}
+.primary-btn:hover {
+  background-color: #155dbb;
+}
+
+/* MODAL OVERLAYS */
 .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-  z-index: 1050; /* High z-index to sit on top */
+  background-color: rgba(0, 0, 0, 0.75); 
+  backdrop-filter: blur(4px);
+  z-index: 1050;
   display: flex;
-  align-items: center; /* Vertical Center */
-  justify-content: center; /* Horizontal Center */
+  align-items: center; 
+  justify-content: center; 
   animation: fadeIn 0.2s ease-out;
 }
-
-/* 2. The Modal Card Itself */
 .custom-modal {
   width: 100%;
-  max-width: 400px; /* Restrict width */
+  max-width: 450px; 
   z-index: 1060;
-  border-radius: 12px;
   animation: scaleIn 0.2s ease-out;
 }
 
-/* 3. Input Styles for Modal */
-.custom-modal input:focus {
-  background-color: #000;
-  color: #fff;
-  border-color: #0d6efd;
-  box-shadow: none;
-}
-
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
 @keyframes scaleIn {
-  from { transform: scale(0.9); opacity: 0; }
+  from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }

@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,7 +7,7 @@ import { UserProfile } from '../../_models/user-profile';
 
 @Component({
   selector: 'app-profile',
-  imports: [NgIf, FormsModule],
+  imports: [NgIf, FormsModule, NgFor],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
