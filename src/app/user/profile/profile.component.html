@@ -8,7 +8,7 @@
         </div>
         <div class="mb-3">
           <h2 class="mb-0 fw-bold">{{ user.name }}</h2>
-          <p class="text-secondary small mb-0"><i class="bi bi-envelope-fill me-1"></i> {{ user.email }}</p>
+          <p class="text-secondary small mb-0"><i class="bi bi-envelope-fill text-primary me-1"></i> {{ user.email }}</p>
         </div>
       </div>
     </div>
@@ -25,13 +25,13 @@
               <button class="nav-link custom-nav-link d-flex align-items-center gap-3" 
                       [class.active]="activeTab === 'basic'" 
                       (click)="setActiveTab('basic')">
-                <i class="bi bi-person-vcard fs-5"></i> Basic Info
+                <i class="bi bi-person-vcard fs-5 text-primary"></i> Basic Info
               </button>
               
               <button class="nav-link custom-nav-link d-flex align-items-center gap-3" 
                       [class.active]="activeTab === 'account'" 
                       (click)="setActiveTab('account')">
-                <i class="bi bi-shield-lock fs-5"></i> Account
+                <i class="bi bi-shield-lock fs-5 text-danger"></i> Account
               </button>
 
             </div>
