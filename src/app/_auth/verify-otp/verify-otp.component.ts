@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../_services/auth.service';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-verify-otp',
-  imports: [NgIf, FormsModule],
+  imports: [NgIf, FormsModule, NgClass],
   templateUrl: './verify-otp.component.html',
   styleUrl: './verify-otp.component.css'
 })
@@ -24,6 +24,9 @@ export class VerifyOtpComponent implements OnInit {
   isResending = false;
   resendMessage = '';
 
+  countdown: number = 60;
+  timerInterval: any;
+
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
@@ -39,6 +42,28 @@ export class VerifyOtpComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+
+    this.startCountdown();
+  }
+
+  ngOnDestroy(): void {
+    if(this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+  }
+
+  startCountdown() {
+    this.countdown = 60;
+    if(this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+
+    this.timerInterval = setInterval(() => {
+      this.countdown--;
+      if(this.countdown <= 0) {
+        clearInterval(this.timerInterval);
+      }
+    }, 1000);
   }
 
   onSubmit() : void {

@@ -1,49 +1,65 @@
-<div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6 col-lg-5">
-        
-        <div class="card shadow-lg border-0 rounded-4">
-          <div class="card-body p-5">
-            
-            <h3 class="text-center fw-bold mb-4">Create Account</h3>
-  
-            <form (ngSubmit)="onSubmit()">
-              
-              <div class="mb-3">
-                <label class="form-label text-muted small fw-bold">Full Name</label>
-                <input type="text" class="form-control bg-light" name="name" [(ngModel)]="form.name" required>
-              </div>
-  
-              <div class="mb-3">
-                <label class="form-label text-muted small fw-bold">Email</label>
-                <input type="email" class="form-control bg-light" name="email" [(ngModel)]="form.email" required>
-              </div>
-  
-              <div class="mb-3">
-                <label class="form-label text-muted small fw-bold">Password</label>
-                <input type="password" class="form-control bg-light" name="password" [(ngModel)]="form.password" required>
-              </div>
-  
-              <div class="d-grid">
-                <button 
-                  type="submit" 
-                  class="btn btn-success btn-lg fw-bold" 
-                  [disabled]="isLoading"> <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  
-                  <span *ngIf="isLoading">Creating Account...</span>
-                  <span *ngIf="!isLoading">Register</span>
-                  
-                </button>
-              </div>
-  
-              <div class="text-center mt-4">
-                <small class="text-muted">Already have an account? <a routerLink="/login" class="text-decoration-none">Login</a></small>
-              </div>
-  
-            </form>
-          </div>
-        </div>
-  
-      </div>
+<div class="auth-wrapper d-flex align-items-center justify-content-center">
+  <div class="auth-card p-4 p-sm-5 rounded-4 shadow-lg">
+    
+    <div class="text-center mb-4">
+      <h3 class="fw-bold text-white mb-1">Create an Account</h3>
     </div>
+
+    <form (ngSubmit)="onSubmit()" #f="ngForm">
+      
+      <div class="mb-3">
+        <label class="form-label text-light small mb-2">Full Name</label>
+        <input 
+          type="text" 
+          class="form-control custom-auth-input" 
+          name="name"
+          [(ngModel)]="form.name" 
+          required
+          placeholder="John Doe">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-light small mb-2">Email</label>
+        <input 
+          type="email" 
+          class="form-control custom-auth-input" 
+          name="email"
+          [(ngModel)]="form.email" 
+          required
+          email
+          placeholder="balamia@gmail.com">
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label text-light small mb-2">Password</label>
+        <div class="position-relative">
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            class="form-control custom-auth-input pe-5" 
+            name="password"
+            [(ngModel)]="form.password" 
+            required
+            placeholder="Enter your password">
+            
+            <i class="bi position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" 
+               style="cursor: pointer;"
+               [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" 
+               (click)="showPassword = !showPassword"></i>
+        </div>
+      </div>
+
+      <div class="d-grid mt-2">
+        <button type="submit" class="btn btn-primary primary-btn fw-bold py-2" [disabled]="f.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span *ngIf="!isLoading">Create account</span>
+          <span *ngIf="isLoading">Creating...</span>
+        </button>
+      </div>
+
+      <div class="text-center mt-4">
+        <small class="text-secondary">Already Have An Account ? <a routerLink="/login" class="text-white text-decoration-none fw-medium">Log In</a></small>
+      </div>
+
+    </form>
   </div>
+</div>

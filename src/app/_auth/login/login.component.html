@@ -1,68 +1,69 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-4">
+<div class="auth-wrapper d-flex align-items-center justify-content-center">
+  <div class="auth-card p-4 p-sm-5 rounded-4 shadow-lg">
+    
+    <div class="text-center mb-4">
+      <h3 class="fw-bold text-white mb-1">Login to your account</h3>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #f="ngForm">
       
-      <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-body p-5">
-          
-          <div class="text-center mb-4">
-            <h3 class="fw-bold">Welcome Back</h3>
-            <p class="text-muted small">Login to continue to RentIt</p>
-          </div>
+      <div class="mb-3">
+        <label class="form-label text-light small mb-2">Email</label>
+        <input 
+          type="email" 
+          class="form-control custom-auth-input" 
+          name="email"
+          [(ngModel)]="form.email" 
+          required
+          email
+          placeholder="name@example.com">
+      </div>
 
-          <form (ngSubmit)="onSubmit()" #f="ngForm">
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-end mb-2">
+          <label class="form-label text-light small mb-0">Password</label>
+          <a href="#" class="text-secondary small text-decoration-none">Forgot ?</a>
+        </div>
+        <div class="position-relative">
+          <input 
+            [type]="showPassword ? 'text' : 'password'" 
+            class="form-control custom-auth-input pe-5" 
+            name="password"
+            [(ngModel)]="form.password" 
+            required
+            placeholder="Enter your password">
             
-            <div class="mb-3">
-              <label class="form-label text-muted small fw-bold">Email Address</label>
-              <input 
-                type="email" 
-                class="form-control form-control-lg bg-light" 
-                name="email"
-                [(ngModel)]="form.email" 
-                required
-                email
-                placeholder="name@example.com">
-            </div>
-
-            <div class="mb-4">
-              <label class="form-label text-muted small fw-bold">Password</label>
-              <input 
-                type="password" 
-                class="form-control form-control-lg bg-light" 
-                name="password"
-                [(ngModel)]="form.password" 
-                required
-                placeholder="••••••••">
-            </div>
-
-            <div class="alert alert-danger d-flex align-items-center" *ngIf="isLoginFailed && !isUnverified">
-              <i class="bi bi-exclamation-circle-fill me-2"></i>
-              <div>{{ errorMessage }}</div>
-            </div>
-
-            <div class="alert alert-warning text-center" *ngIf="isUnverified">
-              <p class="mb-2 fw-bold"><i class="bi bi-shield-lock"></i> Email Not Verified</p>
-              <button type="button" class="btn btn-warning btn-sm w-100" (click)="navigateToVerify()">
-                Verify Email
-              </button>
-            </div>
-
-            <div class="d-grid">
-              <button type="submit" class="btn btn-primary btn-lg fw-bold" [disabled]="f.invalid || isLoading">
-                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-                <span *ngIf="!isLoading">Login</span>
-                <span *ngIf="isLoading">Verifying...</span>
-              </button>
-            </div>
-
-            <div class="text-center mt-4">
-              <small class="text-muted">Don't have an account? <a routerLink="/register" class="text-decoration-none fw-bold">Sign up</a></small>
-            </div>
-
-          </form>
+            <i class="bi position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" 
+               style="cursor: pointer;"
+               [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" 
+               (click)="showPassword = !showPassword"></i>
         </div>
       </div>
 
-    </div>
+      <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger d-flex align-items-center py-2" *ngIf="isLoginFailed && !isUnverified">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>
+        <div class="small">{{ errorMessage }}</div>
+      </div>
+
+      <div class="alert alert-warning bg-warning bg-opacity-10 border-warning border-opacity-25 text-warning text-center py-2" *ngIf="isUnverified">
+        <p class="mb-2 fw-bold small"><i class="bi bi-shield-lock"></i> Email Not Verified</p>
+        <button type="button" class="btn btn-warning btn-sm w-100" (click)="navigateToVerify()">
+          Verify Email
+        </button>
+      </div>
+
+      <div class="d-grid mt-2">
+        <button type="submit" class="btn btn-primary primary-btn fw-bold py-2" [disabled]="f.invalid || isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+          <span *ngIf="!isLoading">Login</span>
+          <span *ngIf="isLoading">Verifying...</span>
+        </button>
+      </div>
+
+      <div class="text-center mt-4">
+        <small class="text-secondary">Don't have an account ? <a routerLink="/register" class="text-white text-decoration-none fw-medium">Sign up</a></small>
+      </div>
+
+    </form>
   </div>
 </div>

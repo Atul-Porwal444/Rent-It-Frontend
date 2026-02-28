@@ -1,0 +1,74 @@
+/* Wrapper to center the card */
+.auth-wrapper {
+    min-height: calc(100vh - 65px); 
+    width: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(30, 20, 60, 0.4) 0%, transparent 60%);
+  }
+  
+  /* The Main Card */
+  .auth-card {
+    width: 100%;
+    max-width: 420px;
+    background-color: #111111; 
+    border: 1px solid #222222;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+  }
+  
+  /* Custom Inputs */
+  .custom-auth-input {
+    background-color: #0a0a0a !important; 
+    border: 1px solid #2a2a2a;
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    padding: 0.8rem 1rem; /* Slightly taller for OTP */
+    transition: all 0.2s ease;
+  }
+  
+  /* Focus State (The glowing blue border) */
+  .custom-auth-input:focus {
+    background-color: #0a0a0a !important;
+    border-color: #0d6efd; 
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); 
+  }
+  
+  .custom-auth-input::placeholder {
+    color: #555555;
+  }
+  
+  /* Webkit Autofill fix */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #0a0a0a inset !important;
+      -webkit-text-fill-color: white !important;
+      transition: background-color 5000s ease-in-out 0s;
+  }
+  
+  /* The bright blue primary button */
+  .primary-btn {
+    background-color: #1a73e8; 
+    border: none;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .primary-btn:hover {
+    background-color: #155dbb;
+  }
+  
+  .primary-btn:disabled {
+    background-color: #1a73e8;
+    opacity: 0.6;
+  }
+  
+  /* Specific OTP Styling */
+  .letter-spacing-2 {
+    letter-spacing: 12px;
+    font-size: 1.5rem;
+  }
+  
+  .letter-spacing-2::placeholder {
+    letter-spacing: 8px;
+  }

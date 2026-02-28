@@ -1,0 +1,86 @@
+/* Wrapper to center the card */
+.auth-wrapper {
+    min-height: calc(100vh - 65px); /* Adjust if your navbar height is different */
+    width: 100%;
+    /* Optional: Adds a subtle radial glow behind the card to mimic the galaxy feel */
+    background: radial-gradient(circle at 50% 50%, rgba(30, 20, 60, 0.4) 0%, transparent 60%);
+  }
+  
+  /* The Main Card */
+  .auth-card {
+    width: 100%;
+    max-width: 420px;
+    background-color: #111111; /* Very dark gray, almost black */
+    border: 1px solid #222222;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+  }
+  
+  /* Social Buttons */
+  .social-btn {
+    background-color: #1a1a1a;
+    color: #cccccc;
+    border: 1px solid #2a2a2a;
+    transition: all 0.2s ease;
+  }
+  
+  .social-btn:hover {
+    background-color: #222222;
+    color: #ffffff;
+    border-color: #444444;
+  }
+  
+  /* 'Or' Divider */
+  .divider .line {
+    height: 1px;
+    background-color: #2a2a2a;
+  }
+  
+  /* Custom Inputs */
+  .custom-auth-input {
+    background-color: #0a0a0a !important; /* Extremely dark background for inputs */
+    border: 1px solid #2a2a2a;
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    transition: all 0.2s ease;
+  }
+  
+  /* Focus State (The glowing blue border from the image) */
+  .custom-auth-input:focus {
+    background-color: #0a0a0a !important;
+    border-color: #0d6efd; /* Bootstrap Primary Blue */
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); /* Soft blue glow */
+  }
+  
+  /* Input Placeholder */
+  .custom-auth-input::placeholder {
+    color: #555555;
+  }
+  
+  /* Webkit Autofill fix (prevents browser autofill from turning inputs white) */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #0a0a0a inset !important;
+      -webkit-text-fill-color: white !important;
+      transition: background-color 5000s ease-in-out 0s;
+  }
+  
+  /* The bright blue primary button */
+  .primary-btn {
+    background-color: #1a73e8; /* Vibrant blue */
+    border: none;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .primary-btn:hover {
+    background-color: #155dbb;
+  }
+  
+  .primary-btn:disabled {
+    background-color: #1a73e8;
+    opacity: 0.6;
+  }

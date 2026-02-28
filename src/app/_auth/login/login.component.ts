@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [NgIf, FormsModule, RouterLink],
+  imports: [NgIf, FormsModule, RouterLink, NgClass],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
+  showPassword = false;
 
   form: any = {
     email: '',
