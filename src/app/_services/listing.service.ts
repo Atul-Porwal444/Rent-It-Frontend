@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -87,5 +87,21 @@ export class ListingService {
 
   getMySavedRoommates(): Observable<any> {
     return this.http.get(this.SAVED_API_URL + 'roommates');
+  }
+
+  getMyRooms(): Observable<any> {
+    return this.http.get(this.API_URL + 'my-rooms');
+  }
+
+  getMyRoommates(): Observable<any> {
+    return this.http.get(this.API_URL + 'my-roommates');
+  }
+
+  deleteRoom(id: number): Observable<any> {
+    return this.http.delete(this.API_URL + 'rooms/' + id);
+  }
+
+  deleteRoommate(id: number): Observable<any> {
+    return this.http.delete(this.API_URL + 'roommates/' + id);
   }
 }

@@ -1,0 +1,87 @@
+<div class="page-wrapper">
+  
+    <div class="header-section pt-5 pb-4 px-4 border-bottom custom-border">
+      <div class="container max-w-custom">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <div>
+            <h2 class="fw-bold text-white mb-1"><i class="bi bi-collection text-success me-2"></i> My Posts</h2>
+            <p class="text-secondary small mb-0">Manage, edit, or remove your active property and roommate listings.</p>
+          </div>
+          <div class="custom-tabs d-flex p-1 rounded-pill">
+            <button class="btn custom-tab-btn rounded-pill px-4 fw-medium" [class.active]="activeTab === 'rooms'" (click)="setTab('rooms')">
+              My Rooms ({{ myRooms.length }})
+            </button>
+            <button class="btn custom-tab-btn rounded-pill px-4 fw-medium" [class.active]="activeTab === 'roommates'" (click)="setTab('roommates')">
+              My Roommates ({{ myRoommates.length }})
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="container max-w-custom py-5">
+      
+      <div *ngIf="isLoading || isDeleting" class="text-center py-5">
+        <div class="spinner-border text-secondary" role="status"></div>
+      </div>
+  
+      <div *ngIf="!isLoading && !isDeleting && activeTab === 'rooms'">
+        <div class="row g-4" *ngIf="myRooms.length > 0">
+          
+          <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let room of myRooms">
+            <div class="position-relative hover-overlay-wrapper">
+              <app-listing-card [data]="room" type="ROOM"></app-listing-card>
+              
+              <div class="action-buttons d-flex gap-2">
+                <button class="btn btn-sm btn-primary action-btn shadow-lg" (click)="editPost('room', room.id, $event)">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+                <button class="btn btn-sm btn-danger action-btn shadow-lg" (click)="deletePost('room', room.id, $event)">
+                  <i class="bi bi-trash3-fill"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+        
+        <div *ngIf="myRooms.length === 0" class="text-center py-5 my-5 glass-card rounded-4 p-5">
+          <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 80px; height: 80px; background-color: rgba(255, 193, 7, 0.1); color: #ffc107;">
+            <i class="bi bi-house-add-fill" style="font-size: 2.5rem;"></i>
+          </div>
+          <h4 class="text-white fw-bold">No Active Room Posts</h4>
+          <p class="text-secondary">You haven't posted any properties for rent yet.</p>
+        </div>
+      </div>
+  
+      <div *ngIf="!isLoading && !isDeleting && activeTab === 'roommates'">
+        <div class="row g-4" *ngIf="myRoommates.length > 0">
+          
+          <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let person of myRoommates">
+            <div class="position-relative hover-overlay-wrapper">
+              <app-listing-card [data]="person" type="ROOMMATE"></app-listing-card>
+              
+              <div class="action-buttons d-flex gap-2">
+                <button class="btn btn-sm btn-primary action-btn shadow-lg" (click)="editPost('roommate', person.id, $event)">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+                <button class="btn btn-sm btn-danger action-btn shadow-lg" (click)="deletePost('roommate', person.id, $event)">
+                  <i class="bi bi-trash3-fill"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+        
+        <div *ngIf="myRoommates.length === 0" class="text-center py-5 my-5 glass-card rounded-4 p-5">
+          <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 80px; height: 80px; background-color: rgba(255, 193, 7, 0.1); color: #ffc107;">
+            <i class="bi bi-person-plus-fill" style="font-size: 2.5rem;"></i>
+          </div>
+          <h4 class="text-white fw-bold">No Active Roommate Posts</h4>
+          <p class="text-secondary">You aren't currently looking for any roommates.</p>
+        </div>
+      </div>
+  
+    </div>
+  </div>

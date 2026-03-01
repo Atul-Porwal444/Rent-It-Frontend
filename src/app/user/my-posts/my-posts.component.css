@@ -1,0 +1,42 @@
+.page-wrapper { background-color: transparent; min-height: calc(100vh - 65px); }
+.max-w-custom { max-width: 1400px; }
+.header-section { background: linear-gradient(180deg, rgba(30, 30, 30, 0.6) 0%, transparent 100%); }
+.custom-border { border-color: rgba(255, 255, 255, 0.08) !important; }
+
+/* Custom Pill Tabs */
+.custom-tabs { background-color: rgba(20, 20, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+.custom-tab-btn { color: #a0a0a0; font-size: 0.9rem; transition: all 0.3s ease; border: none; }
+.custom-tab-btn:hover { color: #fff; }
+.custom-tab-btn.active { background-color: #ffffff; color: #000000; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); }
+
+/* Glass Empty State */
+.glass-card { background-color: rgba(20, 20, 20, 0.5); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+
+/* --- HOVER ACTION BUTTONS --- */
+.hover-overlay-wrapper .action-buttons {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+/* Reveal buttons when hovering over the card wrapper */
+.hover-overlay-wrapper:hover .action-buttons {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-btn i { font-size: 1rem; }
