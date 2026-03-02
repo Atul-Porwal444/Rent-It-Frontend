@@ -106,7 +106,7 @@ export class RoomDetailsComponent implements OnInit {
       "userName" : "Atul Porwal",
       "userProfileImageUrl" : "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/266559d0-a941-4680-95d8-1b9495a03d77_Pi7_Passport_Photo.jpeg",
       "userEmail" : "aatulporwal999@gmail.com",
-      "userPhone": "+91 8823858776",
+      "userPhone": "+91 7828902137",
       "waterSupply24x7" : false
     }
     this.isLoading = false;
@@ -120,6 +120,26 @@ export class RoomDetailsComponent implements OnInit {
 
   revealContact() {
     this.showContact = true;
+  }
+
+  contactOnWhatsApp() {
+    if(!this.room?.userPhone) {
+      alert("This user has not provided a phone number.");
+      return;
+    }
+
+    let phone = this.room.userPhone.replace(/\D/g, '');
+
+    if(phone.length === 10) {
+      phone = '91' + phone;
+    }
+
+    const message = `Hi ${this.room.userName}, I saw your ${this.room.bhkType} room listed in ${this.room.location} for ₹${this.room.rentAmount} on RentIt. Is it still available?`;
+
+    const encodedMessage = encodeURIComponent(message);
+
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_black');
   }
 
 }

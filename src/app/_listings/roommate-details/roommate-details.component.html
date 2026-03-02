@@ -101,38 +101,25 @@
                   <small class="text-secondary">RentIt Verified Member</small>
                 </div>
               </div>
+
+              <button class="btn whatsapp-btn w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2 shadow-lg" 
+                      (click)="contactOnWhatsApp()"
+                      [disabled]="!roommate.userPhone">
+                <i class="bi bi-whatsapp fs-5"></i> Chat on WhatsApp
+              </button>
   
-              <button *ngIf="!showContact" 
-                    class="btn btn-light w-100 fw-bold py-2 mb-3 d-flex align-items-center justify-content-center gap-2" 
-                    (click)="revealContact()">
-              <i class="bi bi-telephone-fill"></i> Show Contact Details
-            </button>
+              <div class="contact-reveal-wrapper mt-2">
+                <button *ngIf="!showContact" class="btn btn-outline-light w-100 fw-medium py-2 d-flex align-items-center justify-content-center gap-2" (click)="revealContact()">
+                  <i class="bi bi-telephone"></i> View Phone Number
+                </button>
 
-            <div *ngIf="showContact" class="contact-reveal p-3 rounded-4 mb-3 border custom-border" style="background-color: #121212;">
-              
-              <div class="d-flex align-items-center gap-3 mb-3">
-                <div class="icon-circle d-flex align-items-center justify-content-center rounded-circle" style="width: 40px; height: 40px; background-color: rgba(25, 135, 84, 0.15); color: #20c997;">
-                  <i class="bi bi-telephone-fill"></i>
-                </div>
-                <div>
-                  <small class="text-secondary d-block" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Phone</small>
-                  <span class="text-white fw-bold">{{ roommate.userPhone || 'Not Provided' }}</span>
+                <div *ngIf="showContact" class="p-3 rounded-3 border custom-border text-center animation-fade-in" style="background-color: rgba(255,255,255,0.05);">
+                  <small class="text-secondary d-block text-uppercase tracking-wide mb-1" style="font-size: 0.6rem;">Direct Contact</small>
+                  <span class="text-white fw-bold fs-10 tracking-wide">{{ roommate.userPhone || 'Not Provided' }}</span>
                 </div>
               </div>
 
-              <div class="d-flex align-items-center gap-3">
-                <div class="icon-circle d-flex align-items-center justify-content-center rounded-circle" style="width: 40px; height: 40px; background-color: rgba(13, 110, 253, 0.15); color: #6ea8fe;">
-                  <i class="bi bi-envelope-fill"></i>
-                </div>
-                <div style="word-break: break-all;">
-                  <small class="text-secondary d-block" style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Email</small>
-                  <span class="text-white fw-bold">{{ roommate.userEmail || 'Not Provided' }}</span>
-                </div>
-              </div>
-
-            </div>
-
-            <button class="btn w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2 transition-all"
+            <button class="btn w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2 transition-all mt-2"
                     [ngClass]="isSaved ? 'btn-danger' : 'btn-outline-secondary'"
                     [disabled]="isSaving"
                     (click)="toggleSave()">

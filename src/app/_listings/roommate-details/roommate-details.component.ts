@@ -120,5 +120,24 @@ export class RoommateDetailsComponent implements OnInit {
     this.showContact = true;
   }
 
+  contactOnWhatsApp() {
+    if(!this.roommate?.userPhone) {
+      alert("This user has not provided a phone number.");
+      return;
+    }
+
+    let phone = this.roommate.userPhone.replace(/\D/g, '');
+
+    if(phone.length === 10) {
+      phone = '91' + phone;
+    }
+
+    const message = `Hi ${this.roommate.userName}, I saw your ${this.roommate.bhkType} room listed in ${this.roommate.location} for ₹${this.roommate.rentAmount} on RentIt. Is it still available?`;
+
+    const encodedMessage = encodeURIComponent(message);
+
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_black');
+  }
 
 }
