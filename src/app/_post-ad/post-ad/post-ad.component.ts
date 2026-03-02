@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PostService } from '../../_services/post.service';
 
@@ -9,7 +9,7 @@ import { PostService } from '../../_services/post.service';
   templateUrl: './post-ad.component.html',
   styleUrl: './post-ad.component.css',
 })
-export class PostAdComponent {
+export class PostAdComponent implements OnInit, OnDestroy {
   @Input() adType: 'room' | 'roommate' = 'room'; // Determines which form to show
   @Output() close = new EventEmitter<void>(); // Tells parent to close modal
 
@@ -5225,6 +5225,14 @@ export class PostAdComponent {
   };
 
   constructor(private postService: PostService) {}
+
+  ngOnInit(): void {
+    document.body.style.overflow = 'hidden';
+  }
+
+  ngOnDestroy(): void {
+    document.body.style.overflow = '';
+  }
 
   // 1. Handle File Selection & Preview
   onFileSelected(event: any) {
