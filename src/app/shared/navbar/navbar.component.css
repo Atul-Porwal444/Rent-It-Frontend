@@ -183,3 +183,147 @@
   border: 1px solid #2a2a2a !important;
   border-radius: 12px;
 }
+
+/* Nav Icon Button */
+.nav-icon-btn {
+  background: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.nav-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Red Dot Indicator */
+.notification-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  background-color: #ff4d4f; /* Bright Red */
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #121212; /* Cuts out background */
+}
+
+/* Pulse animation for new notifications */
+.indicator-pulse {
+  animation: pulse-red 2s infinite;
+}
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.7), 0 0 0 2px #121212; }
+  70% { box-shadow: 0 0 0 6px rgba(255, 77, 79, 0), 0 0 0 2px #121212; }
+  100% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0), 0 0 0 2px #121212; }
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 130%; 
+  right: -60px; /* Default offset for desktop */
+  
+  /* CRITICAL RESPONSIVE FIX */
+  width: 480px; 
+  max-width: 90vw; /* Never let it be wider than 90% of the screen */
+  height: 435px; 
+  max-height: 80vh; /* Prevent it from being taller than the screen */
+  
+  /* Glassmorphism */
+  background-color: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  
+  display: flex;
+  flex-direction: column;
+  z-index: 1050;
+  
+  /* Smooth Slide-in Animation */
+  opacity: 0;
+  transform: translateY(15px) scale(0.98);
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top right;
+}
+
+.notification-dropdown.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+}
+
+.custom-border { border-color: rgba(255, 255, 255, 0.08) !important; }
+.bg-darker { background-color: rgba(10, 10, 10, 0.5); }
+.hover-text-white:hover { color: white !important; }
+
+/* The Scrollable List Area */
+.notification-list {
+  flex-grow: 1; /* Takes up remaining space */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar (Matching LeetCode style) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Individual Notification Items */
+.notif-item {
+  cursor: pointer;
+  background: transparent;
+}
+
+.notif-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.unread-bg {
+  background: rgba(13, 110, 253, 0.05); /* Slight blue tint for unread */
+}
+.unread-bg:hover {
+  background: rgba(13, 110, 253, 0.08);
+}
+
+/* Custom Purple Color for Matches */
+.text-purple { color: #a855f7; }
+.bg-purple-subtle { background-color: rgba(168, 85, 247, 0.15); }
+
+/* MOBILE MEDIA QUERY */
+@media (max-width: 768px) {
+  .notification-dropdown {
+    /* Pull it inward on mobile so it doesn't clip off the right edge */
+    right: -10px; 
+    
+    /* Optional: make it slightly shorter on mobile for a better feel */
+    height: 400px; 
+    
+    /* Change the animation origin since the position changed */
+    transform-origin: top center; 
+  }
+}
+
+.notification-dropdown.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+}
