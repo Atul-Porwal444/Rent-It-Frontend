@@ -1,0 +1,112 @@
+/* --- FOOTER CONTAINER --- */
+.rentit-footer {
+    background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 10, 0.8) 100%);
+    border-top: 2px solid rgba(255, 255, 255, 0.05);
+    margin-top: auto; /* Pushes footer to the bottom of the page */
+  }
+  
+  .max-w-custom {
+    max-width: 1300px;
+  }
+  
+  /* Background ambient glow */
+  .footer-bg-glow {
+    width: 50vw;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(13, 110, 253, 0.08) 0%, rgba(0,0,0,0) 70%);
+    pointer-events: none;
+  }
+  
+  .custom-border { border-color: rgba(255, 255, 255, 0.08) !important; }
+  .tracking-wide { letter-spacing: 0.08em; }
+  
+  /* --- LINKS & TYPOGRAPHY --- */
+  .footer-link {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .footer-link:hover {
+    color: #0d6efd;
+    transform: translateX(4px); /* Slight slide to the right on hover */
+  }
+  
+  /* --- SOCIAL BUTTONS --- */
+  .social-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #a0a0a0;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .social-btn:hover {
+    background: rgba(13, 110, 253, 0.15);
+    color: #fff;
+    border-color: #0d6efd;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+  }
+  
+  /* --- GLASS CARD (For Newsletter) --- */
+  .glass-card {
+    background-color: rgba(20, 20, 20, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Deep Dark Input */
+  .custom-footer-input {
+    background-color: #0a0a0a !important;
+    border: 1px solid #333;
+    color: #fff !important;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+  }
+  
+  .custom-footer-input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+  }
+  
+  .custom-footer-input::placeholder { color: #555; }
+  
+  /* Primary Button */
+  .primary-btn {
+    background-color: #1a73e8;
+    border: none;
+    transition: background-color 0.2s ease;
+  }
+  .primary-btn:hover { background-color: #155dbb; }
+  
+  /* --- ANIMATIONS --- */
+  .animate-slide-up {
+    opacity: 0;
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+  }
+  
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.5s; }
+  
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
