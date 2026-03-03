@@ -1,0 +1,115 @@
+<div class="landing-wrapper">
+  
+    <header class="hero-section d-flex align-items-center text-center position-relative overflow-hidden">
+      <div class="hero-bg-glow position-absolute top-50 start-50 translate-middle"></div>
+      
+      <div class="container position-relative z-1">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2 mb-4 animate-fade-in">
+              <i class="bi bi-stars me-1"></i> The New Way to Rent
+            </span>
+            <h1 class="display-3 fw-bolder text-white mb-4 animate-slide-up">
+              Find Your Perfect <br> <span class="text-gradient">Room & Roommate</span>
+            </h1>
+            <p class="lead text-secondary mb-5 animate-slide-up delay-1">
+              Say goodbye to endless scrolling. RentIt matches you with verified properties and like-minded people in your city instantly.
+            </p>
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 animate-slide-up delay-2">
+              <a routerLink="/rooms" class="btn btn-primary primary-btn btn-lg fw-bold px-5 py-3 rounded-pill">
+                Explore Rooms
+              </a>
+              <a routerLink="/roommates" class="btn btn-outline-light btn-lg fw-bold px-5 py-3 rounded-pill custom-outline-btn">
+                Find Roommates
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+    <section class="py-5 my-5">
+      <div class="container max-w-custom">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold text-white">How It Works</h2>
+          <p class="text-secondary">Three simple steps to your new home.</p>
+        </div>
+  
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="glass-card p-5 h-100 text-center rounded-4 hover-lift">
+              <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" 
+                   style="width: 70px; height: 70px; background: rgba(13, 110, 253, 0.1); color: #0d6efd;">
+                <i class="bi bi-search fs-2"></i>
+              </div>
+              <h5 class="text-white fw-bold">1. Discover</h5>
+              <p class="text-secondary small mb-0">Browse through thousands of verified room listings and roommate requests using our smart filters.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="glass-card p-5 h-100 text-center rounded-4 hover-lift">
+              <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" 
+                   style="width: 70px; height: 70px; background: rgba(25, 135, 84, 0.1); color: #198754;">
+                <i class="bi bi-chat-dots fs-2"></i>
+              </div>
+              <h5 class="text-white fw-bold">2. Connect</h5>
+              <p class="text-secondary small mb-0">Instantly connect with property owners or potential roommates directly via WhatsApp or Phone.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="glass-card p-5 h-100 text-center rounded-4 hover-lift">
+              <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" 
+                   style="width: 70px; height: 70px; background: rgba(168, 85, 247, 0.1); color: #a855f7;">
+                <i class="bi bi-house-check fs-2"></i>
+              </div>
+              <h5 class="text-white fw-bold">3. Move In</h5>
+              <p class="text-secondary small mb-0">Finalize the details, pack your bags, and move into your perfect new living space effortlessly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <section class="py-5 bg-darker border-top border-bottom custom-border">
+      <div class="container max-w-custom py-4">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+          <div>
+            <h2 class="fw-bold text-white mb-1">Featured Rooms</h2>
+            <p class="text-secondary mb-0">Handpicked premium properties available right now.</p>
+          </div>
+          <a routerLink="/rooms" class="btn btn-link text-primary text-decoration-none fw-bold d-none d-md-block">View All <i class="bi bi-arrow-right"></i></a>
+        </div>
+  
+        <div *ngIf="isLoading" class="text-center py-5">
+          <div class="spinner-border text-secondary"></div>
+        </div>
+  
+        <div class="row g-4" *ngIf="!isLoading">
+          <div class="col-12 col-md-6 col-lg-3" *ngFor="let room of featuredRooms">
+            <app-listing-card [data]="room" type="ROOM"></app-listing-card>
+          </div>
+        </div>
+        
+        <div class="text-center mt-4 d-block d-md-none">
+          <a routerLink="/rooms" class="btn btn-outline-light w-100 rounded-pill">View All Rooms</a>
+        </div>
+      </div>
+    </section>
+  
+    <section class="py-5 my-5">
+      <div class="container max-w-custom">
+        <div class="glass-card p-5 rounded-4 text-center position-relative overflow-hidden" style="border: 1px solid rgba(13, 110, 253, 0.3);">
+          <div class="cta-glow position-absolute top-50 start-50 translate-middle"></div>
+          
+          <div class="position-relative z-1 py-4">
+            <h2 class="fw-bolder text-white mb-3">Ready to join RentIt?</h2>
+            <p class="text-secondary mb-4 max-w-500 mx-auto">Create a free account today to save your favorite rental properties, post your own properties, and connect with others.</p>
+            <a routerLink="/register" class="btn btn-primary primary-btn btn-lg fw-bold px-5 py-3 rounded-pill">
+              Create Free Account
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+  </div>

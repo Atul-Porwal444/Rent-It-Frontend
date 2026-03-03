@@ -11,10 +11,11 @@ import { RoommateDetailsComponent } from './_listings/roommate-details/roommate-
 import { SavedPostsComponent } from './user/saved-posts/saved-posts.component';
 import { SettingsComponent } from './user/settings/settings.component';
 import { MyPostsComponent } from './user/my-posts/my-posts.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
-    { path : '', component: DashboardComponent},
-    { path : 'dashboard', redirectTo: '', pathMatch: 'full'},
+    { path : '', component: HomeComponent},
+    { path : 'dashboard', component: DashboardComponent},
     { path : 'login', component: LoginComponent},
     { path : 'profile', component: ProfileComponent},
     { path : 'register', component: RegisterComponent},
