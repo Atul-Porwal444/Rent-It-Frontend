@@ -39,6 +39,14 @@ export class AuthService {
     return this.http.post(this.API_URL + "login", credentials, this.httpOptions);
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.API_URL}forgot-password`, { email });
+  }
+
+  resetPassword(payload: any): Observable<any> {
+    return this.http.post(`${this.API_URL}reset-password`, payload);
+  }
+
   isLoggedIn() : boolean {
     return !!localStorage.getItem('token');
   }

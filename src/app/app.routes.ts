@@ -12,6 +12,7 @@ import { SavedPostsComponent } from './user/saved-posts/saved-posts.component';
 import { SettingsComponent } from './user/settings/settings.component';
 import { MyPostsComponent } from './user/my-posts/my-posts.component';
 import { HomeComponent } from './home/home.component';
+import { ForgotPasswordComponent } from './_auth/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
     { path : '', component: HomeComponent},
@@ -26,5 +27,6 @@ export const routes: Routes = [
     { path: 'roommates/:id', component: RoommateDetailsComponent},
     { path: 'saved-posts', component: SavedPostsComponent },
     { path: 'settings', component: SettingsComponent },
-    { path:'my-posts', component: MyPostsComponent }
+    { path:'my-posts', component: MyPostsComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent }
 ];
