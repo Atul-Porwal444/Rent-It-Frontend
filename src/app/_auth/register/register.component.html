@@ -14,8 +14,16 @@
           class="form-control custom-auth-input" 
           name="name"
           [(ngModel)]="form.name" 
+          #name="ngModel"
+          [ngClass]="{'is-invalid': name.invalid && name.touched}"
           required
+          minlength="3"
+          maxlength="50"
           placeholder="Enter name">
+          <div *ngIf="name.invalid && name.touched" class="text-danger mt-1" style="font-size: 0.75rem;">
+            <span *ngIf="name.errors?.['required']">Name is required.</span>
+            <span *ngIf="name.errors?.['minlength']">Name must be at least 3 characters.</span>
+          </div>
       </div>
 
       <div class="mb-3">
@@ -25,9 +33,15 @@
           class="form-control custom-auth-input" 
           name="email"
           [(ngModel)]="form.email" 
+          #email="ngModel"
+          [ngClass]="{'is-invalid': email.invalid && email.touched}"
           required
           email
           placeholder="Enter email">
+          <div *ngIf="email.invalid && email.touched" class="text-danger mt-1" style="font-size: 0.75rem;">
+            <span *ngIf="email.errors?.['required']">Email is required.</span>
+            <span *ngIf="email.errors?.['email']">Please enter a valid email address.</span>
+          </div>
       </div>
 
       <div class="mb-4">
@@ -38,14 +52,35 @@
             class="form-control custom-auth-input pe-5" 
             name="password"
             [(ngModel)]="form.password" 
+            #password="ngModel"
+            [ngClass]="{'is-invalid': password.invalid && password.touched}"
             required
+            minlength="8"
+            maxlength="15"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,15}$"
             placeholder="Enter your password">
             
             <i class="bi position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" 
-               style="cursor: pointer;"
+               style="cursor: pointer; z-index: 10;"
                [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" 
                (click)="showPassword = !showPassword"></i>
         </div>
+        
+        <div *ngIf="password.invalid && password.touched" class="text-danger mt-1" style="font-size: 0.75rem; line-height: 1.4;">
+          <span *ngIf="password.errors?.['required']">Password is required.</span>
+          <span *ngIf="password.errors?.['minlength'] || password.errors?.['pattern']">
+            Password must be 8-15 characters and contain at least: <br>
+            • One uppercase letter <br>
+            • One lowercase letter <br>
+            • One number <br>
+            • One special character
+          </span>
+        </div>
+      </div>
+
+      <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger d-flex align-items-center py-2 small mb-3" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>
+        <div>{{ errorMessage }}</div>
       </div>
 
       <div class="d-grid mt-2">

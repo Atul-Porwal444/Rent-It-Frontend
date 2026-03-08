@@ -34,13 +34,21 @@ export class AuthService {
     );
   }
 
+  resendForgotPasswordOtp(email : string): Observable<any> {
+    return this.http.post(
+      this.API_URL + 'resend-fp-otp', 
+      { "email" : email }, 
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    );
+  }
+
   // for the login
   login(credentials : any) : Observable<any> {
     return this.http.post(this.API_URL + "login", credentials, this.httpOptions);
   }
 
   forgotPassword(email: string): Observable<any> {
-    return this.http.post(`${this.API_URL}forgot-password`, { email });
+    return this.http.post(`${this.API_URL}forgot-password`, { "email": email });
   }
 
   resetPassword(payload: any): Observable<any> {

@@ -84,3 +84,15 @@
     background-color: #1a73e8;
     opacity: 0.6;
   }
+
+  /* Invalid Input State Styling */
+.custom-auth-input.is-invalid {
+  border-color: #dc3545 !important; /* Bootstrap Red */
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important; /* Red glow */
+  background-image: none !important;
+}
+
+/* Ensure the red border stays red even on focus if invalid */
+.custom-auth-input.is-invalid:focus {
+  background-color: #0a0a0a !important;
+}

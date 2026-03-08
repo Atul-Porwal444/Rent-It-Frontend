@@ -20,11 +20,14 @@ export class RegisterComponent {
 
   isLoading: boolean = false;
   showPassword = false;
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() : void {
     this.isLoading = true;
+    this.errorMessage = '';
+
     this.authService.register(this.form).subscribe({
       next: (response) => {
         console.log("User registered successfully");
@@ -36,10 +39,9 @@ export class RegisterComponent {
       },
       error: (err) => {
         this.isLoading = false;
-        console.log(err);
-        alert("Registration failed " + err.error.message);
+        this.errorMessage = err.error?.message || "Registration failed. Please try again.";
       }
-    })
+    });
   }
 
 }

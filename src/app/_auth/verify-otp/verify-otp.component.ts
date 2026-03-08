@@ -69,7 +69,7 @@ export class VerifyOtpComponent implements OnInit {
   onSubmit() : void {
     this.isLoading = true;
 
-    if(!this.form.otp && this.form.otp.length < 6) {
+    if(!this.form.otp || this.form.otp.length !== 6) {
       this.errorMessage = 'Please enter a valid 6-digit code';
       this.isLoading = false;
       return;
@@ -77,8 +77,6 @@ export class VerifyOtpComponent implements OnInit {
 
     this.auth.verifyOtp(this.form).subscribe({
       next: (res) => {
-        console.log("Account verification successfull");
-
         this.isVerified = true;
         setTimeout(() => {
           this.router.navigate(['/login'], {
@@ -88,7 +86,7 @@ export class VerifyOtpComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = 'Invalid or Expired OTP. Please try again.'
+        this.errorMessage = err.error?.message || 'Invalid or Expired OTP. Please try again.'
       }
     });
   }
@@ -101,6 +99,8 @@ export class VerifyOtpComponent implements OnInit {
       next: () => {
         this.isResending = false;
         this.resendMessage = "New code sent! Check your inbox.";
+
+        this.startCountdown();
       },
       error: (err) => {
         this.isResending = false;

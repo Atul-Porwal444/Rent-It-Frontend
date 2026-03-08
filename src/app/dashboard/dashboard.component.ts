@@ -1,29 +1,50 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ListingCardComponent } from '../shared/listing-card/listing-card.component';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ListingService } from '../_services/listing.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ListingCardComponent, NgFor],
+  imports: [ListingCardComponent, NgFor, NgIf, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
 
+  userName: string = 'User';
+
   featuredRooms : any[] = [];
   featuredRoommates : any[] = [];
+
+  isLoadingRooms: boolean = true;
+  isLoadingRoommates: boolean = true;
 
   constructor(private listingService: ListingService) {}
 
   ngOnInit(): void {
+
+    const userStr = localStorage.getItem('userDetails');
+    if(userStr) {
+      const user = JSON.parse(userStr);
+      this.userName = user.name ? user.name.split(' ')[0] : 'User';
+    }
+
     // Fetch page 0, size 10 
-    this.listingService.getRooms({} , 0, 10, 'postedOn', 'desc').subscribe(res => {
-      this.featuredRooms = res.content;
+    this.listingService.getRooms({} , 0, 10, 'postedOn', 'desc').subscribe({
+      next: (res) => {
+        this.featuredRooms = res.content || [];
+        this.isLoadingRooms = false;
+      },
+      error: () => this.isLoadingRooms = false
     });
 
-    this.listingService.getRoommates({}, 0, 10, 'postedOn', 'desc').subscribe(res => {
-      this.featuredRoommates = res.content;
+    this.listingService.getRoommates({}, 0, 10, 'postedOn', 'desc').subscribe({
+      next: (res) => {
+        this.featuredRoommates = res.content || [];
+        this.isLoadingRoommates = false;
+      },
+      error: () => this.isLoadingRoommates = false
     });
   }
 

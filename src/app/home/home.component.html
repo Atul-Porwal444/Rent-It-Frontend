@@ -77,20 +77,44 @@
             <h2 class="fw-bold text-white mb-1">Featured Rooms</h2>
             <p class="text-secondary mb-0">Handpicked premium properties available right now.</p>
           </div>
-          <a routerLink="/rooms" class="btn btn-link text-primary text-decoration-none fw-bold d-none d-md-block">View All <i class="bi bi-arrow-right"></i></a>
+          <a *ngIf="featuredRooms.length !== 0" routerLink="/rooms" class="btn btn-link text-primary text-decoration-none fw-bold d-none d-md-block">View All <i class="bi bi-arrow-right"></i></a>
         </div>
   
         <div *ngIf="isLoading" class="text-center py-5">
-          <div class="spinner-border text-secondary"></div>
+          <div class="row g-4" *ngIf="isLoading">
+            <div class="col-12 col-md-6 col-lg-3" *ngFor="let item of [1, 2, 3, 4]">
+              <div class="glass-card overflow-hidden h-100 border-0 rounded-4">
+                
+                <div class="skeleton" style="height: 200px; width: 100%; border-radius: 0;"></div>
+                
+                <div class="p-3">
+                  <div class="skeleton mb-3" style="height: 18px; width: 30%; border-radius: 20px;"></div>
+                  
+                  <div class="skeleton mb-2" style="height: 24px; width: 85%; border-radius: 6px;"></div>
+                  
+                  <div class="skeleton mb-4" style="height: 14px; width: 60%; border-radius: 6px;"></div>
+    
+                  <div class="d-flex align-items-center mt-3 pt-3 border-top custom-border">
+                    <div class="skeleton rounded-circle me-2" style="width: 32px; height: 32px;"></div>
+                    <div class="skeleton" style="height: 14px; width: 40%; border-radius: 6px;"></div>
+                  </div>
+                </div>
+    
+              </div>
+            </div>
+          </div>
         </div>
   
         <div class="row g-4" *ngIf="!isLoading">
-          <div class="col-12 col-md-6 col-lg-3" *ngFor="let room of featuredRooms">
-            <app-listing-card [data]="room" type="ROOM"></app-listing-card>
+          <div *ngIf="featuredRooms.length == 0" class="text-center fs-1 text-gradient">Unable To Fetch Rooms.<br>Server is Busy</div>
+          <div *ngIf="featuredRooms.length != 0">
+            <div class="col-12 col-md-6 col-lg-3" *ngFor="let room of featuredRooms">
+              <app-listing-card [data]="room" type="ROOM"></app-listing-card>
+            </div>
           </div>
         </div>
         
-        <div class="text-center mt-4 d-block d-md-none">
+        <div *ngIf="featuredRooms.length !== 0" class="text-center mt-4 d-block d-md-none">
           <a routerLink="/rooms" class="btn btn-outline-light w-100 rounded-pill">View All Rooms</a>
         </div>
       </div>

@@ -1,111 +1,257 @@
-/* 1. Main Background Wrapper */
+/* --- BASE WRAPPER --- */
 .dashboard-wrapper {
   background-color: transparent; 
   min-height: calc(100vh - 65px);
-  }
-  
-  /* 2. Hero Section */
-  .hero-section {
-    background: linear-gradient(145deg, #181818 0%, #121212 100%);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  .highlight-text {
-    color: #ffffff;
-    position: relative;
-    display: inline-block;
-    
-    /* A modern thin underline instead of a bright color */
-    &::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 3px;
-      bottom: 5px;
-      left: 0;
-      background-color: #444; /* Subtle dark grey underline */
-      border-radius: 2px;
-      z-index: -1;
-    }
-  }
-  
-  /* 3. Monochrome "View All" Buttons */
-  .custom-dash-btn {
-    color: #a0a0a0;
-    border: 1px solid #333333;
-    background-color: transparent;
-    border-radius: 8px; /* Matches navbar buttons */
-    padding: 0.35rem 1rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-  
-    &:hover {
-      background-color: #ffffff;
-      color: #000000;
-      border-color: #ffffff;
-    }
-  }
-  
-  /* 4. Custom Divider */
-  .custom-divider {
-    border-color: #2a2a2a; /* Very subtle line */
-    opacity: 1;
-  }
+  overflow-x: hidden;
+}
 
-  /* ... existing dashboard styles ... */
+.max-w-custom {
+  max-width: 1300px;
+}
 
-/* Slider Structure */
-.scroll-container {
+.custom-border {
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* --- HERO SECTION & GLASS CARDS --- */
+.glass-card {
+  background-color: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(30, 30, 30, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hero-bg-glow {
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(13, 110, 253, 0.1) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #6ea8fe 0%, #0d6efd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* --- HORIZONTAL SCROLL & SLIDERS --- */
+.scroll-snap-container {
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 }
 
-/* Hide default ugly scrollbars */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-/* Fix width for each card so they line up horizontally */
 .slider-item {
-  flex: 0 0 auto; /* Prevent shrinking */
-  width: 280px; /* Exact width of cards */
+  flex: 0 0 auto; 
+  width: 290px; /* Consistent card width */
   scroll-snap-align: start;
 }
 
-/* Floating Navigation Arrows for Dashboard Sections */
-.slider-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  width: 45px;
-  height: 45px;
+/* Sleek minimal scrollbar instead of hidden, so users know to swipe */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- SHIMMER EFFECT --- */
+.skeleton {
+  background-color: #222222;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.0) 100%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* --- ANIMATIONS --- */
+.transition-all { transition: all 0.2s ease; }
+.hover-text-white:hover { color: #ffffff !important; }
+
+.animate-slide-up {
+  opacity: 0;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+.max-w-custom {
+  max-width: 1300px;
+}
+
+.custom-border {
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* --- HERO SECTION & GLASS CARDS --- */
+.hero-card {
+  min-height: 350px; /* Increased Height */
+  padding: 4rem 2rem !important; /* Added thick padding for centering */
+}
+
+.glass-card {
+  background-color: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(30, 30, 30, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hero-bg-glow {
+  width: 70vw; /* Made glow wider to accommodate centered text */
+  height: 70vw;
+  background: radial-gradient(circle, rgba(13, 110, 253, 0.1) 0%, rgba(0,0,0,0) 65%);
   border-radius: 50%;
-  background-color: #1a1a1a;
-  color: #e0e0e0;
-  border: 1px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  transition: all 0.2s;
+  pointer-events: none;
 }
 
-.slider-nav-btn:hover {
-  background-color: #fff;
-  color: #000;
-  border-color: #fff;
+.text-gradient {
+  background: linear-gradient(90deg, #6ea8fe 0%, #0d6efd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Pull arrows slightly outside the container */
-.slider-nav-btn.left {
-  left: -20px;
+.text-gradient-green {
+  background: linear-gradient(90deg, #56c167 0%, #31e137 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.slider-nav-btn.right {
-  right: -20px;
+
+/* --- AESTHETIC VIEW ALL BUTTON --- */
+.view-all-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #c0c0c0;
+  padding: 0.4rem 1.25rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+/* Blue Hover for Rooms */
+.view-all-btn:hover {
+  background: rgba(17, 13, 253, 0.1);
+  border-color: rgb(13, 109, 253);
+  color: #6ea8fe;
+  transform: translateX(4px); /* Slight slide to the right */
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.15);
+}
+
+/* Green Hover for Roommates */
+.view-all-btn.btn-success-variant:hover {
+  background: rgba(25, 135, 84, 0.1);
+  border-color: rgb(25, 135, 84);
+  color: #75b798;
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(25, 135, 84, 0.15);
+}
+
+/* --- HORIZONTAL SCROLL & SLIDERS --- */
+.scroll-snap-container {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.slider-item {
+  flex: 0 0 auto; 
+  width: 290px; 
+  scroll-snap-align: start;
+}
+
+/* Sleek minimal scrollbar instead of hidden, so users know to swipe */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* --- SHIMMER EFFECT --- */
+.skeleton {
+  background-color: #222222;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.0) 100%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* --- ANIMATIONS --- */
+.transition-all { transition: all 0.2s ease; }
+
+.animate-slide-up {
+  opacity: 0;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
