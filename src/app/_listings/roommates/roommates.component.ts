@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ListingCardComponent } from '../../shared/listing-card/listing-card.component';
 import { ListingService } from '../../_services/listing.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-rooms',
@@ -22,8 +23,6 @@ export class RoommatesComponent implements OnInit {
   totalPages = 0;
   totalElements = 0;
 
-  // Filter Variables (For UI - you can connect these to backend later)
-  searchCity = '';
 
   filters = {
     searchQuery: '',
@@ -31,8 +30,7 @@ export class RoommatesComponent implements OnInit {
     lookingForGender: '', // For Roommates
     dietaryPreference: '', // For Roommates
     religionPreference: '', // For Roommates
-    minRent: null,
-    maxRent: null,
+    maxRent: 50000,
     isFurnished: false,
     hasParking: false,
     waterSupply24x7: false,   // NEW
@@ -48,110 +46,66 @@ export class RoommatesComponent implements OnInit {
 
   applyFilters() {
     this.currentPage = 0; // Always reset to page 1 when filtering
+    this.loadRoommates();
   }
 
   // 3. Clear all filters
   resetFilters() {
     this.filters = {
       searchQuery: '', bhkType: '', lookingForGender: '', dietaryPreference: '', religionPreference: '', 
-      minRent: null, maxRent: null, isFurnished: false, hasParking: false, 
-      waterSupply24x7: false, electricityBackup: false, // NEW
+      maxRent: 50000, isFurnished: false, hasParking: false, 
+      waterSupply24x7: false, electricityBackup: false,
       sortBy: 'postedOn'
     };
     this.applyFilters();
   }
 
-  preventNegative(event: any) {
-    if (event.key === '-' || event.key === 'e' || event.key === '+') {
-      event.preventDefault();
+
+  loadRoommates() {
+    this.isLoading = true;
+
+    setTimeout(() => {
+        this.listingService.getRoommates(this.filters, this.currentPage, this.pageSize, this.filters.sortBy, 'desc').subscribe({
+        next: (res) => {
+          this.roommates = res.content;
+          this.totalPages = res.totalPages;
+          this.totalElements = res.totalElements;
+          this.isLoading = false;
+          window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
+        },
+        error: (err) => {
+          console.error('Failed to load rooms', err);
+          this.isLoading = false;
+        }
+      });
+    }, 800);
+  }
+
+  // Frontend sorting logic
+  sortDataFrontend() {
+    if (!this.roommates || this.roommates.length === 0) return;
+
+    if (this.filters.sortBy === 'rentAmountAsc') {
+      this.roommates.sort((a, b) => a.rentAmount - b.rentAmount);
+    } 
+    else if (this.filters.sortBy === 'rentAmountDesc') {
+      this.roommates.sort((a, b) => b.rentAmount - a.rentAmount);
+    } 
+    else if (this.filters.sortBy === 'postedOn') {
+      this.roommates.sort((a, b) => new Date(b.postedOn).getTime() - new Date(a.postedOn).getTime());
     }
   }
 
-
-  loadRoommates() {
-    // this.isLoading = true;
-    // this.listingService.getRoommates(this.currentPage, this.pageSize, this.sortBy, 'desc').subscribe({
-    //   next: (res) => {
-    //     this.roommates = res.content;
-    //     this.totalPages = res.totalPages;
-    //     this.totalElements = res.totalElements;
-    //     this.isLoading = false;
-    //     window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
-    //   },
-    //   error: (err) => {
-    //     console.error('Failed to load rooms', err);
-    //     this.isLoading = false;
-    //   }
-    // });
-    const res = {
-      "content" : [
-        {
-          "bhkType" : "1BHK",
-          "city" : "Rau",
-          "currentRoommates" : 1,
-          "description" : "A person who keeps the things clean.",
-          "dietaryPreference" : "Vegetarian",
-          "electricityBackup" : false,
-          "floorNumber" : 1,
-          "furnished" : false,
-          "hasParking" : true,
-          "id" : 2,
-          "imageUrls" : [
-            "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/dacc877c-961e-406f-b421-99e0c669c901_IMG-20251003-WA0012.jpg"
-          ],
-          "location" : "18/B, Swastik Vihar Colony, Rau",
-          "lookingForGender" : "Male",
-          "neededRoommates" : 1,
-          "pincode" : "453331",
-          "postedOn" : "2026-02-19",
-          "religionPreference" : "Hindu",
-          "rentAmount" : 5500.0,
-          "state" : "Madhya Pradesh",
-          "userId" : 13,
-          "userName" : "Atul Porwal",
-          "userProfileImageUrl" : "https://ui-avatars.com/api/?background=random&name=Atul Porwal",
-          "waterSupply24x7" : true
-        },
-        {
-          "bhkType" : "1BHK",
-          "city" : "Indore",
-          "currentRoommates" : 1,
-          "description" : "1313",
-          "dietaryPreference" : "No Preference",
-          "electricityBackup" : true,
-          "floorNumber" : 100000,
-          "furnished" : true,
-          "hasParking" : true,
-          "id" : 1,
-          "imageUrls" : [
-            "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/beece8d3-7f0f-4aaa-81a8-8f229051ab71_Zephyrus G14_1920x1080.jpg"
-          ],
-          "location" : "18/B, Swastik Vihar Colony, Rau",
-          "lookingForGender" : "Male",
-          "neededRoommates" : 1,
-          "pincode" : null,
-          "postedOn" : "2026-02-17",
-          "religionPreference" : "No Preference",
-          "rentAmount" : 1000.0,
-          "state" : null,
-          "userId" : 13,
-          "userName" : "Atul Porwal",
-          "userProfileImageUrl" : "https://ui-avatars.com/api/?background=random&name=Atul Porwal",
-          "waterSupply24x7" : true
-        }
-      ],
-      "pageNumber" : 0,
-      "pageSize" : 12,
-      "totalElements" : 2,
-      "totalPages" : 1,
-      "last" : true
-    }
-
-    this.roommates = res.content;
-    this.totalPages = res.totalPages;
-    this.totalElements = res.totalElements;
-    this.isLoading = false;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  get visiblePageNumbers(): (number | string)[] {
+    const current = this.currentPage;
+    const total = this.totalPages;
+    
+    if (total <= 7) return Array.from({ length: total }, (_, i) => i);
+    
+    if (current <= 2) return [0, 1, 2, 3, '...', total - 1];
+    if (current >= total - 3) return [0, '...', total - 4, total - 3, total - 2, total - 1];
+    
+    return [0, '...', current - 1, current, current + 1, '...', total - 1];
   }
 
   // Pagination Methods
@@ -169,13 +123,11 @@ export class RoommatesComponent implements OnInit {
     }
   }
 
-  goToPage(page: number) {
-    this.currentPage = page;
-    this.loadRoommates();
+  goToPage(page: number | string) {
+    if (typeof page === 'number' && page !== this.currentPage) {
+      this.currentPage = page;
+      this.loadRoommates();
+    }
   }
 
-  // Create an array for the pagination numbers: [0, 1, 2, ...]
-  get pageNumbers(): number[] {
-    return Array(this.totalPages).fill(0).map((x, i) => i);
-  }
 }

@@ -35,27 +35,24 @@
           </div>
 
           <div class="mb-4">
-            <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Rent Range (₹)</label>
-            <div class="d-flex align-items-center gap-2">
-              <input type="number" min="0" 
-                     class="form-control form-control-sm custom-input text-center" 
-                     placeholder="Min" 
-                     [(ngModel)]="filters.minRent" 
-                     (blur)="applyFilters()"
-                     (keydown)="preventNegative($event)">
-              <span class="text-secondary">-</span>
-              <input type="number" min="0" 
-                     class="form-control form-control-sm custom-input text-center" 
-                     placeholder="Max" 
-                     [(ngModel)]="filters.maxRent" 
-                     (blur)="applyFilters()"
-                     (keydown)="preventNegative($event)">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="text-secondary small fw-bold text-uppercase tracking-wide mb-0">Max Budget</label>
+              <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">
+                Up to ₹{{ filters.maxRent }}
+              </span>
+            </div>
+            <input type="range" class="form-range custom-range" min="1000" max="100000" step="500" 
+                   [(ngModel)]="filters.maxRent" 
+                   (change)="applyFilters()">
+            <div class="d-flex justify-content-between mt-1">
+              <small class="text-secondary" style="font-size: 0.7rem;">₹1k</small>
+              <small class="text-secondary" style="font-size: 0.7rem;">₹100k</small>
             </div>
           </div>
 
           <div class="mb-4">
             <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">BHK Type</label>
-            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.bhkType" (change)="applyFilters()">
+            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.bhkType" (ngModelChange)="applyFilters()">
               <option value="">Any Configuration</option>
               <option value="1RK">1 RK</option>
               <option value="1BHK">1 BHK</option>
@@ -66,7 +63,7 @@
 
           <div class="mb-4">
             <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Looking For</label>
-            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.lookingForGender" (change)="applyFilters()">
+            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.lookingForGender" (ngModelChange)="applyFilters()">
               <option value="">Any Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -75,7 +72,7 @@
 
           <div class="mb-4">
             <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Dietary Preference</label>
-            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.dietaryPreference" (change)="applyFilters()">
+            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.dietaryPreference" (ngModelChange)="applyFilters()">
               <option value="">Any Diet</option>
               <option value="Vegetarian">Vegetarian</option>
               <option value="Non-Vegetarian">Non-Vegetarian</option>
@@ -85,7 +82,7 @@
 
           <div class="mb-4">
             <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Religion</label>
-            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.religionPreference" (change)="applyFilters()">
+            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.religionPreference" (ngModelChange)="applyFilters()">
               <option value="">Any Religion</option>
               <option value="Hindu">Hindu</option>
               <option value="Muslim">Muslim</option>
@@ -99,22 +96,21 @@
             <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Amenities</label>
 
             <div class="form-check custom-checkbox mb-2">
-              <input class="form-check-input" type="checkbox" id="am1" [(ngModel)]="filters.hasParking" (change)="applyFilters()">
+              <input class="form-check-input" type="checkbox" id="am1" [(ngModel)]="filters.hasParking" (ngModelChange)="applyFilters()">
               <label class="form-check-label text-light small" for="am1">Parking Available</label>
             </div>
 
             <div class="form-check custom-checkbox mb-2">
-              <input class="form-check-input" type="checkbox" id="am2" [(ngModel)]="filters.waterSupply24x7" (change)="applyFilters()">
+              <input class="form-check-input" type="checkbox" id="am2" [(ngModel)]="filters.waterSupply24x7" (ngModelChange)="applyFilters()">
               <label class="form-check-label text-light small" for="am2">24x7 Water Supply</label>
             </div>
 
             <div class="form-check custom-checkbox mb-2">
-              <input class="form-check-input" type="checkbox" id="am3" [(ngModel)]="filters.electricityBackup" (change)="applyFilters()">
+              <input class="form-check-input" type="checkbox" id="am3" [(ngModel)]="filters.electricityBackup" (ngModelChange)="applyFilters()">
               <label class="form-check-label text-light small" for="am3">Power Backup</label>
             </div>
           </div>
           
-          <button class="btn custom-btn-filled w-100 fw-bold mt-2" (click)="applyFilters()">Apply Filters</button>
         </div>
       </div>
 
@@ -124,7 +120,7 @@
           <p class="text-secondary small mb-0">Showing results for your criteria</p>
           <div class="d-flex align-items-center gap-2">
             <label class="text-secondary small mb-0">Sort:</label>
-            <select class="form-select form-select-sm custom-input border-0 bg-transparent text-white fw-bold shadow-none" style="width: auto; cursor: pointer;" [(ngModel)]="filters.sortBy" (change)="applyFilters()">
+            <select class="form-select form-select-sm custom-input border-0 bg-transparent text-white fw-bold shadow-none" style="width: auto; cursor: pointer;" [(ngModel)]="filters.sortBy" (ngModelChange)="sortDataFrontend()">
               <option value="postedOn" class="bg-dark text-white">Newest First</option>
               <option value="rentAmountAsc" class="bg-dark text-white">Budget: Low to High</option>
               <option value="rentAmountDesc" class="bg-dark text-white">Budget: High to Low</option>
@@ -132,8 +128,21 @@
           </div>
         </div>
 
-        <div *ngIf="isLoading" class="text-center py-5">
-          <div class="spinner-border text-secondary" role="status"></div>
+        <div class="row g-4 mb-5" *ngIf="isLoading">
+          <div class="col-12 col-md-6 col-xl-4" *ngFor="let item of [1,2,3,4,5,6]">
+            <div class="glass-card overflow-hidden h-100 border-0 rounded-4" style="background-color: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div class="skeleton" style="height: 200px; width: 100%; border-radius: 0;"></div>
+              <div class="p-3">
+                <div class="skeleton mb-3" style="height: 18px; width: 30%; border-radius: 20px;"></div>
+                <div class="skeleton mb-2" style="height: 24px; width: 85%; border-radius: 6px;"></div>
+                <div class="skeleton mb-4" style="height: 14px; width: 60%; border-radius: 6px;"></div>
+                <div class="d-flex align-items-center mt-3 pt-3 border-top custom-border">
+                  <div class="skeleton rounded-circle me-2" style="width: 32px; height: 32px;"></div>
+                  <div class="skeleton" style="height: 14px; width: 40%; border-radius: 6px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="row g-4 mb-5" *ngIf="!isLoading">
@@ -141,11 +150,11 @@
             <app-listing-card [data]="person" type="ROOMMATE"></app-listing-card>
           </div>
           
-          <div *ngIf="roommates.length === 0" class="col-12 text-center py-5 my-5 bg-darker rounded-4 border custom-border">
+          <div *ngIf="roommates.length === 0" class="col-12 text-center py-5 my-5 bg-darker rounded-4 border custom-border animate-fade-in">
             <i class="bi bi-person-x display-1 text-secondary opacity-50 mb-3 d-block"></i>
             <h4 class="text-white fw-bold">No roommates match your filters</h4>
-            <p class="text-secondary">Try broadening your search criteria or clearing filters.</p>
-            <button class="btn btn-outline-light mt-2" (click)="resetFilters()">Clear Filters</button>
+            <p class="text-secondary">Try broadening your search criteria, like increasing your budget.</p>
+            <button class="btn btn-outline-light mt-3 px-4 rounded-pill" (click)="resetFilters()">Clear Filters</button>
           </div>
         </div>
 
@@ -154,9 +163,13 @@
             <li class="page-item" [class.disabled]="currentPage === 0">
               <button class="page-link" (click)="prevPage()"><i class="bi bi-chevron-left"></i></button>
             </li>
-            <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="currentPage === page">
-              <button class="page-link" (click)="goToPage(page)">{{ page + 1 }}</button>
+            
+            <li class="page-item" *ngFor="let page of visiblePageNumbers" [class.active]="currentPage === page" [class.disabled]="page === '...'">
+              <button class="page-link" (click)="goToPage(page)">
+                {{ page === '...' ? '...' : $any(page) + 1 }}
+              </button>
             </li>
+            
             <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
               <button class="page-link" (click)="nextPage()"><i class="bi bi-chevron-right"></i></button>
             </li>
