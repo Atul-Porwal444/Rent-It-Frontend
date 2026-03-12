@@ -24,6 +24,13 @@ export class ProfileService {
     return this.http.put(this.API_URL + 'profile', data, this.httpOptions);
   }
 
+  uploadProfileImage(file: File) {
+    const formData = new FormData();
+    formData.append('image', file); 
+
+    return this.http.post(`${this.API_URL}profile-image`, formData, {headers: new HttpHeaders({'Authorization' : `Bearer ${this.token}`})}); 
+  }
+
   changePassword(data: any) : Observable<any> {
     return this.http.post(this.API_URL + 'password', data, this.httpOptions);
   }

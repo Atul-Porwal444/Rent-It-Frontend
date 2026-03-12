@@ -86,9 +86,16 @@ export class LoginComponent {
   }
 
   navigateToVerify() : void {
-    this.router.navigate(['/verify-otp'], {
-      queryParams: {email : this.form.email}
+    this.authService.resendOtp(this.form.email).subscribe({
+      next: (res) => {
+        this.router.navigate(['/verify-otp'], {
+          queryParams: {email : this.form.email},
+          replaceUrl: true
+        });
+      },
+      error: (err) => {
+        alert("Failed to send the Verification OTP");
+      }
     });
   }
-
 }

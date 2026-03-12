@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,7 +7,7 @@ import { UserProfile } from '../../_models/user-profile';
 
 @Component({
   selector: 'app-profile',
-  imports: [NgIf, FormsModule, NgFor],
+  imports: [NgIf, FormsModule, NgFor, NgClass],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -15,30 +15,31 @@ export class ProfileComponent implements OnInit {
 
   activeTab: string = 'basic'; // Controls which sidebar item is active
   editingField: keyof UserProfile | null = null;
-  isUpdating: boolean = false;
   tempValue: string = '';
+
+  // UI States
+  isPageLoading: boolean = true;
+  isUpdatingGlobally: boolean = false; 
+  
+  // Custom Toast Message State
+  toastMessage: string = '';
+  toastType: 'success' | 'error' = 'success';
 
 
   user: UserProfile = {
-    name: '',
-    gender: "",
-    email: '',
-    location: '',
-    bio: '',
-    dob: '',
-    phone: "",
-    occupation: "",
-    profileUrl: 'https://ui-avatars.com/api/?background=random&name=User' // Fallback
+    name: '', gender: "", email: '', location: '', bio: '', dob: '', phone: "", occupation: "",
+    profileUrl: 'https://ui-avatars.com/api/?background=random&name=User'
   };
 
   showPasswordModal : boolean = false;
   showDeleteModal : boolean = false;
-  isLoading : boolean = false;
 
   passwordData = {
     oldPassword: '',
     newPassword: ''
   }
+
+  showPassword = false;
 
   constructor(private profileService: ProfileService, private router: Router) { }
 
@@ -46,11 +47,24 @@ export class ProfileComponent implements OnInit {
     this.loadUserData();
   }
 
-  loadUserData() : void {
-    const storedUser = localStorage.getItem('user');
-    if(storedUser) {
-      this.user = { ...this.user, ...JSON.parse(storedUser) };
-    }
+  loadUserData(): void {
+    this.isPageLoading = true;
+    
+    // Simulating API delay to show shimmer effect
+    setTimeout(() => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        this.user = { ...this.user, ...JSON.parse(storedUser) };
+      }
+      this.isPageLoading = false;
+    }, 800);
+  }
+
+  // Toast Notification Helper
+  showToast(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => this.toastMessage = '', 3500); // Auto-hide after 3.5s
   }
 
   setActiveTab(tab: string) {
@@ -58,7 +72,7 @@ export class ProfileComponent implements OnInit {
     this.cancelEdit();
   }
 
-  startEdit(field : keyof UserProfile) {
+  startEdit(field: keyof UserProfile) {
     this.editingField = field;
     this.tempValue = this.user[field] || '';
   }
@@ -68,31 +82,71 @@ export class ProfileComponent implements OnInit {
     this.tempValue = '';
   }
 
-  saveEdit(field : keyof UserProfile) {
-
-    if(this.tempValue === this.user[field]) {
+  saveEdit(field: keyof UserProfile) {
+    if (this.tempValue === this.user[field]) {
       this.cancelEdit();
       return;
     }
-    this.isUpdating = true;
-
+    
+    this.isUpdatingGlobally = true; // Block UI and show bottom-right spinner
     const payload = { ...this.user, [field]: this.tempValue };
-
     delete (payload as any).email;
-    console.log(JSON.stringify(payload));
+
     this.profileService.updateProfile(payload).subscribe({
       next: (res) => {
         this.user[field] = this.tempValue;
-
-        this.isUpdating = false;
         this.editingField = null;
-
         this.updateLocalStorage(this.user);
+        
+        this.showToast('Profile updated successfully.', 'success');
+        this.isUpdatingGlobally = false;
       },
       error: (err) => {
-        console.error(err);
-        alert('Failed to update. Please try again.');
-        this.isUpdating = false;
+        this.showToast(err.error?.message || 'Failed to update field.', 'error');
+        this.isUpdatingGlobally = false;
+      }
+    });
+  }
+
+  // Image Upload Logic
+  onImageSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // 1. Validate Size (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      this.showToast("Image size must be less than 5MB.", 'error');
+      return;
+    }
+
+    // 2. Validate Type (PNG, JPG)
+    if (!file.type.match(/image\/(png|jpg|jpeg)/)) {
+      this.showToast("Only PNG and JPG formats are allowed.", 'error');
+      return;
+    }
+
+    this.isUpdatingGlobally = true; // Block UI and show spinner
+
+    // 3. Call the actual backend service
+    this.profileService.uploadProfileImage(file).subscribe({
+      next: (res: any) => {
+        // Assuming your backend ApiResponse maps the HashMap to a 'data' property
+        const newImageUrl = res.data?.url || res.url; 
+
+        if (newImageUrl) {
+          this.user.profileUrl = newImageUrl;      // Update UI immediately
+          this.updateLocalStorage(this.user);      // Save to local storage
+          this.showToast("Profile image updated successfully!", 'success');
+        } else {
+          this.showToast("Image uploaded, but no URL returned.", 'error');
+        }
+        
+        this.isUpdatingGlobally = false;
+      },
+      error: (err: any) => {
+        console.error("Upload error:", err);
+        this.showToast(err.error?.message || "Failed to upload image.", 'error');
+        this.isUpdatingGlobally = false;
       }
     });
   }
@@ -101,58 +155,48 @@ export class ProfileComponent implements OnInit {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-  openPasswordModal() {
-    this.showPasswordModal = true;
-    this.passwordData = { oldPassword: '', newPassword: '' };
-  }
+ // --- Modal Logic ---
+ openPasswordModal() {
+  this.showPasswordModal = true;
+  this.passwordData = { oldPassword: '', newPassword: '' };
+  this.showPassword = false;
+}
+closePasswordModal() { this.showPasswordModal = false; }
 
-  closePasswordModal() {
-    this.showPasswordModal = false;
-  }
-
-  onChangePassword() {
-    if (!this.passwordData.oldPassword || !this.passwordData.newPassword) {
-      alert("Please fill in all fields");
-      return;
+onChangePassword() {
+  this.isUpdatingGlobally = true;
+  
+  this.profileService.changePassword(this.passwordData).subscribe({
+    next: (res) => {
+      this.showToast("Password Changed Successfully", 'success');
+      this.isUpdatingGlobally = false;
+      this.closePasswordModal();
+    },
+    error: (err) => {
+      this.showToast(err.error?.message || "Failed to change password", 'error');
+      this.isUpdatingGlobally = false;
     }
+  });
+}
 
-    this.isLoading = true;
-    
-    this.profileService.changePassword(this.passwordData).subscribe({
-      next: (res) => {
-        alert("Password Changed Successfully");
-        this.isLoading = false;
-        this.closePasswordModal();
-      },
-      error: (err) => {
-        alert(err.error?.message || "Failed to change password");
-        this.isLoading = false;
-      }
-    });
-  }
+openDeleteModal() { this.showDeleteModal = true; }
+closeDeleteModal() { this.showDeleteModal = false; }
 
-  openDeleteModal() {
-    this.showDeleteModal = true;
-  }
+onDeleteAccount() {
+  this.isUpdatingGlobally = true;
 
-  closeDeleteModal() {
-    this.showDeleteModal = false;
-  }
+  this.profileService.deleteAccount().subscribe({
+    next: (res) => {
+      this.isUpdatingGlobally = false;
+      localStorage.clear();
+      this.router.navigate(['/login']);
+    },
+    error: (err) => {
+      this.showToast(err.error?.message || "Failed to delete account", 'error');
+      this.isUpdatingGlobally = false;
+      this.closeDeleteModal();
+    }
+  });
+}
 
-  onDeleteAccount() {
-    this.isLoading = true;
-
-    this.profileService.deleteAccount().subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        localStorage.clear();
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        alert("Failed to delete account");
-        this.isLoading = false;
-        this.closeDeleteModal();
-      }
-    });
-  }
 }

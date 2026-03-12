@@ -1,14 +1,40 @@
-<div class="profile-page">
+<div class="profile-page position-relative">
   
+  <div class="global-blocker" *ngIf="isUpdatingGlobally"></div>
+  <div class="updating-toast glass-card d-flex align-items-center gap-2" *ngIf="isUpdatingGlobally">
+    <span class="spinner-border spinner-border-sm text-primary"></span>
+    <span class="text-white small fw-bold tracking-wide text-uppercase">Updating...</span>
+  </div>
+
+  <div class="custom-toast glass-card d-flex align-items-center gap-2" [ngClass]="toastType" *ngIf="toastMessage">
+    <i class="bi fs-5" [ngClass]="toastType === 'error' ? 'bi-x-circle-fill text-danger' : 'bi-check-circle-fill text-success'"></i>
+    <span class="text-white small fw-medium">{{ toastMessage }}</span>
+  </div>
+
   <div class="profile-header text-white">
     <div class="container py-4">
       <div class="d-flex align-items-end gap-4">
-        <div class="avatar-container">
-          <img [src]="user.profileUrl" alt="User" class="profile-avatar shadow-lg">
+        
+        <div class="avatar-container position-relative group cursor-pointer">
+          <div *ngIf="isPageLoading" class="skeleton profile-avatar"></div>
+          
+          <ng-container *ngIf="!isPageLoading">
+            <img [src]="user.profileUrl" alt="User" class="profile-avatar shadow-lg">
+            <label for="profileImageUpload" class="avatar-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center cursor-pointer m-0">
+              <i class="bi bi-camera-fill text-white fs-4 shadow-sm"></i>
+            </label>
+            <input type="file" id="profileImageUpload" class="d-none" accept=".png, .jpg, .jpeg" (change)="onImageSelected($event)">
+          </ng-container>
         </div>
+
         <div class="mb-3">
-          <h2 class="mb-0 fw-bold">{{ user.name }}</h2>
-          <p class="text-secondary small mb-0"><i class="bi bi-envelope-fill text-primary me-1"></i> {{ user.email }}</p>
+          <div *ngIf="isPageLoading" class="skeleton mb-2" style="height: 28px; width: 150px; border-radius: 6px;"></div>
+          <div *ngIf="isPageLoading" class="skeleton" style="height: 16px; width: 200px; border-radius: 4px;"></div>
+          
+          <ng-container *ngIf="!isPageLoading">
+            <h3 class="mb-0 fw-bold">{{ user.name }}</h3>
+            <p class="text-secondary small mb-0"><i class="bi bi-envelope-fill text-primary me-1"></i> {{ user.email }}</p>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -21,34 +47,36 @@
         <div class="card glass-card border-0 shadow-lg">
           <div class="card-body p-3">
             <div class="nav flex-column nav-pills gap-1">
-              
               <button class="nav-link custom-nav-link d-flex align-items-center gap-3" 
-                      [class.active]="activeTab === 'basic'" 
-                      (click)="setActiveTab('basic')">
-                <i class="bi bi-person-vcard fs-5 text-primary"></i> Basic Info
+                      [class.active]="activeTab === 'basic'" (click)="setActiveTab('basic')">
+                <i class="bi bi-person-vcard fs-6 text-primary"></i> Basic Info
               </button>
-              
               <button class="nav-link custom-nav-link d-flex align-items-center gap-3" 
-                      [class.active]="activeTab === 'account'" 
-                      (click)="setActiveTab('account')">
-                <i class="bi bi-shield-lock fs-5 text-danger"></i> Account
+                      [class.active]="activeTab === 'account'" (click)="setActiveTab('account')">
+                <i class="bi bi-shield-lock fs-6 text-danger"></i> Account
               </button>
-
             </div>
           </div>
         </div>
       </div>
 
       <div class="col-md-8 col-lg-9">
-        <div class="card glass-card border-0 shadow-lg">
+        <div class="card glass-card border-0 shadow-lg position-relative overflow-hidden">
           
-          <div *ngIf="activeTab === 'basic'">
+          <div *ngIf="isPageLoading" class="p-4">
+            <div class="skeleton mb-4" style="height: 24px; width: 150px; border-radius: 6px;"></div>
+            <div class="info-row" *ngFor="let item of [1,2,3,4]">
+              <div class="skeleton" style="height: 14px; width: 100px; border-radius: 4px;"></div>
+              <div class="skeleton ms-4" style="height: 18px; width: 200px; border-radius: 4px;"></div>
+            </div>
+          </div>
+
+          <div *ngIf="!isPageLoading && activeTab === 'basic'">
             <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 pt-4 pb-3 px-4">
-              <h5 class="fw-bold text-white mb-0">Basic Info</h5>
+              <h6 class="fw-bold text-white mb-0">Basic Info</h6>
             </div>
             
             <div class="card-body p-4">
-
               <ng-container *ngFor="let field of [
                 { key: 'name', label: 'Name', type: 'text', placeholder: 'Add Name' },
                 { key: 'phone', label: 'Phone', type: 'text', placeholder: 'Add Phone Number' },
@@ -60,18 +88,16 @@
                   <div class="label text-secondary small text-uppercase tracking-wide">{{ field.label }}</div>
                   
                   <ng-container *ngIf="editingField !== field.key">
-                    <div class="value text-white fw-medium">{{ $any(user)[field.key] || field.placeholder }}</div>
+                    <div class="value text-white small fw-medium">{{ $any(user)[field.key] || field.placeholder }}</div>
                     <div class="action">
                       <button class="btn-icon" (click)="startEdit($any(field.key))"><i class="bi bi-pencil"></i></button>
                     </div>
                   </ng-container>
 
-                  <div *ngIf="editingField === field.key" class="flex-grow-1">
-                    <input [type]="field.type" class="form-control custom-profile-input mb-3" [(ngModel)]="tempValue">
+                  <div *ngIf="editingField === field.key" class="flex-grow-1 pe-3">
+                    <input [type]="field.type" class="form-control custom-profile-input mb-2" [(ngModel)]="tempValue">
                     <div class="d-flex gap-2">
-                      <button class="btn btn-sm btn-primary primary-btn px-4" (click)="saveEdit($any(field.key))" [disabled]="isUpdating">
-                        <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
-                      </button>
+                      <button class="btn btn-sm btn-primary primary-btn px-3 fw-medium" (click)="saveEdit($any(field.key))">Save</button>
                       <button class="btn btn-sm btn-outline-secondary px-3" (click)="cancelEdit()">Cancel</button>
                     </div>
                   </div>
@@ -81,22 +107,20 @@
               <div class="info-row">
                 <div class="label text-secondary small text-uppercase tracking-wide">Gender</div>
                 <ng-container *ngIf="editingField !== 'gender'">
-                  <div class="value text-white fw-medium">{{ user.gender || 'Add Gender' }}</div>
+                  <div class="value text-white small fw-medium">{{ user.gender || 'Add Gender' }}</div>
                   <div class="action">
                     <button class="btn-icon" (click)="startEdit('gender')"><i class="bi bi-pencil"></i></button>
                   </div>
                 </ng-container>
-                <div *ngIf="editingField === 'gender'" class="flex-grow-1">
-                  <select class="form-select custom-profile-input mb-3" [(ngModel)]="tempValue">
+                <div *ngIf="editingField === 'gender'" class="flex-grow-1 pe-3">
+                  <select class="form-select custom-profile-input mb-2" [(ngModel)]="tempValue">
                     <option value="" disabled>Select Gender</option>
                     <option value="Male" class="bg-dark text-white">Male</option>
                     <option value="Female" class="bg-dark text-white">Female</option>
                     <option value="Other" class="bg-dark text-white">Other</option>
                   </select>
                   <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-primary primary-btn px-4" (click)="saveEdit('gender')" [disabled]="isUpdating">
-                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
-                    </button>
+                    <button class="btn btn-sm btn-primary primary-btn px-3 fw-medium" (click)="saveEdit('gender')">Save</button>
                     <button class="btn btn-sm btn-outline-secondary px-3" (click)="cancelEdit()">Cancel</button>
                   </div>
                 </div>
@@ -105,61 +129,57 @@
               <div class="info-row border-bottom-0 pb-0">
                 <div class="label text-secondary small text-uppercase tracking-wide">Summary</div>
                 <ng-container *ngIf="editingField !== 'bio'">
-                  <div class="value text-white text-truncate-2" style="line-height: 1.6;">
+                  <div class="value text-white small" style="line-height: 1.6;">
                     {{ user.bio || 'Write something about yourself...' }}
                   </div>
                   <div class="action align-self-start">
                     <button class="btn-icon" (click)="startEdit('bio')"><i class="bi bi-pencil"></i></button>
                   </div>
                 </ng-container>
-                <div *ngIf="editingField === 'bio'" class="flex-grow-1">
-                  <textarea class="form-control custom-profile-input mb-3" rows="3" [(ngModel)]="tempValue"></textarea>
+                <div *ngIf="editingField === 'bio'" class="flex-grow-1 pe-3">
+                  <textarea class="form-control custom-profile-input mb-2" rows="3" maxlength="300" [(ngModel)]="tempValue"></textarea>
                   <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-primary primary-btn px-4" (click)="saveEdit('bio')" [disabled]="isUpdating">
-                      <span *ngIf="isUpdating" class="spinner-border spinner-border-sm me-1"></span> Update
-                    </button>
+                    <button class="btn btn-sm btn-primary primary-btn px-3 fw-medium" (click)="saveEdit('bio')">Save</button>
                     <button class="btn btn-sm btn-outline-secondary px-3" (click)="cancelEdit()">Cancel</button>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
 
-          <div *ngIf="activeTab === 'account'">
+          <div *ngIf="!isPageLoading && activeTab === 'account'">
             <div class="card-header bg-transparent border-bottom border-secondary border-opacity-25 pt-4 pb-3 px-4">
-              <h5 class="fw-bold text-white mb-0">Account Settings</h5>
+              <h6 class="fw-bold text-white mb-0">Account Settings</h6>
             </div>
             
             <div class="card-body p-4">
               <div class="info-row border-bottom-0">
                  <div class="label text-secondary small text-uppercase tracking-wide">Email</div>
-                 <div class="value text-white fw-medium">{{ user.email }}</div>
+                 <div class="value text-white small fw-medium">{{ user.email }}</div>
                  <div class="action">
-                   <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">Verified</span>
+                   <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1" style="font-size: 0.65rem;">Verified</span>
                  </div>
               </div>
 
               <div class="info-row mt-3 border-bottom-0">
                 <div class="label text-secondary small text-uppercase tracking-wide">Password</div>
-                <div class="value text-white">••••••••••••••</div>
+                <div class="value text-white small">••••••••••••••</div>
                 <div class="action">
-                  <button class="btn btn-outline-light btn-sm rounded-pill px-3" (click)="openPasswordModal()">
+                  <button class="btn btn-outline-light btn-sm rounded-pill px-3" style="font-size: 0.75rem;" (click)="openPasswordModal()">
                     Change
                   </button>
                 </div>
               </div>
 
               <div class="mt-5 pt-4 border-top border-danger border-opacity-25">
-                <div class="d-flex justify-content-between align-items-center p-4 rounded-4" style="background: rgba(220, 53, 69, 0.05); border: 1px solid rgba(220, 53, 69, 0.2);">
+                <div class="d-flex justify-content-between align-items-center p-3 rounded-4" style="background: rgba(220, 53, 69, 0.05); border: 1px solid rgba(220, 53, 69, 0.2);">
                   <div>
-                    <strong class="text-danger d-block mb-1">Delete Account</strong>
-                    <small class="text-secondary">Once deleted, there is no going back. All data will be lost.</small>
+                    <strong class="text-danger d-block mb-1 small">Delete Account</strong>
+                    <div class="text-secondary" style="font-size: 0.75rem;">Once deleted, there is no going back.</div>
                   </div>
-                  <button class="btn btn-danger fw-bold" (click)="openDeleteModal()">Delete</button>
+                  <button class="btn btn-danger btn-sm fw-bold px-3" (click)="openDeleteModal()">Delete</button>
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -171,50 +191,60 @@
 
   <div class="modal-backdrop" *ngIf="showPasswordModal">
     <div class="custom-modal glass-card p-1 shadow-lg border border-secondary border-opacity-25">
-      <div class="card-body p-4 p-sm-5">
+      <div class="card-body p-4 p-sm-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h4 class="fw-bold text-white mb-0">Change Password</h4>
-          <button type="button" class="btn-close btn-close-white" (click)="closePasswordModal()"></button>
+          <h5 class="fw-bold text-white mb-0">Change Password</h5>
+          <button type="button" class="btn-close btn-close-white" style="font-size: 0.75rem;" (click)="closePasswordModal()"></button>
         </div>
         
-        <div class="mb-3">
-          <label class="form-label text-secondary small">Old Password</label>
-          <input type="password" class="form-control custom-profile-input" [(ngModel)]="passwordData.oldPassword">
-        </div>
+        <form (ngSubmit)="onChangePassword()" #pwdForm="ngForm">
+          <div class="mb-3">
+            <label class="form-label text-secondary small mb-1">Old Password</label>
+            <input type="password" class="form-control custom-profile-input" name="oldPassword" [(ngModel)]="passwordData.oldPassword" required>
+          </div>
 
-        <div class="mb-4">
-          <label class="form-label text-secondary small">New Password</label>
-          <input type="password" class="form-control custom-profile-input" [(ngModel)]="passwordData.newPassword">
-        </div>
+          <div class="mb-4 position-relative">
+            <label class="form-label text-secondary small mb-1">New Password</label>
+            <input [type]="showPassword ? 'text' : 'password'" class="form-control custom-profile-input pe-5" 
+                   name="newPassword" [(ngModel)]="passwordData.newPassword" #newPwd="ngModel"
+                   required minlength="8" maxlength="15" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,15}$">
+                   
+            <i class="bi position-absolute text-secondary" style="right: 15px; top: 32px; font-size: 0.8rem; cursor: pointer;"
+               [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" (click)="showPassword = !showPassword"></i>
 
-        <div class="d-grid gap-2">
-          <button class="btn btn-primary primary-btn fw-bold py-2" (click)="onChangePassword()" [disabled]="isLoading">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span> Update Password
-          </button>
-        </div>
+            <div *ngIf="newPwd.invalid && newPwd.touched" class="text-danger mt-1" style="font-size: 0.7rem; line-height: 1.4;">
+              <span *ngIf="newPwd.errors?.['required']">Password is required.</span>
+              <span *ngIf="newPwd.errors?.['minlength'] || newPwd.errors?.['pattern']">
+                Must be 8-15 characters, with upper, lower, number, & special char.
+              </span>
+            </div>
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary primary-btn fw-bold py-2 small" [disabled]="pwdForm.invalid">
+              Update Password
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <div class="modal-backdrop" *ngIf="showDeleteModal">
     <div class="custom-modal glass-card p-1 shadow-lg" style="border: 1px solid rgba(220, 53, 69, 0.3);">
-      <div class="card-body p-4 p-sm-5 text-center">
-        <div class="mb-3">
-          <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" 
-               style="width: 70px; height: 70px; background-color: rgba(220, 53, 69, 0.15); color: #ea868f;">
-            <i class="bi bi-exclamation-triangle-fill" style="font-size: 2rem;"></i>
-          </div>
+      <div class="card-body p-4 text-center">
+        <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" 
+             style="width: 60px; height: 60px; background-color: rgba(220, 53, 69, 0.15); color: #ea868f;">
+          <i class="bi bi-exclamation-triangle-fill fs-3"></i>
         </div>
-        <h4 class="fw-bold text-white">Delete Account?</h4>
-        <p class="text-secondary mb-4 small">
+        <h5 class="fw-bold text-white mb-2">Delete Account?</h5>
+        <p class="text-secondary mb-4" style="font-size: 0.8rem;">
           This action cannot be undone. All your posts, saved items, and personal data will be permanently erased.
         </p>
 
         <div class="d-flex flex-column gap-2">
-          <button class="btn btn-danger fw-bold py-2" (click)="onDeleteAccount()" [disabled]="isLoading">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span> Yes, Delete Forever
-          </button>
-          <button class="btn btn-outline-secondary py-2 border-0" (click)="closeDeleteModal()">Cancel, Keep Account</button>
+          <button class="btn btn-danger fw-bold py-2 small" (click)="onDeleteAccount()">Yes, Delete Forever</button>
+          <button class="btn btn-outline-secondary py-2 border-0 small" (click)="closeDeleteModal()">Cancel, Keep Account</button>
         </div>
       </div>
     </div>

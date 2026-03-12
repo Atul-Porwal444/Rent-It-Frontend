@@ -4,7 +4,6 @@
   min-height: calc(100vh - 65px);
 }
 
-/* Subtle gradient header */
 .profile-header {
   background: linear-gradient(180deg, rgba(30, 30, 30, 0.6) 0%, transparent 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -20,26 +19,79 @@
   border-radius: 16px;
 }
 
-/* Avatar Styling */
+/* --- GLOBAL UPDATING BLOCKER & TOASTS --- */
+.global-blocker {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 9998;
+  cursor: wait; /* Prevents clicks globally */
+}
+
+.updating-toast {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  padding: 10px 20px;
+  z-index: 9999;
+  border: 1px solid rgba(13, 110, 253, 0.3) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideInBottom 0.3s ease-out;
+}
+
+.custom-toast {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  padding: 12px 20px;
+  z-index: 9999;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideInBottom 0.3s ease-out;
+}
+.custom-toast.success { border: 1px solid rgba(25, 135, 84, 0.4) !important; }
+.custom-toast.error { border: 1px solid rgba(220, 53, 69, 0.4) !important; }
+
+@keyframes slideInBottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- IMAGE UPLOAD AVATAR --- */
 .avatar-container {
   position: relative;
   border-radius: 20px;
   padding: 4px;
   background: rgba(255, 255, 255, 0.1);
+  width: 108px; /* 100px + padding */
+  height: 108px;
 }
+
 .profile-avatar {
   width: 100px;
   height: 100px;
-  border-radius: 16px; /* Squircle */
+  border-radius: 16px; 
   object-fit: cover;
 }
 
-/* Custom Navigation Pills */
+.avatar-overlay {
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-radius: 16px;
+}
+.avatar-container:hover .avatar-overlay {
+  opacity: 1;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* --- DECREASED FONT SIZES & STRUCTURE --- */
 .custom-nav-link {
   color: #a0a0a0;
-  padding: 12px 20px;
-  border-radius: 12px;
+  padding: 10px 16px; /* Tighter padding */
+  border-radius: 10px;
   font-weight: 500;
+  font-size: 0.85rem; /* Smaller font */
   transition: all 0.2s ease;
   background: transparent;
   border: none;
@@ -50,41 +102,39 @@
   color: #fff;
 }
 .custom-nav-link.active {
-  background-color: rgba(13, 110, 253, 0.15); /* Blue tint */
+  background-color: rgba(13, 110, 253, 0.15); 
   color: #fff;
   border-left: 4px solid #0d6efd;
 }
 
-/* Info Rows */
 .info-row {
   display: flex;
-  align-items: center;
-  padding: 1.25rem 0;
+  align-items: flex-start; /* Changed to start for textareas */
+  padding: 1rem 0; /* Reduced padding */
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  min-height: 55px; /* Ensures row doesn't collapse too much */
 }
-.info-row:last-child {
-  border-bottom: none;
-}
+.info-row:last-child { border-bottom: none; }
 .info-row .label {
-  width: 140px; 
+  width: 120px; /* Slightly narrower */
   flex-shrink: 0;
+  padding-top: 6px; /* Aligns label with values nicely */
+  font-size: 0.75rem; /* Smaller label */
 }
 .info-row .value {
   flex-grow: 1;
   padding-right: 20px;
+  padding-top: 4px;
 }
 
-.tracking-wide {
-  letter-spacing: 0.05em;
-}
+.tracking-wide { letter-spacing: 0.05em; }
 
-/* Edit Icon Button */
 .btn-icon {
   background: transparent;
   border: none;
   color: #6ea8fe; 
-  font-size: 1rem;
-  padding: 8px;
+  font-size: 0.9rem; /* Smaller icon */
+  padding: 6px 10px;
   border-radius: 50%;
   transition: background 0.2s;
 }
@@ -93,13 +143,12 @@
   color: #0d6efd;
 }
 
-/* CUSTOM GLOWING INPUTS (Matches Auth Pages) */
 .custom-profile-input {
   background-color: #0a0a0a !important; 
   border: 1px solid #333;
   color: #ffffff !important;
-  font-size: 0.95rem;
-  padding: 0.6rem 1rem;
+  font-size: 0.85rem; /* Decreased font */
+  padding: 0.5rem 0.8rem;
   transition: all 0.2s ease;
   border-radius: 8px;
 }
@@ -108,47 +157,41 @@
   border-color: #0d6efd; 
   box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); 
 }
-.custom-profile-input::placeholder {
-  color: #555555;
-}
+.custom-profile-input::placeholder { color: #555555; }
 
-/* Primary Button */
 .primary-btn {
   background-color: #1a73e8; 
   border: none;
   transition: background-color 0.2s ease;
 }
-.primary-btn:hover {
-  background-color: #155dbb;
+.primary-btn:hover { background-color: #155dbb; }
+
+/* --- SHIMMER EFFECT --- */
+.skeleton {
+  background-color: #222222;
+  background-image: linear-gradient(90deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.0) 100%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
 }
 
-/* MODAL OVERLAYS */
+/* --- MODALS --- */
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background-color: rgba(0, 0, 0, 0.75); 
   backdrop-filter: blur(4px);
   z-index: 1050;
-  display: flex;
-  align-items: center; 
-  justify-content: center; 
+  display: flex; align-items: center; justify-content: center; 
   animation: fadeIn 0.2s ease-out;
 }
 .custom-modal {
   width: 100%;
-  max-width: 450px; 
+  max-width: 420px; /* Reduced max width */
   z-index: 1060;
   animation: scaleIn 0.2s ease-out;
 }
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes scaleIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
