@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, retry } from 'rxjs';
 
 @Injectable({
@@ -10,6 +10,15 @@ export class ListingService {
   private readonly API_URL = 'http://localhost:8080/user/list/';
 
   private readonly SAVED_API_URL = 'http://localhost:8080/user/save/';
+
+  private readonly token = localStorage.getItem('token');
+
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type' : 'Application/json' ,
+      'Authorization' : `Bearer ${this.token}`
+    })
+  };
 
   constructor(private http: HttpClient) { }
 
@@ -74,34 +83,34 @@ export class ListingService {
   }
 
   toggleSave(type: 'room' | 'roommate', postId: number): Observable<any> {
-    return this.http.post(`${this.SAVED_API_URL}${type}/${postId}`, {});
+    return this.http.post(`${this.SAVED_API_URL}${type}/${postId}`, {}, this.httpOptions);
   }
 
   checkSaveStatus(type: 'room' | 'roommate', postId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.SAVED_API_URL}${type}/${postId}/status`);
+    return this.http.get<boolean>(`${this.SAVED_API_URL}${type}/${postId}/status`, this.httpOptions);
   }
 
   getMySavedRooms(): Observable<any> {
-    return this.http.get(this.SAVED_API_URL + 'rooms');
+    return this.http.get(this.SAVED_API_URL + 'rooms', this.httpOptions);
   }
 
   getMySavedRoommates(): Observable<any> {
-    return this.http.get(this.SAVED_API_URL + 'roommates');
+    return this.http.get(this.SAVED_API_URL + 'roommates', this.httpOptions);
   }
 
   getMyRooms(): Observable<any> {
-    return this.http.get(this.API_URL + 'my-rooms');
+    return this.http.get(this.API_URL + 'my-rooms', this.httpOptions);
   }
 
   getMyRoommates(): Observable<any> {
-    return this.http.get(this.API_URL + 'my-roommates');
+    return this.http.get(this.API_URL + 'my-roommates', this.httpOptions);
   }
 
   deleteRoom(id: number): Observable<any> {
-    return this.http.delete(this.API_URL + 'rooms/' + id);
+    return this.http.delete(this.API_URL + 'rooms/' + id, this.httpOptions);
   }
 
   deleteRoommate(id: number): Observable<any> {
-    return this.http.delete(this.API_URL + 'roommates/' + id);
+    return this.http.delete(this.API_URL + 'roommates/' + id, this.httpOptions);
   }
 }
