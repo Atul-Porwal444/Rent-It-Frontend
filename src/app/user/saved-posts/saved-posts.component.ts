@@ -95,7 +95,7 @@ export class SavedPostsComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.apiError = "Failed to load your saved rooms. Please try again later.";
+        this.apiError = "Failed to load your saved posts. Please try again later.";
         checkCompletion();
       }
     });
@@ -107,7 +107,7 @@ export class SavedPostsComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.apiError = "Failed to load your saved roommates. Please try again later.";
+        this.apiError = "Failed to load your saved posts. Please try again later.";
         checkCompletion();
       }
     });
