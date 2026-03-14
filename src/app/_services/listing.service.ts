@@ -113,4 +113,12 @@ export class ListingService {
   deleteRoommate(id: number): Observable<any> {
     return this.http.delete(this.API_URL + 'roommates/' + id, this.httpOptions);
   }
+
+  toggleSavedRoom(postId: number) {
+    return this.http.post(`${this.SAVED_API_URL}room/${postId}`, {}, this.httpOptions);
+  }
+
+  toggleSavedRoommate(postId: number) {
+    return this.http.post(`${this.SAVED_API_URL}roommate/${postId}`, {}, this.httpOptions);
+  }
 }

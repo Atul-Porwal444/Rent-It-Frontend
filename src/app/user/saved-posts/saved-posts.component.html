@@ -1,74 +1,153 @@
-<div class="page-wrapper">
+<div class="page-wrapper position-relative">
   
-    <div class="header-section pt-5 pb-4 px-4 border-bottom custom-border">
-      <div class="container max-w-custom">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-          
-          <div>
-            <h2 class="fw-bold text-white mb-1">
-              <i class="bi bi-heart-fill text-danger me-2"></i> Saved Posts
-            </h2>
-            <p class="text-secondary small mb-0">Manage your favorite properties and potential roommates.</p>
-          </div>
-  
-          <div class="custom-tabs d-flex p-1 rounded-pill">
-            <button class="btn custom-tab-btn rounded-pill px-4 fw-medium" 
-                    [class.active]="activeTab === 'rooms'" 
-                    (click)="setTab('rooms')">
-              Saved Rooms ({{ savedRooms.length }})
-            </button>
-            <button class="btn custom-tab-btn rounded-pill px-4 fw-medium" 
-                    [class.active]="activeTab === 'roommates'" 
-                    (click)="setTab('roommates')">
-              Saved Roommates ({{ savedRoommates.length }})
-            </button>
-          </div>
-  
-        </div>
-      </div>
-    </div>
-  
-    <div class="container max-w-custom py-5">
-      
-      <div *ngIf="isLoading" class="text-center py-5">
-        <div class="spinner-border text-secondary" role="status"></div>
-      </div>
-  
-      <div *ngIf="!isLoading && activeTab === 'rooms'">
-        <div class="row g-4" *ngIf="savedRooms.length > 0">
-          <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let room of savedRooms">
-            <app-listing-card [data]="room" type="ROOM"></app-listing-card>
-          </div>
+  <div class="global-blocker" *ngIf="isProcessingGlobally"></div>
+  <div class="updating-toast glass-card d-flex align-items-center gap-2" *ngIf="isProcessingGlobally">
+    <span class="spinner-border spinner-border-sm text-danger"></span>
+    <span class="text-white small fw-bold tracking-wide text-uppercase">Removing...</span>
+  </div>
+
+  <div class="custom-toast glass-card d-flex align-items-center gap-2" [ngClass]="toastType" *ngIf="toastMessage">
+    <i class="bi fs-5" [ngClass]="toastType === 'error' ? 'bi-x-circle-fill text-danger' : 'bi-check-circle-fill text-success'"></i>
+    <span class="text-white small fw-medium">{{ toastMessage }}</span>
+  </div>
+
+  <div class="header-section pt-5 pb-4 px-4 border-bottom custom-border">
+    <div class="container max-w-custom">
+      <div class="row align-items-center">
+        <div class="col-md-6 mb-4 mb-md-0">
+          <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-2 mb-2">
+            <i class="bi bi-bookmark-heart-fill me-1"></i> Favorites
+          </span>
+          <h2 class="fw-bold text-white mb-1">Saved Posts</h2>
+          <p class="text-secondary small mb-0">Quickly access the property and roommate listings you've shortlisted.</p>
         </div>
         
-        <div *ngIf="savedRooms.length === 0" class="text-center py-5 my-5 glass-card rounded-4 p-5">
-          <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" 
-               style="width: 80px; height: 80px; background-color: rgba(220, 53, 69, 0.1); color: #ea868f;">
-            <i class="bi bi-heartbreak-fill" style="font-size: 2.5rem;"></i>
+        <div class="col-md-6 d-flex justify-content-md-end">
+          <div class="custom-tabs d-flex p-1 rounded-pill shadow-lg">
+            <button class="btn custom-tab-btn rounded-pill px-4 fw-medium d-flex align-items-center gap-2" 
+                    [class.active]="activeTab === 'rooms'" (click)="setTab('rooms')">
+              <i class="bi bi-houses-fill"></i> Rooms 
+              <span class="badge rounded-pill">{{ savedRooms.length }}</span>
+            </button>
+            <button class="btn custom-tab-btn rounded-pill px-4 fw-medium d-flex align-items-center gap-2" 
+                    [class.active]="activeTab === 'roommates'" (click)="setTab('roommates')">
+              <i class="bi bi-people-fill"></i> Roommates
+              <span class="badge rounded-pill">{{ savedRoommates.length }}</span>
+            </button>
           </div>
-          <h4 class="text-white fw-bold">No Saved Rooms</h4>
-          <p class="text-secondary">You haven't saved any property listings yet.</p>
-          <button class="btn btn-outline-light mt-2 px-4 rounded-pill" routerLink="/rooms">Explore Rooms</button>
         </div>
       </div>
-  
-      <div *ngIf="!isLoading && activeTab === 'roommates'">
-        <div class="row g-4" *ngIf="savedRoommates.length > 0">
-          <div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let person of savedRoommates">
-            <app-listing-card [data]="person" type="ROOMMATE"></app-listing-card>
-          </div>
-        </div>
-        
-        <div *ngIf="savedRoommates.length === 0" class="text-center py-5 my-5 glass-card rounded-4 p-5">
-          <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" 
-               style="width: 80px; height: 80px; background-color: rgba(220, 53, 69, 0.1); color: #ea868f;">
-            <i class="bi bi-heartbreak-fill" style="font-size: 2.5rem;"></i>
-          </div>
-          <h4 class="text-white fw-bold">No Saved Roommates</h4>
-          <p class="text-secondary">You haven't saved any roommate requests yet.</p>
-          <button class="btn btn-outline-light mt-2 px-4 rounded-pill" routerLink="/roommates">Find Roommates</button>
-        </div>
-      </div>
-  
     </div>
   </div>
+  
+  <div class="container max-w-custom py-5">
+    
+    <div *ngIf="apiError" class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger d-flex align-items-center py-3 px-4 rounded-4 mb-4">
+      <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+      <div>
+        <h6 class="fw-bold mb-1">Error Loading Content</h6>
+        <div class="small">{{ apiError }}</div>
+      </div>
+    </div>
+
+    <div class="row g-4" *ngIf="isLoading && !apiError">
+      <div class="col-12 col-md-6 col-xl-3" *ngFor="let item of [1,2,3,4]">
+        <div class="glass-card overflow-hidden h-100 border-0 rounded-4">
+          <div class="skeleton" style="height: 200px; width: 100%; border-radius: 0;"></div>
+          <div class="p-3">
+            <div class="skeleton mb-3" style="height: 18px; width: 30%; border-radius: 20px;"></div>
+            <div class="skeleton mb-2" style="height: 24px; width: 85%; border-radius: 6px;"></div>
+            <div class="skeleton mb-4" style="height: 14px; width: 60%; border-radius: 6px;"></div>
+            <div class="d-flex align-items-center mt-3 pt-3 border-top custom-border">
+              <div class="skeleton rounded-circle me-2" style="width: 32px; height: 32px;"></div>
+              <div class="skeleton" style="height: 14px; width: 40%; border-radius: 6px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && !apiError && activeTab === 'rooms'" class="animate-slide-up">
+      <div class="row g-4" *ngIf="savedRooms.length > 0">
+        <div class="col-12 col-md-6 col-xl-3" *ngFor="let room of paginatedRooms">
+          <div class="position-relative hover-overlay-wrapper">
+            <app-listing-card [data]="room" type="ROOM"></app-listing-card>
+            
+            <button class="sleek-unsave-btn shadow-lg" (click)="unsavePost('room', room.id, $event)" title="Remove from Saved">
+              <i class="bi bi-heartbreak-fill"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-5" *ngIf="totalRoomPages > 1">
+        <ul class="pagination custom-pagination gap-2">
+          <li class="page-item" [class.disabled]="currentRoomPage === 0">
+            <button class="page-link" (click)="changeRoomPage(currentRoomPage - 1)"><i class="bi bi-chevron-left"></i></button>
+          </li>
+          <li class="page-item" *ngFor="let page of [].constructor(totalRoomPages); let i = index" [class.active]="currentRoomPage === i">
+            <button class="page-link" (click)="changeRoomPage(i)">{{ i + 1 }}</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentRoomPage === totalRoomPages - 1">
+            <button class="page-link" (click)="changeRoomPage(currentRoomPage + 1)"><i class="bi bi-chevron-right"></i></button>
+          </li>
+        </ul>
+      </div>
+      
+      <div *ngIf="savedRooms.length === 0" class="text-center py-5 my-5 empty-state-card rounded-4 p-5">
+        <div class="empty-icon-wrapper">
+          <i class="bi bi-houses text-primary" style="font-size: 3.5rem; filter: drop-shadow(0 0 10px rgba(13, 110, 253, 0.5));"></i>
+        </div>
+        <h3 class="text-white fw-bold mb-2">No Saved Properties</h3>
+        <p class="text-secondary mx-auto mb-4" style="max-width: 450px;">
+          You haven't bookmarked any rooms yet. Start exploring and save the ones you love to easily find them later!
+        </p>
+        <a routerLink="/rooms" class="btn btn-primary primary-btn rounded-pill px-5 py-2 fw-bold shadow-lg">
+          Explore Rooms
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && !apiError && activeTab === 'roommates'" class="animate-slide-up">
+      <div class="row g-4" *ngIf="savedRoommates.length > 0">
+        <div class="col-12 col-md-6 col-xl-3" *ngFor="let person of paginatedRoommates">
+          <div class="position-relative hover-overlay-wrapper">
+            <app-listing-card [data]="person" type="ROOMMATE"></app-listing-card>
+            
+            <button class="sleek-unsave-btn shadow-lg" (click)="unsavePost('roommate', person.id, $event)" title="Remove from Saved">
+              <i class="bi bi-heartbreak-fill"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-5" *ngIf="totalRoommatePages > 1">
+        <ul class="pagination custom-pagination gap-2">
+          <li class="page-item" [class.disabled]="currentRoommatePage === 0">
+            <button class="page-link" (click)="changeRoommatePage(currentRoommatePage - 1)"><i class="bi bi-chevron-left"></i></button>
+          </li>
+          <li class="page-item" *ngFor="let page of [].constructor(totalRoommatePages); let i = index" [class.active]="currentRoommatePage === i">
+            <button class="page-link" (click)="changeRoommatePage(i)">{{ i + 1 }}</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentRoommatePage === totalRoommatePages - 1">
+            <button class="page-link" (click)="changeRoommatePage(currentRoommatePage + 1)"><i class="bi bi-chevron-right"></i></button>
+          </li>
+        </ul>
+      </div>
+      
+      <div *ngIf="savedRoommates.length === 0" class="text-center py-5 my-5 empty-state-card rounded-4 p-5">
+        <div class="empty-icon-wrapper success">
+          <i class="bi bi-people text-success" style="font-size: 3.5rem; filter: drop-shadow(0 0 10px rgba(25, 135, 84, 0.5));"></i>
+        </div>
+        <h3 class="text-white fw-bold mb-2">No Saved Roommates</h3>
+        <p class="text-secondary mx-auto mb-4" style="max-width: 450px;">
+          You haven't added anyone to your shortlist yet. Browse user profiles and save potential matches to reach out to them later!
+        </p>
+        <a routerLink="/roommates" class="btn btn-success rounded-pill px-5 py-2 fw-bold shadow-lg">
+          Find Roommates
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,48 +1,147 @@
-.page-wrapper {
-    background-color: transparent; 
-    min-height: calc(100vh - 65px);
-  }
-  
-  .max-w-custom {
-    max-width: 1400px;
-  }
-  
-  .header-section {
-    background: linear-gradient(180deg, rgba(30, 30, 30, 0.6) 0%, transparent 100%);
-  }
-  
-  .custom-border {
-    border-color: rgba(255, 255, 255, 0.08) !important;
-  }
-  
-  /* Custom Pill Tabs */
-  .custom-tabs {
-    background-color: rgba(20, 20, 20, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-  }
-  
-  .custom-tab-btn {
-    color: #a0a0a0;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    border: none;
-  }
-  
-  .custom-tab-btn:hover {
-    color: #fff;
-  }
-  
-  .custom-tab-btn.active {
-    background-color: #ffffff;
-    color: #000000;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
-  }
-  
-  /* Glassmorphic Empty State Card */
-  .glass-card {
-    background-color: rgba(20, 20, 20, 0.5);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
+.page-wrapper { background-color: transparent; min-height: calc(100vh - 65px); }
+.max-w-custom { max-width: 1400px; margin: 0 auto; }
+.header-section { background: linear-gradient(180deg, rgba(30, 30, 30, 0.6) 0%, transparent 100%); }
+.custom-border { border-color: rgba(255, 255, 255, 0.08) !important; }
+
+/* Custom Pill Tabs */
+.custom-tabs { 
+  background-color: rgba(20, 20, 20, 0.8); 
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  backdrop-filter: blur(10px); 
+}
+.custom-tab-btn { color: #a0a0a0; font-size: 0.9rem; transition: all 0.3s ease; border: none; }
+.custom-tab-btn:hover { color: #fff; }
+.custom-tab-btn.active { 
+  background-color: #ffffff; 
+  color: #000000; 
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15); 
+}
+
+/* Dynamic Tab Badges */
+.custom-tab-btn .badge {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #a0a0a0 !important;
+  transition: all 0.3s ease;
+}
+.custom-tab-btn.active .badge {
+  background-color: rgba(13, 110, 253, 0.15) !important;
+  color: #0d6efd !important;
+}
+
+/* Glass States */
+.glass-card { 
+  background-color: rgba(20, 20, 20, 0.5); 
+  backdrop-filter: blur(16px); 
+  border: 1px solid rgba(255, 255, 255, 0.08); 
+}
+
+/* Primary Button */
+.primary-btn {
+  background-color: #1a73e8; border: none; transition: background-color 0.2s ease;
+}
+.primary-btn:hover { background-color: #155dbb; }
+
+/* --- SLEEK HOVER UNSAVE BUTTON --- */
+.hover-overlay-wrapper { position: relative; display: block; }
+
+.sleek-unsave-btn {
+  position: absolute;
+  top: 15px; right: 15px; z-index: 20;
+  background: rgba(220, 53, 69, 0.85); /* Translucent Red */
+  backdrop-filter: blur(4px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transform: scale(0.8) translateY(-5px);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hover-overlay-wrapper:hover .sleek-unsave-btn {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.sleek-unsave-btn:hover {
+  background: #dc3545; /* Solid Red */
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+  transform: scale(1.1);
+}
+
+/* --- ANIMATIONS --- */
+.animate-slide-up {
+  opacity: 0;
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- SHIMMER EFFECT --- */
+.skeleton {
+  background-color: #222222;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.0) 100%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* --- GLOBAL UPDATING BLOCKER & TOASTS --- */
+.global-blocker {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9998; cursor: wait;
+}
+
+.updating-toast, .custom-toast {
+  position: fixed; bottom: 25px; right: 25px; padding: 12px 20px; z-index: 9999;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideInBottom 0.3s ease-out;
+}
+.updating-toast { border: 1px solid rgba(220, 53, 69, 0.3) !important; }
+.custom-toast.success { border: 1px solid rgba(25, 135, 84, 0.4) !important; }
+.custom-toast.error { border: 1px solid rgba(220, 53, 69, 0.4) !important; }
+
+@keyframes slideInBottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- CUSTOM PAGINATION --- */
+.custom-pagination .page-link {
+  background-color: #181818; color: #a0a0a0; border: 1px solid #333;
+  border-radius: 8px !important; padding: 0.4rem 0.8rem; font-size: 0.85rem;
+  transition: all 0.2s; cursor: pointer;
+}
+.custom-pagination .page-link:hover { background-color: #2a2a2a; color: #fff; }
+.custom-pagination .page-item.active .page-link { background-color: #ffffff; color: #000000; border-color: #ffffff; font-weight: bold; }
+.custom-pagination .page-item.disabled .page-link { background-color: #121212; color: #444; border-color: #222; cursor: not-allowed; }
+
+/* --- BEAUTIFUL EMPTY STATE --- */
+.empty-state-card {
+  background: rgba(20, 20, 20, 0.4);
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.empty-state-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(20, 20, 20, 0.6);
+}
+.empty-icon-wrapper {
+  width: 110px; height: 110px;
+  background: radial-gradient(circle, rgba(13, 110, 253, 0.15) 0%, rgba(0,0,0,0) 70%);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; margin: 0 auto 1.5rem;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+.empty-icon-wrapper.success { background: radial-gradient(circle, rgba(25, 135, 84, 0.15) 0%, rgba(0,0,0,0) 70%); }
+@keyframes floatIcon {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}

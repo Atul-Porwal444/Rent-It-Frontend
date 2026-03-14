@@ -16,7 +16,21 @@ export class SavedPostsComponent implements OnInit {
 
   savedRooms: any[] = [];
   savedRoommates: any[] = [];
+
+  // UI States
   isLoading = true;
+  isProcessingGlobally = false;
+  apiError = '';
+
+  // Toast Variables
+  toastMessage: string = '';
+  toastType: 'success' | 'error' = 'success';
+
+  // Frontend Pagination Variables
+  pageSize = 8;
+  currentRoomPage = 0;
+  currentRoommatePage = 0;
+  
 
   constructor(private listingService: ListingService) {}
 
@@ -24,151 +38,136 @@ export class SavedPostsComponent implements OnInit {
     this.loadData();
   }
 
-  loadData() {
-    this.isLoading = true;
-
-    // this.listingService.getMySavedRooms().subscribe({
-    //   next: (res) => {
-    //     this.savedRooms = res;
-    //     this.checkIfDone();
-    //   },
-    //   error: (err) => console.error(err)
-    // });
-
-    // this.listingService.getMySavedRoommates().subscribe({
-    //   next: (res) => {
-    //     this.savedRoommates = res;
-    //     this.checkIfDone();
-    //   },
-    //   error: (err) => console.error(err)
-    // });
-
-    this.savedRooms = [{
-      "availabilityStatus" : "Available",
-      "bhkType" : "1RK",
-      "city" : "Indore",
-      "description" : "",
-      "electricityBackup" : true,
-      "floorNumber" : 1,
-      "furnished" : true,
-      "hasParking" : true,
-      "id" : 8,
-      "imageUrls" : [
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/e168eed3-1fbc-4082-b0d1-7a95d8a008fe_preorder-tshirt_1713852170.png",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/9eaeaf72-2172-4673-881a-69dd4a36096c_IMG_20230716_184359.jpg",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/b90d00ac-71a1-4ebf-9284-d7a6e3ac6a11_Atul.png"
-      ],
-      "location" : "18/B, Swastik Vihar",
-      "pincode" : "453331",
-      "postedOn" : "2026-02-22",
-      "rentAmount" : 1200.0,
-      "securityDeposit" : 1200.0,
-      "state" : "Madhya Pradesh",
-      "userId" : 13,
-      "userName" : "Atul Porwal",
-      "userProfileImageUrl" : "https://ui-avatars.com/api/?background=random&name=Atul Porwal",
-      "waterSupply24x7" : true
-    },
-    {
-      "availabilityStatus" : "Available",
-      "bhkType" : "1BHK",
-      "city" : "Abhayapuri",
-      "description" : "",
-      "electricityBackup" : false,
-      "floorNumber" : 1,
-      "furnished" : false,
-      "hasParking" : true,
-      "id" : 9,
-      "imageUrls" : [
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/67a21782-9bdb-479f-af91-29e933636181_entityManagerFactory(EntityManagerFactoryBuilder, PersistenceManagedTypes).png",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/a39bcd8f-8395-40bf-a62d-572018d339fd_WhatsApp Image 2026-02-19 at 12.58.10 AM.jpeg",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/e5fe2eda-06cd-4406-938f-094f7f20828f_Pi7_Passport_Photo-min.jpeg",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/266559d0-a941-4680-95d8-1b9495a03d77_Pi7_Passport_Photo.jpeg",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/d16707d3-3c34-42ee-97ac-380e8d8064c9_Atul.png"
-      ],
-      "location" : "Indore",
-      "pincode" : "546465",
-      "postedOn" : "2026-02-22",
-      "rentAmount" : 13333.0,
-      "securityDeposit" : 121212.0,
-      "state" : "Delhi",
-      "userId" : 13,
-      "userName" : "Atul Porwal",
-      "userProfileImageUrl" : "https://ui-avatars.com/api/?background=random&name=Atul Porwal",
-      "waterSupply24x7" : false
-    }];
-
-    this.savedRoommates = [{
-      "bhkType" : "1BHK",
-      "city" : "Rau",
-      "currentRoommates" : 1,
-      "description" : "A person who keeps the things clean.",
-      "dietaryPreference" : "Vegetarian",
-      "electricityBackup" : false,
-      "floorNumber" : 1,
-      "furnished" : false,
-      "hasParking" : true,
-      "id" : 2,
-      "imageUrls" : [
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/dacc877c-961e-406f-b421-99e0c669c901_IMG-20251003-WA0012.jpg"
-      ],
-      "location" : "18/B, Swastik Vihar Colony, Rau",
-      "lookingForGender" : "Male",
-      "neededRoommates" : 1,
-      "pincode" : "453331",
-      "postedOn" : "2026-02-19",
-      "religionPreference" : "Hindu",
-      "rentAmount" : 5500.0,
-      "state" : "Madhya Pradesh",
-      "userId" : 13,
-      "userName" : "Atul Porwal",
-      "userProfileImageUrl" : "https://ui-avatars.com/api/?background=random&name=Atul Porwal",
-      "waterSupply24x7" : true
-    },
-    {
-      "bhkType" : "1BHK",
-      "city" : "Indore",
-      "currentRoommates" : 1,
-      "description" : "1313",
-      "dietaryPreference" : "No Preference",
-      "electricityBackup" : true,
-      "floorNumber" : 100000,
-      "furnished" : true,
-      "hasParking" : true,
-      "id" : 1,
-      "imageUrls" : [
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/beece8d3-7f0f-4aaa-81a8-8f229051ab71_Zephyrus G14_1920x1080.jpg"
-      ],
-      "location" : "18/B, Swastik Vihar Colony, Rau",
-      "lookingForGender" : "Male",
-      "neededRoommates" : 1,
-      "pincode" : null,
-      "postedOn" : "2026-02-17",
-      "religionPreference" : "No Preference",
-      "rentAmount" : 1000.0,
-      "state" : null,
-      "userId" : 13,
-      "userName" : "Atul Porwal",
-      "userProfileImageUrl" : "https://ui-avatars.com/api/?background=random&name=Atul Porwal",
-      "waterSupply24x7" : true
-    }];
-
-    this.checkIfDone();
-    this.checkIfDone();
-
+  // --- Pagination Getters ---
+  get paginatedRooms() {
+    const start = this.currentRoomPage * this.pageSize;
+    return this.savedRooms.slice(start, start + this.pageSize);
   }
 
-  private requestCompleted = 0;
-  checkIfDone() {
-    this.requestCompleted++;
-    if(this.requestCompleted >= 2) {
-      this.isLoading = false;
-      this.requestCompleted = 0;
-    }
+  get totalRoomPages() {
+    return Math.ceil(this.savedRooms.length / this.pageSize);
+  }
+
+  get paginatedRoommates() {
+    const start = this.currentRoommatePage * this.pageSize;
+    return this.savedRoommates.slice(start, start + this.pageSize);
+  }
+
+  get totalRoommatePages() {
+    return Math.ceil(this.savedRoommates.length / this.pageSize);
+  }
+
+  // Pagination Controls
+  changeRoomPage(page: number) {
+    this.currentRoomPage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  changeRoommatePage(page: number) {
+    this.currentRoommatePage = page;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // --- Toast Notification ---
+  showToast(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => this.toastMessage = '', 3500);
+  }
+
+  loadData() {
+    this.isLoading = true;
+    this.apiError = '';
+
+    let completedRequests = 0;
+
+    const checkCompletion = () => {
+      completedRequests++;
+      if (completedRequests >= 2) {
+        this.isLoading = false;
+      }
+    };
+
+    this.listingService.getMySavedRooms().subscribe({
+      next: (res) => {
+        this.savedRooms = res;
+        checkCompletion();
+      },
+      error: (err) => {
+        console.error(err);
+        this.apiError = "Failed to load your saved rooms. Please try again later.";
+        checkCompletion();
+      }
+    });
+
+    this.listingService.getMySavedRoommates().subscribe({
+      next: (res) => {
+        this.savedRoommates = res;
+        checkCompletion();
+      },
+      error: (err) => {
+        console.error(err);
+        this.apiError = "Failed to load your saved roommates. Please try again later.";
+        checkCompletion();
+      }
+    });
   }
 
   setTab(tab: 'rooms' | 'roommates') {
     this.activeTab = tab;
   }
 
+  stopPropagation(event: Event) {
+    event.stopPropagation();
+  }
+
+  unsavePost(type: 'room' | 'roommate', id: number, event: Event) {
+    this.stopPropagation(event);
+    this.isProcessingGlobally = true; // Block UI and show loader
+
+    if (type === 'room') {
+      
+      this.listingService.toggleSavedRoom(id).subscribe({
+        next: (res) => {
+          // Removing the post from the frontend array
+          this.savedRooms = this.savedRooms.filter(r => r.id !== id);
+          
+          // Adjusting pagination if we deleted the last item on the current page
+          if (this.currentRoomPage >= this.totalRoomPages && this.currentRoomPage > 0) {
+            this.currentRoomPage--;
+          }
+          
+          this.showToast("Room removed from saved list.", 'success');
+          this.isProcessingGlobally = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.showToast(err.error?.message || "Failed to unsave room. Please try again.", 'error');
+          this.isProcessingGlobally = false;
+        }
+      });
+
+    } else {
+
+      this.listingService.toggleSavedRoommate(id).subscribe({
+        next: (res) => {
+          // Remove the post from the frontend array
+          this.savedRoommates = this.savedRoommates.filter(r => r.id !== id);
+          
+          // Adjust pagination if we deleted the last item on the current page
+          if (this.currentRoommatePage >= this.totalRoommatePages && this.currentRoommatePage > 0) {
+            this.currentRoommatePage--;
+          }
+          
+          this.showToast("Roommate removed from saved list.", 'success');
+          this.isProcessingGlobally = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.showToast(err.error?.message || "Failed to unsave roommate. Please try again.", 'error');
+          this.isProcessingGlobally = false;
+        }
+      });
+    }
+  }
 }
