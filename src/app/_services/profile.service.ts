@@ -11,6 +11,8 @@ export class ProfileService {
 
   private readonly SETTING_API_URL = 'http://localhost:8080/user/settings/';
 
+  private readonly NOTIFICATION_API_URL = 'http://localhost:8080/user/notifications/';
+
   private readonly token = localStorage.getItem('token');
 
   private httpOptions = {
@@ -71,5 +73,13 @@ export class ProfileService {
     };
 
     return this.http.put(`${this.SETTING_API_URL}update`, payloadDto, this.httpOptions);
+  }
+
+  getNotifications(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.NOTIFICATION_API_URL}notification`, this.httpOptions);
+  }
+
+  markAllNotificationsAsRead(): Observable<any> {
+    return this.http.put(`${this.NOTIFICATION_API_URL}read-all`, {}, this.httpOptions);
   }
 }

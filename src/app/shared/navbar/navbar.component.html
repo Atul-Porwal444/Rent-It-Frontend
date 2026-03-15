@@ -23,7 +23,7 @@
         <li>
           <div class="d-flex align-items-center gap-3 ms-auto">
           
-            <div class="nav-item position-relative">
+            <div class="nav-item position-relative" *ngIf="authService.isLoggedIn()">
               
               <button class="btn nav-icon-btn position-relative" (click)="toggleNotifications($event)">
                 <i class="bi bi-bell fs-5 text-light"></i>
@@ -34,47 +34,66 @@
                   [class.show]="isNotificationOpen" 
                   (click)="onDropdownClick($event)">
                 
-                <div class="d-flex justify-content-between align-items-center px-4 py-2 border-bottom custom-border">
+                <div class="px-4 py-3 border-bottom custom-border">
                   <h6 class="text-white fw-bold mb-0">Notifications</h6>
-                  <button class="btn btn-link text-secondary text-decoration-none p-0 small hover-text-white">Mark all as read</button>
                 </div>
     
-                <div class="notification-list custom-scrollbar">
+                <div class="notification-list custom-scrollbar position-relative">
                   
-                  <div class="notif-item d-flex gap-3 px-4 py-3 border-bottom custom-border transition-all" 
-                      *ngFor="let notif of notifications"
-                      [class.unread-bg]="!notif.isRead">
-                    
-                    <div class="icon-circle-notif flex-shrink-0 d-flex align-items-center justify-content-center rounded-circle border custom-border" 
-                        [ngClass]="notif.bg" style="width: 30px; height: 30px;">
-                      <i class="bi fs-5" [ngClass]="[notif.icon, notif.color]"></i>
+                  <ng-container *ngIf="isLoadingNotifications && !notificationsError">
+                    <div class="d-flex gap-3 px-4 py-3 border-bottom custom-border" *ngFor="let i of [1,2,3,4,5]">
+                      <div class="skeleton rounded-circle flex-shrink-0" style="width: 30px; height: 30px;"></div>
+                      <div class="flex-grow-1 pt-1">
+                        <div class="skeleton mb-2" style="height: 12px; width: 90%; border-radius: 4px;"></div>
+                        <div class="skeleton mb-2" style="height: 12px; width: 60%; border-radius: 4px;"></div>
+                        <div class="skeleton" style="height: 10px; width: 30%; border-radius: 4px;"></div>
+                      </div>
                     </div>
-    
-                    <div class="flex-grow-1">
-                      <p class="text-light mb-1" style="font-size: 0.9rem; line-height: 1;">
-                        {{ notif.message }}
-                      </p>
-                      <span class="text-secondary" style="font-size: 0.75rem;">{{ notif.time }}</span>
-                    </div>
-    
-                    <div class="align-self-center" *ngIf="!notif.isRead">
-                      <span class="d-block bg-primary rounded-circle" style="width: 8px; height: 8px;"></span>
-                    </div>
-    
+                  </ng-container>
+
+                  <div *ngIf="!isLoadingNotifications && notificationsError" class="text-center py-5 px-4">
+                    <i class="bi bi-exclamation-triangle-fill text-danger mb-2 d-block" style="font-size: 2rem;"></i>
+                    <h6 class="text-white fw-bold mb-1">Failed to load</h6>
+                    <p class="text-secondary small mb-0">We couldn't fetch your notifications. Please try again.</p>
                   </div>
-    
+
+                  <div *ngIf="!isLoadingNotifications && !notificationsError && notifications.length === 0" class="text-center py-5 px-4">
+                    <i class="bi bi-bell-slash text-secondary opacity-50 mb-2 d-block" style="font-size: 2rem;"></i>
+                    <h6 class="text-white fw-bold mb-1">You're all caught up!</h6>
+                    <p class="text-secondary small mb-0">No new notifications right now.</p>
+                  </div>
+
+                  <ng-container *ngIf="!isLoadingNotifications && !notificationsError && notifications.length > 0">
+                    <div class="notif-item d-flex gap-3 px-4 py-3 border-bottom custom-border transition-all" 
+                        *ngFor="let notif of notifications"
+                        [class.unread-bg]="!notif.isRead">
+                      
+                      <div class="icon-circle-notif flex-shrink-0 d-flex align-items-center justify-content-center rounded-circle border custom-border" 
+                          [ngClass]="notif.bg" style="width: 30px; height: 30px;">
+                        <i class="bi fs-5" [ngClass]="[notif.icon, notif.color]"></i>
+                      </div>
+      
+                      <div class="flex-grow-1">
+                        <p class="text-light mb-1" style="font-size: 0.8rem; line-height: 1.3;">
+                          {{ notif.message }}
+                        </p>
+                        <span class="text-secondary" style="font-size: 0.7rem;">{{ notif.time }}</span>
+                      </div>
+      
+                      <div class="align-self-start pt-1" *ngIf="!notif.isRead">
+                        <span class="badge bg-primary px-2 py-1 rounded-pill fw-medium" style="font-size: 0.65rem;">New</span>
+                      </div>
+      
+                    </div>
+                  </ng-container>
+
                 </div>
-    
-                <div class="d-flex justify-content-between align-items-center px-3 py-2 border-top custom-border bg-darker rounded-bottom-4">
-                  <button class="btn btn-link text-secondary p-1" routerLink="/settings"><i class="bi bi-gear fs-5"></i></button>
-                  <button class="btn btn-link text-secondary p-1"><i class="bi bi-three-dots fs-5"></i></button>
-                </div>
-    
               </div>
             </div>
     
             </div>
           </li>
+          
         <div class="d-none d-lg-block border-end border-secondary mx-2" style="height: 20px;"></div>
 
         <li class="nav-item">
@@ -83,7 +102,6 @@
             <span class="d-none d-lg-inline">Post Room</span> 
           </button>
         </li>
-      
         <li class="nav-item">
           <button class="btn d-flex align-items-center gap-2 custom-btn-filled" (click)="openPostModal('roommate')">
             <i class="bi bi-people"></i>
@@ -91,12 +109,6 @@
           </button>
         </li>
       
-        <app-post-ad 
-          *ngIf="showPostModal" 
-          [adType]="currentAdType" 
-          (close)="showPostModal = false">
-        </app-post-ad>
-
         <li class="nav-item dropdown ms-lg-2" *ngIf="authService.isLoggedIn(); else loginBtn">
           
           <a class="nav-link p-0 d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -175,3 +187,9 @@
     </div>
   </div>
 </nav>
+
+<app-post-ad 
+*ngIf="showPostModal" 
+[adType]="currentAdType" 
+(close)="showPostModal = false">
+</app-post-ad>
