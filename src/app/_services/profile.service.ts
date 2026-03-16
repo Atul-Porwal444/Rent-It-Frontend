@@ -79,6 +79,10 @@ export class ProfileService {
     return this.http.get<any[]>(`${this.NOTIFICATION_API_URL}notification`, this.httpOptions);
   }
 
+  checkUnreadNotifications(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.NOTIFICATION_API_URL}has-unread`, this.httpOptions);
+  }
+
   markAllNotificationsAsRead(): Observable<any> {
     return this.http.put(`${this.NOTIFICATION_API_URL}read-all`, {}, this.httpOptions);
   }

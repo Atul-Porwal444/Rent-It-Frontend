@@ -33,6 +33,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUser();
+
+    if (this.authService.isLoggedIn()) { 
+      this.fetchNotificationsSilent(); 
+    }
   }
 
   loadUser() : void {
@@ -45,6 +49,16 @@ export class NavbarComponent implements OnInit {
   }
 
   // --- Notification Logic ---
+
+  fetchNotificationsSilent() {
+    this.hasUnreadNotifications = false;
+    this.profileService.checkUnreadNotifications().subscribe({
+      next: (hasUnread: boolean) => {
+        this.hasUnreadNotifications = hasUnread;
+      },
+      error: (err) => console.error("Silently failed to check unread notifications", err)
+    });
+  }
 
   toggleNotifications(event: Event) {
     event.stopPropagation();
@@ -60,7 +74,7 @@ export class NavbarComponent implements OnInit {
   closeNotifications() {
     if (this.isNotificationOpen) {
       this.isNotificationOpen = false;
-      this.markAllAsReadAPI();
+      if(this.hasUnreadNotifications) this.markAllAsReadAPI();
     }
   }
 
@@ -93,7 +107,14 @@ export class NavbarComponent implements OnInit {
           };
         });
 
-        this.hasUnreadNotifications = this.notifications.some(n => !n.isRead);
+        this.notifications.sort((a, b) => {
+          if (a.isRead !== b.isRead) {
+            return a.isRead - b.isRead;
+          }
+        
+          return b.time - a.time;
+        });
+
         this.isLoadingNotifications = false;
       },
       error: (err) => {
@@ -151,7 +172,7 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login'], {replaceUrl: true});
   }
 
   openPostModal(type: 'room' | 'roommate') {

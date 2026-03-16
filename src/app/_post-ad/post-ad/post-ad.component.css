@@ -9,14 +9,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.25s ease-out;
 }
 
 .glass-card {
   width: 95%;
   max-width: 650px;
   max-height: 90vh;
-  background-color: rgba(20, 20, 20, 0.85); /* Deep dark glass */
+  background-color: rgba(20, 20, 20, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -24,73 +24,83 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: scaleIn 0.25s ease-out;
+  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* --- CLOSING ANIMATIONS --- */
+.modal-overlay.fade-out { animation: fadeOut 0.25s ease-in forwards; }
+.glass-card.scale-out { animation: scaleOut 0.25s ease-in forwards; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes scaleOut { from { transform: scale(1); opacity: 1; } to { transform: scale(0.95); opacity: 0; } }
 
 .custom-border { border-color: rgba(255, 255, 255, 0.08) !important; }
 
 /* 2. Scrollbar */
-.custom-scrollbar { overflow-y: auto; overflow-x: hidden; }
 .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
-.hide-scrollbar::-webkit-scrollbar { display: none; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; margin: 10px 0; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 
-/* 3. Deep Dark Premium Inputs */
+/* --- 3. SLEEK BOTTOM-LINE INPUTS --- */
 .custom-modal-input {
-  background-color: #0a0a0a !important; /* Pure black inside inputs */
-  border: 1px solid #333333;
+  background-color: transparent !important;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 0;
   color: #ffffff !important;
-  font-size: 0.85rem; /* Smaller text */
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.2rem;
+  transition: all 0.3s ease;
 }
 
 .custom-modal-input:focus {
-  background-color: #000000 !important;
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); /* Blue glow */
+  border-bottom: 2px solid #ffffff;
+  box-shadow: none;
+  outline: none;
 }
 
-.custom-modal-input::placeholder { color: #555555; }
-textarea.custom-modal-input { resize: none; }
-
-/* 4. Validation Styling */
-.custom-modal-input.ng-invalid.ng-touched {
-  border-color: #dc3545 !important;
-  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
+.custom-modal-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
 }
 
-/* 5. Stylish Toggle Switches */
-.toggle-row {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* Ensure <select> dropdown items are readable against black */
+.custom-modal-input option {
+  background-color: #1e1e1e;
+  color: #ffffff;
 }
 
-.custom-switch { padding-left: 2.5rem; }
+/* Chrome/Safari Autocomplete fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* 4. Subtles Colors */
+.bg-primary-subtle { background-color: rgba(13, 110, 253, 0.15) !important; }
+.bg-info-subtle { background-color: rgba(13, 202, 253, 0.15) !important; }
+
+/* 5. Custom Switches */
 .custom-switch .form-check-input {
-  width: 2.5rem; height: 1.25rem; margin-left: -2.5rem;
-  background-color: #333333;
-  border: 1px solid #444444;
-  border-radius: 2rem; cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23a0a0a0'/%3e%3c/svg%3e");
+  width: 2.5rem; height: 1.2rem;
+  background-color: #333; border: 1px solid #444; cursor: pointer; transition: all 0.3s;
 }
-
 .custom-switch .form-check-input:checked {
   background-color: #0d6efd; border-color: #0d6efd;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
   box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
 }
 .custom-switch .form-check-input:focus { box-shadow: none; border-color: #555; }
 
 /* 6. Image Upload Box */
-.image-upload-box { border: 1.5px dashed #444; }
-.image-upload-box:hover { border-color: #0d6efd; background: rgba(13, 110, 253, 0.05) !important; color: #fff !important; }
+.image-upload-box { border: 1.5px dashed #555; }
+.image-upload-box:hover { border-color: #ffffff; background: rgba(255, 255, 255, 0.05) !important; }
 
-/* Delete Image Button Hover */
 .delete-btn { opacity: 0; width: 22px; height: 22px; transition: opacity 0.2s; }
 .hover-reveal:hover .delete-btn { opacity: 1; }
 
@@ -100,22 +110,86 @@ textarea.custom-modal-input { resize: none; }
 .icon-circle-small { width: 32px; height: 32px; font-size: 1.1rem; }
 
 /* Primary Button */
-.primary-btn { background-color: #1a73e8; border: none; transition: background-color 0.2s ease; }
-.primary-btn:hover { background-color: #155dbb; }
-.primary-btn:disabled { opacity: 0.6; }
-
-/* Hide Number Arrows */
-input[type=number]::-webkit-outer-spin-button, 
-input[type=number]::-webkit-inner-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+.primary-btn { 
+  background-color: #1a73e8; border: none; transition: background-color 0.2s ease; 
+}
+.primary-btn:hover:not(:disabled) { 
+  background-color: #155dbb; box-shadow: 0 4px 15px rgba(26, 115, 232, 0.4);
 }
 
-input[type=number] { 
-  -moz-appearance: textfield; 
-  appearance: textfield; /* <-- Added this line */
+/* --- GLOBAL UPDATING BLOCKER & TOASTS --- */
+.global-blocker {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9998; cursor: wait;
 }
 
-/* Animations */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.custom-toast {
+  position: fixed; bottom: 25px; right: 25px; padding: 12px 20px; z-index: 9999;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideInBottom 0.3s ease-out;
+  border-radius: 12px;
+}
+.custom-toast.success { border: 1px solid rgba(25, 135, 84, 0.4) !important; }
+.custom-toast.error { border: 1px solid rgba(220, 53, 69, 0.4) !important; }
+
+@keyframes slideInBottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- FIX MODAL SCROLLING --- */
+.modal-body {
+  overflow-y: auto; /* Enables vertical scrolling */
+  overflow-x: hidden;
+  flex-grow: 1; /* Ensures it fills the space between header and bottom */
+}
+
+/* --- HIDE NUMBER INPUT ARROWS (SPIN BUTTONS) --- */
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+/* --- CITY AUTOCOMPLETE DROPDOWN --- */
+.city-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 180px; /* Fits about 5 items before scrolling */
+  overflow-y: auto;
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0;
+  margin-top: 4px;
+  list-style: none;
+  z-index: 1060; /* Ensures it floats above the lower input fields */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.city-item {
+  padding: 10px 15px;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.city-item:last-child {
+  border-bottom: none;
+}
+
+.city-item:hover {
+  background-color: rgba(13, 110, 253, 0.15); /* Sleek blue highlight */
+  color: #ffffff;
+}

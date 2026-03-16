@@ -16,7 +16,15 @@ export class PostAdComponent implements OnInit, OnDestroy {
   // MAX LENGTH CONSTANT
   readonly DESC_MAX_LENGTH = 500;
 
+  // UI States
   isSubmitting = false;
+  isClosing = false;
+  isProcessingGlobally = false;
+  
+  // Toast Variables
+  toastMessage: string = '';
+  toastType: 'success' | 'error' = 'success';
+
   selectedImages: File[] = [];
   imagePreviews: string[] = [];
 
@@ -25,10 +33,8 @@ export class PostAdComponent implements OnInit, OnDestroy {
     "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", 
     "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", 
     "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", 
-    "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", 
-    "Chandigarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Lakshadweep", 
-    "Puducherry"
-  ].sort();
+    "Uttar Pradesh", "Uttarakhand", "West Bengal"
+  ];
 
   indianCities: string[] = [
     'SGM',
@@ -5197,31 +5203,19 @@ export class PostAdComponent implements OnInit, OnDestroy {
     'Zunheboto',
   ];
 
+  filteredCities: string[] = [];
+  showCityDropdown = false;
+
   // Common Form Data (Matches BaseListing)
   formData: any = {
-    location: '',
-    city: '',
-    state: '',
-    pincode: null,
+    bhkType: '', state: '', city: '', pincode: '', location: '',
+    rentAmount: null, securityDeposit: null,
+    isFurnished: false, hasParking: false, waterSupply24x7: false, electricityBackup: false,
     description: '',
-    rentAmount: null,
-    bhkType: '1BHK',
-    floorNumber: 1,
-    isFurnished: false,
-    hasParking: false,
-    waterSupply24x7: false,
-    electricityBackup: false,
-
-    // Room Specific
-    securityDeposit: null,
-    availabilityStatus: 'Available',
-
-    // Roommate Specific
-    lookingForGender: 'Any',
-    religionPreference: 'No Preference',
-    dietaryPreference: 'No Preference',
-    currentRoommates: 0,
-    neededRoommates: 1,
+    
+    // Roommate specifics
+    neededRoommates: null, currentRoommates: null,
+    lookingForGender: '', dietaryPreference: '', religionPreference: ''
   };
 
   constructor(private postService: PostService) {}
@@ -5234,45 +5228,68 @@ export class PostAdComponent implements OnInit, OnDestroy {
     document.body.style.overflow = '';
   }
 
-  // 1. Handle File Selection & Preview
-  onFileSelected(event: any) {
+  // --- Toast & Modal Logic ---
+  showToast(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => this.toastMessage = '', 3500);
+  }
+
+  filterCities() {
+    const query = this.formData.city?.toLowerCase() || '';
+    if (query) {
+      this.filteredCities = this.indianCities.filter(c => c.toLowerCase().startsWith(query));
+      this.showCityDropdown = this.filteredCities.length > 0;
+    } else {
+      this.showCityDropdown = false;
+    }
+  }
+
+  selectCity(city: string) {
+    this.formData.city = city;
+    this.showCityDropdown = false;
+  }
+
+  hideDropdownDelay() {
+    // Delay hiding so the (click) event on the dropdown item has time to register
+    setTimeout(() => this.showCityDropdown = false, 200); 
+  }
+
+  closeModal() {
+    this.isClosing = true; // Triggers slide-out animation
+    setTimeout(() => this.close.emit(), 250); // Emits after animation finishes
+  }
+
+  // --- Image Handling ---
+  onImageSelect(event: any) {
     const files = event.target.files;
     if (files) {
-      // Allow max 5 images total (existing + new)
-      const remainingSlots = 5 - this.selectedImages.length;
-
-      if (remainingSlots <= 0) {
-        alert('You can only upload a maximum of 5 images.');
-        return;
-      }
-
-      // Loop only up to the remaining slots
-      for (let i = 0; i < files.length && i < remainingSlots; i++) {
-        const file = files[i];
+      for (let file of files) {
+        // 1. Validate Size (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          this.showToast(`Image "${file.name}" exceeds the 5MB limit.`, 'error');
+          continue; 
+        }
 
         // VALIDATION: Check File Type specifically
         if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-          alert('Only JPG and PNG images are allowed.');
+          this.showToast(`Only jpg , png and jpeg files are allowed`, 'error');
           continue;
         }
 
-        this.selectedImages.push(file);
-
-        // Preview logic
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.imagePreviews.push(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-
-      if (files.length > remainingSlots) {
-        alert(
-          `Only the first ${remainingSlots} images were added. Max 5 allowed.`
-        );
+        if (this.selectedImages.length < 5) {
+          this.selectedImages.push(file);
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            this.imagePreviews.push(e.target.result);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          this.showToast('You can only upload up to 5 images.', 'error');
+          break;
+        }
       }
     }
-    // Reset input so same file can be selected again if needed
     event.target.value = '';
   }
 
@@ -5292,38 +5309,44 @@ export class PostAdComponent implements OnInit, OnDestroy {
 
   // 3. Submit Form
   onSubmit() {
-
-    // 1. Validate Rent (Prevent Huge Values)
-    if (this.formData.rentAmount > 1000000) { // Max 10 Lakhs
-      alert("Rent amount is too high. Please enter a valid amount.");
+    // Validations
+    if (this.formData.rentAmount > 1000000) {
+      this.showToast("Rent amount is too high. Please enter a valid amount.", 'error');
       return;
     }
-    // 2. Validate Floor
     if (this.formData.floorNumber > 200) {
-      alert("Floor number seems incorrect.");
+      this.showToast("Floor number seems incorrect.", 'error');
       return;
     }
-    // Extra safety check for negative numbers
     if (this.formData.rentAmount < 0 || this.formData.floorNumber < 0) {
-      alert('Values cannot be negative.');
+      this.showToast("Values cannot be negative.", 'error');
       return;
     }
 
     this.isSubmitting = true;
+    this.isProcessingGlobally = true;
 
-    this.postService
-      .createPost(this.adType, this.formData, this.selectedImages)
-      .subscribe({
-        next: (res) => {
-          alert('Ad Posted Successfully!');
+    // Call Backend
+    this.postService.createPost(this.adType, this.formData, this.selectedImages).subscribe({
+      next: (res) => {
+        this.showToast(`${this.adType === 'room' ? 'Room' : 'Roommate Request'} posted successfully!`, 'success');
+        
+        // Delay closing slightly so user sees the success toast
+        setTimeout(() => {
           this.isSubmitting = false;
-          this.close.emit(); // Close the modal
-        },
-        error: (err) => {
-          console.error(err);
-          alert('Failed to post ad.');
+          this.isProcessingGlobally = false;
+          this.closeModal();
+        }, 2000);
+      },
+      error: (err) => {
+        this.showToast(err.error?.message || "Failed to create post. Please try again.", 'error');
+        
+        setTimeout(() => {
           this.isSubmitting = false;
-        },
-      });
+          this.isProcessingGlobally = false;
+          this.closeModal();
+        }, 2000);
+      }
+    });
   }
 }

@@ -1,5 +1,12 @@
-<div class="modal-overlay">
-  <div class="modal-card shadow-lg glass-card">
+<div class="modal-overlay" [ngClass]="{'fade-out': isClosing}">
+  
+  <div class="global-blocker" *ngIf="isProcessingGlobally"></div>
+  <div class="custom-toast glass-card d-flex align-items-center gap-2" [ngClass]="toastType" *ngIf="toastMessage" style="z-index: 9999;">
+    <i class="bi fs-5" [ngClass]="toastType === 'error' ? 'bi-x-circle-fill text-danger' : 'bi-check-circle-fill text-success'"></i>
+    <span class="text-white small fw-medium">{{ toastMessage }}</span>
+  </div>
+
+  <div class="modal-card shadow-lg glass-card" [ngClass]="{'scale-out': isClosing}">
     
     <div class="modal-header d-flex justify-content-between align-items-center px-4 py-3 border-bottom custom-border">
       <h5 class="text-white fw-bold mb-0" style="font-size: 1.1rem;">
@@ -9,7 +16,7 @@
         </div>
         Post {{ adType === 'room' ? 'Room' : 'Roommate Request' }}
       </h5>
-      <button class="btn-close btn-close-white" style="font-size: 0.8rem;" (click)="close.emit()"></button>
+      <button class="btn-close btn-close-white" style="font-size: 0.8rem;" (click)="closeModal()"></button>
     </div>
 
     <div class="modal-body p-4 text-white custom-scrollbar">
@@ -17,175 +24,171 @@
 
         <div class="mb-4">
           <label class="form-label text-secondary small fw-bold text-uppercase tracking-wide mb-2">
-            <i class="bi bi-images text-light me-1"></i> Upload Photos (Max 5)<br><small style="font-size: 0.6rem;">Size should be less than 5MB</small>
+            <i class="bi bi-images text-light me-1"></i> Upload Photos (Max 5)
           </label>
-          <div class="d-flex gap-2 overflow-auto py-1 hide-scrollbar">
-            <label class="image-upload-box d-flex flex-column align-items-center justify-content-center rounded text-secondary transition-all" 
-                   style="min-width: 80px; height: 80px; cursor: pointer; background: rgba(0,0,0,0.3);">
-              <i class="bi bi-camera fs-5 mb-1 text-primary"></i>
-              <span style="font-size: 0.65rem; font-weight: 500;">Add Photo</span>
-              <input type="file" multiple accept="image/png, image/jpeg" hidden (change)="onFileSelected($event)">
-            </label>
+          
+          <div class="d-flex flex-wrap gap-3">
+            <div class="position-relative hover-reveal" *ngFor="let preview of imagePreviews; let i = index" style="width: 80px; height: 80px;">
+              <img [src]="preview" class="rounded-3 border custom-border w-100 h-100 object-fit-cover shadow-sm">
+              <button type="button" class="btn btn-danger delete-btn position-absolute top-0 end-0 translate-middle rounded-circle p-0 d-flex align-items-center justify-content-center shadow" (click)="removeImage(i)">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
 
-            <div *ngFor="let img of imagePreviews; let i = index" class="position-relative hover-reveal">
-              <img [src]="img" class="rounded object-fit-cover shadow-sm border custom-border" style="width: 80px; height: 80px;">
-              <button type="button" class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 m-1 d-flex align-items-center justify-content-center p-0 delete-btn" 
-                      (click)="removeImage(i)"><i class="bi bi-x"></i></button>
+            <div class="image-upload-box rounded-3 d-flex flex-column align-items-center justify-content-center position-relative transition-all cursor-pointer" 
+                 style="width: 80px; height: 80px; background: rgba(255,255,255,0.02);" 
+                 *ngIf="imagePreviews.length < 5">
+              <i class="bi bi-plus-lg fs-3 text-secondary"></i>
+              <input type="file" multiple accept=".png, .jpg, .jpeg" class="position-absolute w-100 h-100 opacity-0" style="cursor: pointer;" (change)="onImageSelect($event)">
             </div>
           </div>
-          <small class="text-danger mt-1 d-block" style="font-size: 0.7rem;" *ngIf="selectedImages.length >= 5">Maximum of 5 images reached.</small>
         </div>
 
-        <hr class="custom-border my-4 opacity-50">
-
-        <div class="row g-3 mb-4">
-          
+        <div class="row g-4 mb-4">
           <div class="col-md-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-map text-info me-1"></i> State</label>
-            <input type="text" class="form-control custom-modal-input" 
-                   [(ngModel)]="formData.state" name="state" required 
-                   placeholder="Select State..." list="stateList">
-            <datalist id="stateList">
-              <option *ngFor="let state of indianStates" [value]="state"></option>
-            </datalist>
+            <label class="form-label text-secondary small mb-1">State</label>
+            <select class="form-select custom-modal-input" [(ngModel)]="formData.state" name="state" required>
+              <option value="" disabled selected>Select State</option>
+              <option *ngFor="let state of indianStates" [value]="state">{{state}}</option>
+            </select>
           </div>
-
-          <div class="col-md-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-building text-success me-1"></i> City</label>
+          <div class="col-md-6 position-relative">
+            <label class="form-label text-secondary small mb-1">City</label>
+            
             <input type="text" class="form-control custom-modal-input" 
-                   [(ngModel)]="formData.city" name="city" required 
-                   placeholder="Type to search..." list="cityList" maxlength="30">
-            <datalist id="cityList">
-              <option *ngFor="let city of indianCities" [value]="city"></option>
-            </datalist>
+                   [(ngModel)]="formData.city" name="city" 
+                   placeholder="e.g. Indore" required
+                   autocomplete="off"
+                   (input)="filterCities()"
+                   (focus)="filterCities()"
+                   (blur)="hideDropdownDelay()">
+            
+            <ul class="city-dropdown custom-scrollbar" *ngIf="showCityDropdown">
+              <li class="city-item" *ngFor="let city of filteredCities" (click)="selectCity(city)">
+                <i class="bi bi-geo me-2 text-secondary"></i> {{ city }}
+              </li>
+            </ul>
           </div>
+        </div>
 
-          <div class="col-md-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-geo-alt text-danger me-1"></i> Location / Area</label>
-            <input type="text" class="form-control custom-modal-input" 
-                   [(ngModel)]="formData.location" name="loc" required 
-                   placeholder="e.g. Vijay Nagar" maxlength="40">
+        <div class="row g-4 mb-4">
+          <div class="col-md-8">
+            <label class="form-label text-secondary small mb-1">Street / Locality</label>
+            <input type="text" class="form-control custom-modal-input" [(ngModel)]="formData.location" name="location" placeholder="e.g. Vijay Nagar" required>
           </div>
-
-          <div class="col-md-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-mailbox text-warning me-1"></i> Pincode</label>
+          <div class="col-md-4">
+            <label class="form-label text-secondary small mb-1">Pincode</label>
             <input type="number" class="form-control custom-modal-input" 
                    [(ngModel)]="formData.pincode" name="pincode" required 
                    placeholder="e.g. 452010" min="100000" max="999999" 
                    (keydown)="preventNegative($event)">
+                   <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.pincode > 999999 || formData.pincode < 100000) && formData.pincode !== ''">Enter 6-digit valid pincode</small>
           </div>
+        </div>
 
-          <div class="col-md-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-house text-primary me-1"></i> BHK Type</label>
-            <select class="form-select custom-modal-input" [(ngModel)]="formData.bhkType" name="bhk">
-              <option value="1RK" class="bg-dark text-white">1 RK</option>
-              <option value="1BHK" class="bg-dark text-white">1 BHK</option>
-              <option value="2BHK" class="bg-dark text-white">2 BHK</option>
-              <option value="3BHK" class="bg-dark text-white">3 BHK</option>
+        <div class="row g-4 mb-4 border-top custom-border pt-4 mt-1">
+          <div class="col-md-4">
+            <label class="form-label text-secondary small mb-1">BHK Type</label>
+            <select class="form-select custom-modal-input" [(ngModel)]="formData.bhkType" name="bhkType" required>
+              <option value="" disabled selected>Select Type</option>
+              <option value="1RK">1 RK</option>
+              <option value="1BHK">1 BHK</option>
+              <option value="2BHK">2 BHK</option>
+              <option value="3BHK">3 BHK+</option>
             </select>
           </div>
-          
           <div class="col-md-6">
             <label class="form-label text-secondary small mb-1"><i class="bi bi-layers text-info me-1"></i> Floor No.</label>
             <input type="number" min="0" max="200" class="form-control custom-modal-input" 
                    [(ngModel)]="formData.floorNumber" name="floor" 
                    (keydown)="preventNegative($event)" required placeholder="e.g. 2">
+                   <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.pincode > 999999 || formData.pincode < 100000) && formData.pincode !== ''">Enter 6-digit valid pincode</small>
           </div>
-          
-          <div class="col-md-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-currency-rupee text-success me-1"></i> Rent / Month</label>
-            <input type="number" min="0" max="1000000" class="form-control custom-modal-input text-success fw-bold" 
-                   [(ngModel)]="formData.rentAmount" name="rent" 
-                   (keydown)="preventNegative($event)" required placeholder="0">
-            <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="formData.rentAmount > 1000000">Exceeds limit.</small>
+          <div class="col-md-4">
+            <label class="form-label text-secondary small mb-1">Rent Amount (₹)</label>
+            <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.rentAmount" name="rent" placeholder="Per month" required (keydown)="preventNegative($event)">
           </div>
-
-          <div class="col-md-6" *ngIf="adType === 'room'">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-safe text-warning me-1"></i> Security Deposit</label>
-            <input type="number" min="0" max="1000000" class="form-control custom-modal-input" 
-                   [(ngModel)]="formData.securityDeposit" name="deposit"
-                   (keydown)="preventNegative($event)" required placeholder="0">
+          <div class="col-md-4">
+            <label class="form-label text-secondary small mb-1">Security Deposit (₹)</label>
+            <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.securityDeposit" name="deposit" placeholder="Refundable" required (keydown)="preventNegative($event)">
           </div>
         </div>
 
-        <div *ngIf="adType === 'roommate'" class="row g-3 mb-4 p-3 rounded-3" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05);">
-          
-          <div class="col-md-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-gender-ambiguous text-primary me-1"></i> Looking For</label>
-            <select class="form-select custom-modal-input" [(ngModel)]="formData.lookingForGender" name="gender">
-              <option value="Male" class="bg-dark text-white">Male</option>
-              <option value="Female" class="bg-dark text-white">Female</option>
-            </select>
+        <ng-container *ngIf="adType === 'roommate'">
+          <div class="row g-4 mb-4 border-top custom-border pt-4 mt-1">
+            <div class="col-md-4">
+              <label class="form-label text-secondary small mb-1">Current Mates</label>
+              <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.currentRoommates" name="curr" required (keydown)="preventNegative($event)">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-secondary small mb-1">Needed</label>
+              <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.neededRoommates" name="need" required (keydown)="preventNegative($event)">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-secondary small mb-1">Gender</label>
+              <select class="form-select custom-modal-input" [(ngModel)]="formData.lookingForGender" name="gen" required>
+                <option value="" disabled selected>Preference</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Any">Any</option>
+              </select>
+            </div>
           </div>
-
-          <div class="col-md-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-cup-hot text-warning me-1"></i> Diet Preference</label>
-            <select class="form-select custom-modal-input" [(ngModel)]="formData.dietaryPreference" name="diet">
-              <option value="No Preference" class="bg-dark">No Preference</option>
-              <option value="Vegetarian" class="bg-dark">Vegetarian</option>
-              <option value="Non-Vegetarian" class="bg-dark">Non-Vegetarian</option>
-              <option value="Vegan" class="bg-dark">Vegan</option>
-            </select>
+          <div class="row g-4 mb-4">
+            <div class="col-md-6">
+              <label class="form-label text-secondary small mb-1">Dietary Preference</label>
+              <select class="form-select custom-modal-input" [(ngModel)]="formData.dietaryPreference" name="diet" required>
+                <option value="" disabled selected>Preference</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Non-Vegetarian">Non-Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Any">No Preference</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-secondary small mb-1">Religion Preference</label>
+              <select class="form-select custom-modal-input" [(ngModel)]="formData.religionPreference" name="rel" required>
+                <option value="" disabled selected>Preference</option>
+                <option value="Hindu">Hindu</option>
+                <option value="Muslim">Muslim</option>
+                <option value="Sikh">Sikh</option>
+                <option value="Christian">Christian</option>
+                <option value="Other">Other</option>
+                <option value="Any">No Preference</option>
+              </select>
+            </div>
           </div>
+        </ng-container>
 
-          <div class="col-md-12">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-book text-info me-1"></i> Religion Preference</label>
-            <select class="form-select custom-modal-input" [(ngModel)]="formData.religionPreference" name="religion">
-              <option value="No Preference" class="bg-dark">No Preference</option>
-              <option value="Hindu" class="bg-dark">Hindu</option>
-              <option value="Muslim" class="bg-dark">Muslim</option>
-              <option value="Sikh" class="bg-dark">Sikh</option>
-              <option value="Christian" class="bg-dark">Christian</option>
-              <option value="Other" class="bg-dark">Other</option>
-            </select>
-          </div>
-
-          <div class="col-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-person-check text-secondary me-1"></i> Current Roommates</label>
-            <input type="number" min="0" max="10" class="form-control custom-modal-input text-center" 
-                   [(ngModel)]="formData.currentRoommates" name="curr" (keydown)="preventNegative($event)" required>
-          </div>
-
-          <div class="col-6">
-            <label class="form-label text-secondary small mb-1"><i class="bi bi-person-add text-secondary me-1"></i> Needed Roommates</label>
-            <input type="number" min="1" max="10" class="form-control custom-modal-input text-center" 
-                   [(ngModel)]="formData.neededRoommates" name="needed" (keydown)="preventNegative($event)" required>
-          </div>
-        </div>
-
-        <hr class="custom-border my-4 opacity-50">
-
-        <div class="mb-4">
-          <label class="form-label text-secondary small fw-bold text-uppercase tracking-wide mb-3">
-            <i class="bi bi-stars text-warning me-1"></i> Amenities
-          </label>
-          <div class="row g-2">
+        <div class="mb-4 border-top custom-border pt-4 mt-1">
+          <label class="form-label text-secondary small fw-bold text-uppercase tracking-wide mb-3">Amenities</label>
+          <div class="row g-3">
             <div class="col-sm-6">
-              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 toggle-row">
-                <span class="small text-light"><i class="bi bi-lamp me-2 text-primary"></i>Furnished</span>
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3" style="background: rgba(255,255,255,0.03);">
+                <span class="small text-light"><i class="bi bi-lamp me-2 text-light"></i>Furnished</span>
                 <div class="form-check form-switch custom-switch mb-0">
                   <input class="form-check-input m-0" type="checkbox" [(ngModel)]="formData.isFurnished" name="furn">
                 </div>
               </div>
             </div>
             <div class="col-sm-6">
-              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 toggle-row">
-                <span class="small text-light"><i class="bi bi-car-front me-2 text-warning"></i>Parking</span>
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3" style="background: rgba(255,255,255,0.03);">
+                <span class="small text-light"><i class="bi bi-car-front me-2 text-light"></i>Parking</span>
                 <div class="form-check form-switch custom-switch mb-0">
                   <input class="form-check-input m-0" type="checkbox" [(ngModel)]="formData.hasParking" name="park">
                 </div>
               </div>
             </div>
             <div class="col-sm-6">
-              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 toggle-row">
-                <span class="small text-light"><i class="bi bi-droplet-fill me-2 text-info"></i>24x7 Water</span>
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3" style="background: rgba(255,255,255,0.03);">
+                <span class="small text-light"><i class="bi bi-droplet me-2 text-light"></i>24x7 Water</span>
                 <div class="form-check form-switch custom-switch mb-0">
                   <input class="form-check-input m-0" type="checkbox" [(ngModel)]="formData.waterSupply24x7" name="water">
                 </div>
               </div>
             </div>
             <div class="col-sm-6">
-              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 toggle-row">
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3" style="background: rgba(255,255,255,0.03);">
                 <span class="small text-light"><i class="bi bi-lightning-charge me-2 text-light"></i>Power Backup</span>
                 <div class="form-check form-switch custom-switch mb-0">
                   <input class="form-check-input m-0" type="checkbox" [(ngModel)]="formData.electricityBackup" name="elec">
@@ -197,7 +200,7 @@
 
         <div class="mb-4">
           <label class="form-label text-secondary small mb-1"><i class="bi bi-card-text text-success me-1"></i> Description</label>
-          <textarea class="form-control custom-modal-input" rows="3" 
+          <textarea class="form-control custom-modal-input" rows="2" 
             [(ngModel)]="formData.description" name="desc" 
             placeholder="Describe the property, rules, or what kind of person you are looking for..." 
             [maxlength]="DESC_MAX_LENGTH">
@@ -210,7 +213,7 @@
         <div class="d-grid mt-2">
           <button type="submit" class="btn btn-primary primary-btn fw-bold py-2 rounded-3" [disabled]="adForm.invalid || isSubmitting">
             <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
-            {{ isSubmitting ? 'Posting...' : 'Post ' + (adType === 'room' ? 'Room Ad' : 'Roommate Request') }}
+            {{ isSubmitting ? 'Posting...' : 'Publish Post' }}
           </button>
         </div>
 
