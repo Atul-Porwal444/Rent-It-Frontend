@@ -121,4 +121,8 @@ export class ListingService {
   toggleSavedRoommate(postId: number) {
     return this.http.post(`${this.SAVED_API_URL}roommate/${postId}`, {}, this.httpOptions);
   }
+
+  getRoomById(postId: number) : Observable<any> {
+    return this.http.get(`${this.API_URL}rooms/${postId}`, this.httpOptions);
+  }
 }
