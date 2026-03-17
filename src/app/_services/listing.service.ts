@@ -125,4 +125,8 @@ export class ListingService {
   getRoomById(postId: number) : Observable<any> {
     return this.http.get(`${this.API_URL}rooms/${postId}`, this.httpOptions);
   }
+
+  getRoommateById(postId: number) : Observable<any> {
+    return this.http.get(`${this.API_URL}roommates/${postId}`, this.httpOptions);
+  }
 }

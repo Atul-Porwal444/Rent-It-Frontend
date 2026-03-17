@@ -1,28 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListingService } from '../../_services/listing.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-roommate-details',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './roommate-details.component.html',
   styleUrl: './roommate-details.component.css'
 })
 export class RoommateDetailsComponent implements OnInit {
 
   roommate: any = null;
-  isLoading = true;
   currentImageIndex = 0;
   showContact: boolean = false;
 
-  isSaved: boolean = false;
+  // UI States
+  isLoading = true;
+  apiError = '';
   isSaving: boolean = false;
+  isProcessingGlobally = false;
+
+  // Toast Variables
+  toastMessage: string = '';
+  toastType: 'success' | 'error' = 'success';
 
   constructor(
       private route: ActivatedRoute,
       private listingService: ListingService,
-      private router: Router
+      private router: Router,
+      public authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -33,83 +41,35 @@ export class RoommateDetailsComponent implements OnInit {
         this.router.navigate(['/roommates']);
       }
   }
-  checkIfSaved(id: number) {
-    // if (this.authService.isLoggedIn()) {
-    //   this.listingService.checkSaveStatus('roommate', id).subscribe({
-    //     next: (status) => this.isSaved = status
-    //   });
-    // }
-    this.isSaved = true;
-  }
 
-  toggleSave() {
-    // 1. Redirect if not logged in
-    // if (!this.authService.isLoggedIn()) {
-    //   this.router.navigate(['/login']);
-    //   return;
-    // }
-
-    // 2. Prevent spam clicks
-    // if (this.isSaving) return; 
-
-    this.isSaving = true;
-    
-    // 3. Optimistic UI update (feels instant to the user)
-    this.isSaved = !this.isSaved;
-
-    // 4. API Call
-    // this.listingService.toggleSave('room', this.roommate.id).subscribe({
-    //   next: () => {
-    //     this.isSaving = false;
-    //   },
-    //   error: (err) => {
-    //     console.error(err);
-    //     // Revert if API fails
-    //     this.isSaved = !this.isSaved;
-    //     this.isSaving = false;
-    //     alert("Failed to save post");
-    //   }
-    // });
-    this.isSaving = false;
+  // --- Toast Notification ---
+  showToast(message: string, type: 'success' | 'error') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => this.toastMessage = '', 3500);
   }
 
   loadRoommateDetails(id: number) {
-    this.roommate = {
-      "bhkType" : "1BHK",
-      "city" : "Rau",
-      "currentRoommates" : 1,
-      "description" : "A person who keeps the things clean.",
-      "dietaryPreference" : "Vegetarian",
-      "electricityBackup" : false,
-      "floorNumber" : 1,
-      "furnished" : false,
-      "hasParking" : true,
-      "id" : 2,
-      "imageUrls" : [
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/dacc877c-961e-406f-b421-99e0c669c901_IMG-20251003-WA0012.jpg",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/a39bcd8f-8395-40bf-a62d-572018d339fd_WhatsApp Image 2026-02-19 at 12.58.10 AM.jpeg",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/e5fe2eda-06cd-4406-938f-094f7f20828f_Pi7_Passport_Photo-min.jpeg",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/266559d0-a941-4680-95d8-1b9495a03d77_Pi7_Passport_Photo.jpeg",
-        "https://fizubunuyqbpsybvudgc.supabase.co/storage/v1/object/public/images/d16707d3-3c34-42ee-97ac-380e8d8064c9_Atul.png"
-      ],
-      "location" : "18/B, Swastik Vihar Colony, Rau",
-      "lookingForGender" : "Male",
-      "neededRoommates" : 1,
-      "pincode" : "453331",
-      "postedOn" : "2026-02-19",
-      "religionPreference" : "Hindu",
-      "rentAmount" : 5500.0,
-      "state" : "Madhya Pradesh",
-      "userId" : 13,
-      "userName" : "Atul Porwal",
-      "userProfileImageUrl" : "https://ui-avatars.com/api/?background=random&name=Atul Porwal",
-      "userEmail" : "aatulporwal999@gmail.com",
-      "userPhone": "+91 8823858776",
-      "waterSupply24x7" : true
-    }
+    this.isLoading = true;
+    this.apiError = '';
+
+    // Fetching Roommate Details
+    this.listingService.getRoommateById(id).subscribe({
+      next: (res) => {
+        this.roommate = res;
+        this.finalizeLoading();
+      },
+      error: (err) => {
+        console.error("Failed to load roommate details", err);
+        this.apiError = "Unable to fetch the roommate details. The post may have been removed.";
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private finalizeLoading() {
     this.isLoading = false;
-    this.checkIfSaved(id);
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   setMainImage(index: number) {
@@ -120,9 +80,36 @@ export class RoommateDetailsComponent implements OnInit {
     this.showContact = true;
   }
 
+  toggleSave() {
+    if (!this.authService.isLoggedIn()) {
+      this.showToast("Please login to save posts.", 'error');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (this.isSaving) return;
+    this.isSaving = true;
+
+    // Call Backend API to toggle save status
+    this.listingService.toggleSave('roommate', this.roommate.id).subscribe({
+      next: (res) => {
+        // Toggle the UI state instantly
+        this.roommate.isSavedByUser = !this.roommate.isSavedByUser;
+        
+        const msg = this.roommate.isSavedByUser ? "Post saved successfully!" : "Post removed from favorites.";
+        this.showToast(msg, 'success');
+        this.isSaving = false;
+      },
+      error: (err) => {
+        console.error("Failed to toggle save status", err);
+        this.showToast("Unable to update saved status. Please try again.", 'error');
+        this.isSaving = false;
+      }
+    });
+  }
+
   contactOnWhatsApp() {
-    if(!this.roommate?.userPhone) {
-      alert("This user has not provided a phone number.");
+    if(!this.roommate?.showPhone) {
       return;
     }
 

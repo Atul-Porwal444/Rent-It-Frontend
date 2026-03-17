@@ -1,80 +1,162 @@
 .page-wrapper {
-    background-color: #121212;
-    min-height: calc(100vh - 65px);
-  }
-  .max-w-custom {
-    max-width: 1200px;
-  }
-  .custom-border {
-    border-color: #2a2a2a !important;
-  }
-  .bg-18 {
-    background-color: #181818;
-  }
-  
-  /* Thumbnail Gallery */
-  .thumbnail-wrapper {
-    width: 80px;
-    height: 80px;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  .thumbnail-wrapper:hover, .thumbnail-wrapper.border-white {
-    opacity: 1;
-  }
-  
-  /* Hide scrollbar for thumbnails */
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  
-  /* Overview boxes */
-  .overview-box {
-    background-color: #1a1a1a;
-    transition: transform 0.2s;
-  }
-  .overview-box:hover {
-    transform: translateY(-5px);
-    background-color: #222;
-  }
+  background-color: transparent;
+  min-height: calc(100vh - 65px);
+}
+.max-w-custom { max-width: 1200px; margin: 0 auto; }
+.custom-border { border-color: rgba(255, 255, 255, 0.08) !important; }
 
-  /* WhatsApp Premium Button */
-.whatsapp-btn {
-  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-  color: white;
-  border: none;
+/* 1. Glassmorphic Cards */
+.glass-card {
+  background-color: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* --- 2. PREMIUM IMAGE VIEWER (Handles any size perfectly) --- */
+.main-image-wrapper {
+  height: 450px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #050505;
+}
+
+/* The Blurred Backdrop fills the empty space for vertical images */
+.blurred-backdrop {
+  position: absolute;
+  top: -10%; left: -10%;
+  width: 120%; height: 120%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(30px) brightness(0.4);
+  z-index: 0;
+}
+
+/* The actual image fits perfectly without cropping */
+.main-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; 
+}
+
+/* Thumbnail Gallery */
+.thumbnail-wrapper {
+  width: 80px; height: 80px;
+  cursor: pointer; opacity: 0.5;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  background-color: #000;
+}
+.thumbnail-wrapper:hover, .thumbnail-wrapper.border-primary {
+  opacity: 1; transform: translateY(-2px);
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* --- 3. UNIQUE FLOATING SAVE BUTTON --- */
+.floating-save-btn {
+  position: absolute;
+  top: 20px; right: 20px;
+  z-index: 10;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-save-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+.floating-save-btn.saved {
+  background: #ffffff;
+  color: #dc3545;
+  border-color: #ffffff;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* --- 4. OVERVIEW BOXES --- */
+.overview-box {
+  background: rgba(255, 255, 255, 0.02);
   transition: all 0.3s ease;
 }
-
-.whatsapp-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4) !important;
-  color: white;
+.overview-box:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.whatsapp-btn:disabled {
-  background: #333;
-  color: #888;
-  transform: none;
-  box-shadow: none !important;
-  cursor: not-allowed;
+/* --- 5. CONTACT ACTION BUTTONS --- */
+.contact-action-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #a0a0a0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Animations & Spacing */
-.tracking-wide { letter-spacing: 2px; }
-.transition-all { transition: all 0.2s ease; }
-
-.animation-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
+.contact-action-btn.whatsapp:hover {
+  background: #25D366; color: #ffffff; border-color: #25D366;
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
+.contact-action-btn.phone:hover {
+  background: #0d6efd; color: #ffffff; border-color: #0d6efd;
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
 }
+
+.contact-action-btn.message:hover {
+  background: #a855f7; color: #ffffff; border-color: #a855f7;
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+}
+
+/* --- 6. TOASTS & ANIMATIONS --- */
+.custom-toast {
+  position: fixed; bottom: 25px; right: 25px; padding: 12px 20px; z-index: 9999;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  animation: slideInBottom 0.3s ease-out;
+  border-radius: 12px;
+}
+.custom-toast.success { border: 1px solid rgba(25, 135, 84, 0.4) !important; }
+.custom-toast.error { border: 1px solid rgba(220, 53, 69, 0.4) !important; }
+
+@keyframes slideInBottom { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.animate-slide-up { opacity: 0; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.animate-fade-in { animation: fadeIn 0.4s ease-in; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* --- 7. SHIMMER EFFECT --- */
+.skeleton {
+  background-color: #222222;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.0) 100%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+
+.bg-success-subtle { background-color: rgba(25, 135, 84, 0.15) !important; }
+.tracking-wide { letter-spacing: 0.05em; }
