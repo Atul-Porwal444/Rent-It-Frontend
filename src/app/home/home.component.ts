@@ -3,6 +3,7 @@ import { ListingService } from '../_services/listing.service';
 import { ListingCardComponent } from '../shared/listing-card/listing-card.component';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
   featuredRooms: any[]= [];
   isLoading = true;
 
-  constructor(private listingService: ListingService) {}
+  constructor(private listingService: ListingService, public authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadFeaturedRooms();

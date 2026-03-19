@@ -24,7 +24,7 @@ export class DashboardComponent {
 
   ngOnInit(): void {
 
-    const userStr = localStorage.getItem('userDetails');
+    const userStr = localStorage.getItem('user');
     if(userStr) {
       const user = JSON.parse(userStr);
       this.userName = user.name ? user.name.split(' ')[0] : 'User';

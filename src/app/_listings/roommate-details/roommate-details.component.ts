@@ -94,9 +94,9 @@ export class RoommateDetailsComponent implements OnInit {
     this.listingService.toggleSave('roommate', this.roommate.id).subscribe({
       next: (res) => {
         // Toggle the UI state instantly
-        this.roommate.isSavedByUser = !this.roommate.isSavedByUser;
+        this.roommate.savedByUser = !this.roommate.savedByUser;
         
-        const msg = this.roommate.isSavedByUser ? "Post saved successfully!" : "Post removed from favorites.";
+        const msg = this.roommate.savedByUser ? "Post saved successfully!" : "Post removed from favorites.";
         this.showToast(msg, 'success');
         this.isSaving = false;
       },

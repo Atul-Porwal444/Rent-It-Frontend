@@ -124,7 +124,7 @@
       </div>
     </section>
   
-    <section class="py-5 my-5">
+    <section *ngIf="!authService.isLoggedIn()" class="py-5 my-5">
       <div class="container max-w-custom">
         <div class="glass-card p-5 rounded-4 text-center position-relative overflow-hidden" style="border: 1px solid rgba(13, 110, 253, 0.3);">
           <div class="cta-glow position-absolute top-50 start-50 translate-middle"></div>

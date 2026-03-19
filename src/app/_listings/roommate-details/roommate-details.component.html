@@ -44,7 +44,7 @@
           
           <button class="floating-save-btn shadow-lg" [ngClass]="{'saved': roommate.isSavedByUser}" (click)="toggleSave()" [disabled]="isSaving" title="Save Post">
             <span *ngIf="isSaving" class="spinner-border spinner-border-sm text-danger"></span>
-            <i *ngIf="!isSaving" class="bi" [ngClass]="roommate.isSavedByUser ? 'bi-bookmark-heart-fill text-success' : 'bi-bookmark-heart'"></i>
+            <i *ngIf="!isSaving" class="bi" [ngClass]="roommate.savedByUser ? 'bi-bookmark-heart-fill text-success' : 'bi-bookmark-heart'"></i>
           </button>
         </div>
 

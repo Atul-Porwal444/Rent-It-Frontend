@@ -100,9 +100,9 @@ export class RoomDetailsComponent implements OnInit {
     this.listingService.toggleSave('room', this.room.id).subscribe({
       next: (res) => {
         // Toggle the UI state instantly
-        this.room.isSavedByUser = !this.room.isSavedByUser;
+        this.room.savedByUser = !this.room.savedByUser;
         
-        const msg = this.room.isSavedByUser ? "Post saved successfully!" : "Post removed from favorites.";
+        const msg = this.room.savedByUser ? "Post saved successfully!" : "Post removed from favorites.";
         this.showToast(msg, 'success');
         this.isSaving = false;
       },
