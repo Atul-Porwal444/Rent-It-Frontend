@@ -26,6 +26,7 @@
           </div>
       </div>
 
+
       <div class="mb-3">
         <label class="form-label text-light small mb-2">Email</label>
         <input 
@@ -44,7 +45,7 @@
           </div>
       </div>
 
-      <div class="mb-4">
+      <div class="mb-3">
         <label class="form-label text-light small mb-2">Password</label>
         <div class="position-relative">
           <input 
@@ -76,6 +77,30 @@
             • One special character
           </span>
         </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label text-light small mb-0">Target City</label><br>
+            <small class="text-info" style="font-size: 0.7rem;"> *Select preferred city of property </small>
+            <input type="text" class="form-control custom-auth-input pe-5" 
+                   [(ngModel)]="form.targetCity"
+                   name="targetCity" 
+                   #targetCity="ngModel"
+                   placeholder="e.g Indore" required
+                   autocomplete="off"
+                   required="Choose a city"
+                   (input)="filterCities()"
+                   (focus)="filterCities()"
+                   (blur)="hideDropdownDelay()">
+            
+            <ul class="city-dropdown custom-scrollbar" *ngIf="showCityDropdown">
+              <li class="city-item" *ngFor="let city of filteredCities" (click)="selectCity(city)">
+                <i class="bi bi-geo me-2 text-secondary"></i> {{ city }}
+              </li>
+            </ul>
+            <div *ngIf="targetCity.invalid && targetCity.touched" class="text-danger mt-1" style="font-size: 0.75rem;">
+              <span *ngIf="targetCity.errors?.['required']">Target City is required.</span>
+            </div>
       </div>
 
       <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger d-flex align-items-center py-2 small mb-3" *ngIf="errorMessage">

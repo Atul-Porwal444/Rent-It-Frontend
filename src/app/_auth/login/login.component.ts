@@ -43,6 +43,7 @@ export class LoginComponent {
           const userDetails = {
             id : response.data.id,
             name : response.data.name,
+            targetCity: response.data.targetCity,
             email: response.data.email,
             profileUrl: response.data.profileUrl,
             location: response.data.location,
@@ -55,7 +56,7 @@ export class LoginComponent {
 
           localStorage.setItem('user', JSON.stringify(userDetails));
           
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboard']);
         } else {
           this.isLoginFailed = true;
           this.errorMessage = "Login succeeded but token was missing.";

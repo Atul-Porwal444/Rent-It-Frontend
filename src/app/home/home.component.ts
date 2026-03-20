@@ -23,7 +23,15 @@ export class HomeComponent implements OnInit {
   }
 
   loadFeaturedRooms() {
-    this.listingService.getRooms({}, 0, 4, 'postedOn', 'desc').subscribe({
+    const storedUser = localStorage.getItem("user");
+    let user = {
+      searchQuery: ''
+    };
+    if(storedUser) {
+      user.searchQuery = JSON.parse(storedUser).targetCity;
+    }
+
+    this.listingService.getRooms(user, 0, 4, 'postedOn', 'desc').subscribe({
       next: (res) => {
         this.featuredRooms = res.content || [];
         this.isLoading = false;

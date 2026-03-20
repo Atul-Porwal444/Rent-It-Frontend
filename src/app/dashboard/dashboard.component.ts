@@ -25,13 +25,17 @@ export class DashboardComponent {
   ngOnInit(): void {
 
     const userStr = localStorage.getItem('user');
+    let filter = {
+      searchQuery: ''
+    };
     if(userStr) {
       const user = JSON.parse(userStr);
       this.userName = user.name ? user.name.split(' ')[0] : 'User';
+      filter.searchQuery = user.targetCity;
     }
 
     // Fetch page 0, size 10 
-    this.listingService.getRooms({} , 0, 10, 'postedOn', 'desc').subscribe({
+    this.listingService.getRooms(filter , 0, 10, 'postedOn', 'desc').subscribe({
       next: (res) => {
         this.featuredRooms = res.content || [];
         this.isLoadingRooms = false;
@@ -39,7 +43,7 @@ export class DashboardComponent {
       error: () => this.isLoadingRooms = false
     });
 
-    this.listingService.getRoommates({}, 0, 10, 'postedOn', 'desc').subscribe({
+    this.listingService.getRoommates(filter, 0, 10, 'postedOn', 'desc').subscribe({
       next: (res) => {
         this.featuredRoommates = res.content || [];
         this.isLoadingRoommates = false;
