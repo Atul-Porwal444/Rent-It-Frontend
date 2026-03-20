@@ -74,7 +74,22 @@ export class ProfileComponent implements OnInit {
 
   startEdit(field: keyof UserProfile) {
     this.editingField = field;
-    this.tempValue = this.user[field] || '';
+    let val = this.user[field] || '';
+    
+    // If editing phone, strip the '+91 ' so the user only edits the 10 digits
+    if (field === 'phone' && val.startsWith('+91')) {
+      val = val.replace('+91', '').trim();
+    }
+    
+    this.tempValue = val;
+  }
+
+  // Prevents user from typing letters in the phone input
+  restrictToNumbers(event: any) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+    }
   }
 
   cancelEdit() {
@@ -83,7 +98,20 @@ export class ProfileComponent implements OnInit {
   }
 
   saveEdit(field: keyof UserProfile) {
-    if (this.tempValue === this.user[field]) {
+    let finalValue = this.tempValue;
+
+    // Strict Phone Validation before saving
+    if (field === 'phone') {
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(this.tempValue)) {
+        this.showToast('Please enter a valid 10-digit phone number.', 'error');
+        return;
+      }
+      // Re-attach the +91 format for the backend
+      finalValue = `+91 ${this.tempValue}`;
+    }
+
+    if (finalValue === this.user[field]) {
       this.cancelEdit();
       return;
     }

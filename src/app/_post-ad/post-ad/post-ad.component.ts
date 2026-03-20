@@ -5214,7 +5214,7 @@ export class PostAdComponent implements OnInit, OnDestroy {
     description: '',
     
     // Roommate specifics
-    neededRoommates: null, currentRoommates: null,
+    neededRoommates: '', currentRoommates: '',
     lookingForGender: '', dietaryPreference: '', religionPreference: ''
   };
 
@@ -5267,7 +5267,7 @@ export class PostAdComponent implements OnInit, OnDestroy {
       for (let file of files) {
         // 1. Validate Size (5MB)
         if (file.size > 5 * 1024 * 1024) {
-          this.showToast(`Image "${file.name}" exceeds the 5MB limit.`, 'error');
+          this.showToast(`Image exceeds the 5MB limit.`, 'error');
           continue; 
         }
 

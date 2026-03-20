@@ -95,9 +95,30 @@
                   </ng-container>
 
                   <div *ngIf="editingField === field.key" class="flex-grow-1 pe-3">
-                    <input [type]="field.type" class="form-control custom-profile-input mb-2" [(ngModel)]="tempValue">
+                    
+                    <input *ngIf="field.key !== 'phone'" [type]="field.type" class="form-control custom-profile-input mb-2" [(ngModel)]="tempValue">
+
+                    <div *ngIf="field.key === 'phone'" class="mb-2">
+                      <div class="input-group custom-input-group">
+                        <span class="input-group-text phone-prefix">+91</span>
+                        <input type="text" class="form-control custom-profile-input phone-input" 
+                               [(ngModel)]="tempValue" 
+                               placeholder="10-digit number"
+                               maxlength="10" 
+                               pattern="^[0-9]{10}$"
+                               (keypress)="restrictToNumbers($event)">
+                      </div>
+                      <div *ngIf="tempValue && tempValue.length !== 10" class="text-danger mt-1" style="font-size: 0.7rem;">
+                        Phone number must be exactly 10 digits.
+                      </div>
+                    </div>
+
                     <div class="d-flex gap-2">
-                      <button class="btn btn-sm btn-primary primary-btn px-3 fw-medium" (click)="saveEdit($any(field.key))">Save</button>
+                      <button class="btn btn-sm btn-primary primary-btn px-3 fw-medium" 
+                              (click)="saveEdit($any(field.key))"
+                              [disabled]="field.key === 'phone' && tempValue.length !== 10">
+                        Save
+                      </button>
                       <button class="btn btn-sm btn-outline-secondary px-3" (click)="cancelEdit()">Cancel</button>
                     </div>
                   </div>

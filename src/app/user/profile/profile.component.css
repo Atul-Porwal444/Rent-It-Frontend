@@ -158,6 +158,19 @@
   box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); 
 }
 .custom-profile-input::placeholder { color: #555555; }
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(100%) contrast(80%);
+  font-size: large;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+input[type="date"]:not(:focus):in-range::-webkit-datetime-edit-year-field,
+input[type="date"]:not(:focus):in-range::-webkit-datetime-edit-month-field,
+input[type="date"]:not(:focus):in-range::-webkit-datetime-edit-day-field,
+input[type="date"]:not(:focus):in-range::-webkit-datetime-edit-text {
+  color: transparent;
+}
 
 .primary-btn {
   background-color: #1a73e8; 
@@ -195,3 +208,34 @@
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* --- CUSTOM PHONE INPUT PREFIX --- */
+.custom-input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.phone-prefix {
+  background-color: #121212 !important; 
+  border: 1px solid #333 !important;
+  border-right: none !important; /* Seamlessly attach to input */
+  color: #777 !important; /* Low color as requested */
+  font-weight: 600;
+  border-radius: 8px 0 0 8px !important;
+  padding: 0.5rem 0.8rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  user-select: none; /* Prevents user from selecting the text */
+}
+
+/* Adjust the right side input to complete the pill shape */
+.phone-input {
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* Maintain the blue glow effect nicely */
+.phone-input:focus {
+  border-left-color: #333; 
+}
+

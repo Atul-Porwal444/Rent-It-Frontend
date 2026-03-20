@@ -102,15 +102,17 @@
             <input type="number" min="0" max="200" class="form-control custom-modal-input" 
                    [(ngModel)]="formData.floorNumber" name="floor" 
                    (keydown)="preventNegative($event)" required placeholder="e.g. 2">
-                   <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.pincode > 999999 || formData.pincode < 100000) && formData.pincode !== ''">Enter 6-digit valid pincode</small>
+                   <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.floorNumber > 200)">Floor should be 1-200</small>
           </div>
           <div class="col-md-4">
             <label class="form-label text-secondary small mb-1">Rent Amount (₹)</label>
             <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.rentAmount" name="rent" placeholder="Per month" required (keydown)="preventNegative($event)">
+            <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.rentAmount > 1000000)">Amount should be less than 1000000</small>
           </div>
           <div class="col-md-4">
             <label class="form-label text-secondary small mb-1">Security Deposit (₹)</label>
             <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.securityDeposit" name="deposit" placeholder="Refundable" required (keydown)="preventNegative($event)">
+            <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.securityDeposit > 1000000)">Amount should be less than 1000000</small>
           </div>
         </div>
 
@@ -119,10 +121,12 @@
             <div class="col-md-4">
               <label class="form-label text-secondary small mb-1">Current Mates</label>
               <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.currentRoommates" name="curr" required (keydown)="preventNegative($event)">
+              <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.currentRoommates > 20 || formData.currentRoommates < 1) && formData.currentRoommates !== ''">Value must be 1-20</small>
             </div>
             <div class="col-md-4">
               <label class="form-label text-secondary small mb-1">Needed</label>
               <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.neededRoommates" name="need" required (keydown)="preventNegative($event)">
+              <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.neededRoommates > 20 || formData.neededRoommates < 1) && formData.neededRoommates !== ''">Value must be 1-20</small>
             </div>
             <div class="col-md-4">
               <label class="form-label text-secondary small mb-1">Gender</label>
@@ -130,7 +134,6 @@
                 <option value="" disabled selected>Preference</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
-                <option value="Any">Any</option>
               </select>
             </div>
           </div>
