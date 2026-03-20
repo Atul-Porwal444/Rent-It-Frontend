@@ -13,7 +13,7 @@
             
             <input type="text" 
                    class="form-control form-control-lg custom-search-input ps-5 rounded-pill" 
-                   placeholder="Search by city, area, or zip code..." 
+                   placeholder="Search by city" 
                    [(ngModel)]="filters.searchQuery"
                    (keyup.enter)="applyFilters()">
             
@@ -109,26 +109,53 @@
           </div>
         </div>
 
-        <div class="row g-4 mb-5" *ngIf="isLoading">
-          <div class="col-12 col-md-6 col-xl-4" *ngFor="let item of [1,2,3,4,5,6]">
-            <div class="glass-card overflow-hidden h-100 border-0 rounded-4" style="background-color: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.08);">
-              <div class="skeleton" style="height: 200px; width: 100%; border-radius: 0;"></div>
-              <div class="p-3">
-                <div class="skeleton mb-3" style="height: 18px; width: 30%; border-radius: 20px;"></div>
-                <div class="skeleton mb-2" style="height: 24px; width: 85%; border-radius: 6px;"></div>
-                <div class="skeleton mb-4" style="height: 14px; width: 60%; border-radius: 6px;"></div>
-                <div class="d-flex align-items-center mt-3 pt-3 border-top custom-border">
-                  <div class="skeleton rounded-circle me-2" style="width: 32px; height: 32px;"></div>
-                  <div class="skeleton" style="height: 14px; width: 40%; border-radius: 6px;"></div>
+        <div class="row g-4 justify-content-center mb-5" *ngIf="isLoading">
+          
+          <div class="col-12" *ngFor="let item of [1,2,3,4]">
+            
+            <div class="horizontal-card" style="background-color: rgba(20, 20, 20, 0.6);">
+              <div class="row g-0 h-100">
+                
+                <div class="col-md-5 col-lg-4 image-section skeleton" style="border-radius: 0;"></div>
+                
+                <div class="col-md-7 col-lg-8 d-flex flex-column p-4 detail-section">
+                  
+                  <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div class="d-flex gap-2">
+                      <div class="skeleton" style="width: 50px; height: 24px; border-radius: 6px;"></div>
+                      <div class="skeleton" style="width: 80px; height: 24px; border-radius: 6px;"></div>
+                    </div>
+                    <div class="skeleton" style="width: 100px; height: 16px; border-radius: 4px;"></div>
+                  </div>
+                  
+                  <div class="skeleton mb-3" style="height: 32px; width: 35%; border-radius: 6px;"></div>
+                  
+                  <div class="skeleton mb-4" style="height: 16px; width: 65%; border-radius: 4px;"></div>
+                  
+                  <div class="skeleton mb-2" style="height: 12px; width: 90%; border-radius: 4px;"></div>
+                  <div class="skeleton mb-4" style="height: 12px; width: 50%; border-radius: 4px;"></div>
+                  
+                  <div class="mt-auto pt-3 border-top custom-border d-flex flex-wrap gap-3">
+                    <div class="skeleton" style="height: 16px; width: 90px; border-radius: 4px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 110px; border-radius: 4px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 100px; border-radius: 4px;"></div>
+                  </div>
+
                 </div>
+
               </div>
             </div>
+            
           </div>
+
         </div>
 
-        <div class="row g-4 mb-5" *ngIf="!isLoading">
-          <div class="col-12 col-md-6 col-xl-4" *ngFor="let room of rooms">
-            <app-listing-card [data]="room" type="ROOM"></app-listing-card>
+        <div class="row g-4 justify-content-center" *ngIf="!isLoading">
+          <div class="col-12" *ngFor="let room of rooms">
+            <app-horizontal-listing-card 
+              [data]="room" 
+              [type]="'ROOM'">
+            </app-horizontal-listing-card>
           </div>
           
           <div *ngIf="rooms.length === 0" class="col-12 text-center py-5 my-5 bg-darker rounded-4 border custom-border animate-fade-in">

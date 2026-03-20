@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ListingCardComponent } from '../../shared/listing-card/listing-card.component';
 import { ListingService } from '../../_services/listing.service';
+import { HorizontalListingCardComponent } from '../../shared/horizontal-listing-card/horizontal-listing-card.component';
 
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [CommonModule, FormsModule, ListingCardComponent],
+  imports: [CommonModule, FormsModule, HorizontalListingCardComponent],
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.css']
 })
@@ -18,7 +19,7 @@ export class RoomsComponent implements OnInit {
 
   // Pagination Variables
   currentPage = 0;
-  pageSize = 12; // 12 is great for a 4-column or 3-column grid
+  pageSize = 10; // 12 is great for a 4-column or 3-column grid
   totalPages = 0;
   totalElements = 0;
 

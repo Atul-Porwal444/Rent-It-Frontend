@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ListingCardComponent } from '../../shared/listing-card/listing-card.component';
 import { ListingService } from '../../_services/listing.service';
 import { filter } from 'rxjs';
+import { HorizontalListingCardComponent } from '../../shared/horizontal-listing-card/horizontal-listing-card.component';
 
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [CommonModule, FormsModule, ListingCardComponent],
+  imports: [CommonModule, FormsModule, HorizontalListingCardComponent],
   templateUrl: './roommates.component.html',
   styleUrls: ['./roommates.component.css']
 })

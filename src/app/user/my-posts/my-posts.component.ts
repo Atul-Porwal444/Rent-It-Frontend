@@ -4,10 +4,11 @@ import e from 'express';
 import { CommonModule } from '@angular/common';
 import { ListingCardComponent } from '../../shared/listing-card/listing-card.component';
 import { RouterLink } from '@angular/router';
+import { HorizontalListingCardComponent } from '../../shared/horizontal-listing-card/horizontal-listing-card.component';
 
 @Component({
   selector: 'app-my-posts',
-  imports: [CommonModule, ListingCardComponent],
+  imports: [CommonModule, HorizontalListingCardComponent],
   templateUrl: './my-posts.component.html',
   styleUrl: './my-posts.component.css'
 })
@@ -77,26 +78,39 @@ export class MyPostsComponent implements OnInit {
   loadData() {
     this.isLoading = true;
 
+    let completedRequests = 0;
+
+    const checkCompletion = () => {
+      completedRequests++;
+      if (completedRequests >= 2) {
+        this.isLoading = false;
+      }
+    };
+
     // Simulating API delay for shimmer effect
     setTimeout(() => {
      
       this.listingService.getMyRooms().subscribe({
         next: (res) => {
           this.myRooms = res;
+          checkCompletion();
         },
         error: (err) => {
+          this.showToast("Unable to fetch posts", 'error');
+          checkCompletion();
         }
       });
 
       this.listingService.getMyRoommates().subscribe({
         next: (res) => {
           this.myRoommates = res;
+          checkCompletion();
         },
         error: (err) => {
-
+          this.showToast("Unable to fetch post", 'error');
+          checkCompletion();
         }
       });
-      this.isLoading = false;
     }, 800);
   }
 
@@ -111,9 +125,7 @@ export class MyPostsComponent implements OnInit {
 
   deletePost(type: 'room' | 'roommate', id: number, event: Event) {
     this.stopPropagation(event);
-
-    if(!confirm("Are you sure you want to delete this post? This cannot be undone.")) return;
-
+    
     this.isDeletingGlobally = true; // Blocks UI
 
     if(type === 'room') {

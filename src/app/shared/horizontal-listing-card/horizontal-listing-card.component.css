@@ -1,0 +1,102 @@
+/* Container sizing and styling */
+.horizontal-card {
+    width: 100%;
+    max-width: 900px; /* Expands nicely on desktop */
+    margin: 0 auto;
+    background-color: rgba(24, 24, 24, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .horizontal-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    background-color: rgba(30, 30, 30, 0.6);
+  }
+  
+  .custom-border { border-color: rgba(255, 255, 255, 0.08) !important; }
+  
+  /* Image Section */
+  .image-section {
+    background-color: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .blurred-backdrop {
+    position: absolute; top: -10%; left: -10%; width: 120%; height: 120%;
+    background-size: cover; background-position: center; filter: blur(25px) brightness(0.4); z-index: 0;
+  }
+  
+  .main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Keeps the whole image visible over the blurred background */
+  }
+  
+  /* Slider Controls */
+  .img-nav-btn {
+    background-color: rgba(0, 0, 0, 0.5); color: white; border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%; width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+    transition: all 0.2s; backdrop-filter: blur(4px);
+  }
+  .img-nav-btn:hover { background-color: #0d6efd; border-color: #0d6efd; transform: scale(1.1); }
+  
+  .img-indicator {
+    width: 6px; height: 6px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.4); transition: all 0.2s;
+  }
+  .img-indicator.active {
+    background-color: #0d6efd; width: 12px; border-radius: 4px;
+  }
+  
+  /* Badges */
+  .type-badge {
+    position: absolute; top: 15px; left: 15px; z-index: 10;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); color: #fff;
+    padding: 4px 10px; font-size: 0.7rem; font-weight: 600; border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2); text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .bg-success-subtle { background-color: rgba(25, 135, 84, 0.15) !important; }
+  .bg-danger-subtle { background-color: rgba(220, 53, 69, 0.15) !important; }
+  
+  /* Text Utilities */
+  .text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal;
+    line-height: 1.5;
+  }
+  
+  /* --- RESPONSIVE FIXED HEIGHTS --- */
+@media (min-width: 768px) {
+  .horizontal-card { 
+    height: 280px; /* STRICT fixed height for the whole card on desktop */
+  }
+  .row, .image-section, .detail-section { 
+    height: 100%; /* Forces all sections to respect the 280px limit */
+  }
+}
+
+@media (max-width: 767.98px) {
+  .image-section { 
+    height: 240px; /* STRICT fixed height just for the image on mobile */
+    width: 100%;
+    border-right: none; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+  }
+  /* The text section will flow naturally below the fixed image on phones */
+}

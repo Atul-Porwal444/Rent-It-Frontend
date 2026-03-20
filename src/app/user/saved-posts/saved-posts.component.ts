@@ -3,10 +3,11 @@ import { ListingService } from '../../_services/listing.service';
 import { CommonModule } from '@angular/common';
 import { ListingCardComponent } from '../../shared/listing-card/listing-card.component';
 import { RouterLink } from '@angular/router';
+import { HorizontalListingCardComponent } from '../../shared/horizontal-listing-card/horizontal-listing-card.component';
 
 @Component({
   selector: 'app-saved-posts',
-  imports: [CommonModule, ListingCardComponent, RouterLink],
+  imports: [CommonModule, RouterLink, HorizontalListingCardComponent],
   templateUrl: './saved-posts.component.html',
   styleUrl: './saved-posts.component.css'
 })
