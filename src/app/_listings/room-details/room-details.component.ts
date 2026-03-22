@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListingService } from '../../_services/listing.service';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import { AuthService } from '../../_services/auth.service';
   templateUrl: './room-details.component.html',
   styleUrl: './room-details.component.css'
 })
-export class RoomDetailsComponent implements OnInit {
+export class RoomDetailsComponent implements OnInit, OnDestroy {
 
   room: any = null;
   currentImageIndex = 0;
@@ -21,6 +21,11 @@ export class RoomDetailsComponent implements OnInit {
   apiError = '';
   isSaving: boolean = false; 
   isProcessingGlobally = false;
+
+  //contact owner variable
+  isOwner: boolean = false;
+  showDMModal: boolean = false;
+  isSendingDM: boolean = false;
 
   // Toast Variables
   toastMessage: string = '';
@@ -43,6 +48,10 @@ export class RoomDetailsComponent implements OnInit {
       }
   }
 
+  ngOnDestroy(): void {
+      document.body.style.overflow = '';
+  }
+
   // --- Toast Notification ---
   showToast(message: string, type: 'success' | 'error') {
     this.toastMessage = message;
@@ -58,12 +67,46 @@ export class RoomDetailsComponent implements OnInit {
     this.listingService.getRoomById(id).subscribe({
       next: (res) => {
         this.room = res;
+
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+          const currentUser = JSON.parse(userStr);
+          // Assuming your backend returns userEmail or userId to compare
+          this.isOwner = currentUser.id === this.room.userId; 
+        }
+
         this.finalizeLoading();
       },
       error: (err) => {
         console.error("Failed to load room details", err);
         this.apiError = "Unable to fetch the room details. The post may have been removed.";
         this.isLoading = false;
+      }
+    });
+  }
+
+  openDMModal() {
+    this.showDMModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+  
+  closeDMModal() {
+    this.showDMModal = false;
+    document.body.style.overflow = '';
+  }
+
+  confirmSendDM() {
+    this.isSendingDM = true;
+    this.listingService.contactOwner('room', this.room.id).subscribe({
+      next: () => {
+        this.showToast("Contact request sent! The owner will receive your email.", 'success');
+        this.isSendingDM = false;
+        this.closeDMModal();
+      },
+      error: (err) => {
+        this.showToast("Failed to send message. Please try again.", 'error');
+        this.isSendingDM = false;
+        this.closeDMModal();
       }
     });
   }

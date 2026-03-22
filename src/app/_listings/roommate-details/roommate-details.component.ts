@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ListingService } from '../../_services/listing.service';
 import { CommonModule } from '@angular/common';
@@ -10,11 +10,16 @@ import { AuthService } from '../../_services/auth.service';
   templateUrl: './roommate-details.component.html',
   styleUrl: './roommate-details.component.css'
 })
-export class RoommateDetailsComponent implements OnInit {
+export class RoommateDetailsComponent implements OnInit, OnDestroy {
 
   roommate: any = null;
   currentImageIndex = 0;
   showContact: boolean = false;
+
+   //contact owner variable
+   isOwner: boolean = false;
+   showDMModal: boolean = false;
+   isSendingDM: boolean = false;
 
   // UI States
   isLoading = true;
@@ -42,6 +47,10 @@ export class RoommateDetailsComponent implements OnInit {
       }
   }
 
+  ngOnDestroy(): void {
+    document.body.style.overflow = '';
+  }
+
   // --- Toast Notification ---
   showToast(message: string, type: 'success' | 'error') {
     this.toastMessage = message;
@@ -57,12 +66,46 @@ export class RoommateDetailsComponent implements OnInit {
     this.listingService.getRoommateById(id).subscribe({
       next: (res) => {
         this.roommate = res;
+
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+          const currentUser = JSON.parse(userStr);
+          // Assuming your backend returns userEmail or userId to compare
+          this.isOwner = currentUser.id === this.roommate.userId; 
+        }
+
         this.finalizeLoading();
       },
       error: (err) => {
         console.error("Failed to load roommate details", err);
         this.apiError = "Unable to fetch the roommate details. The post may have been removed.";
         this.isLoading = false;
+      }
+    });
+  }
+
+  openDMModal() {
+    this.showDMModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+  
+  closeDMModal() {
+    this.showDMModal = false;
+    document.body.style.overflow = '';
+  }
+
+  confirmSendDM() {
+    this.isSendingDM = true;
+    this.listingService.contactOwner('roommate', this.roommate.id).subscribe({
+      next: () => {
+        this.showToast("Contact request sent! The owner will receive your email.", 'success');
+        this.isSendingDM = false;
+        this.closeDMModal();
+      },
+      error: (err) => {
+        this.showToast("Failed to send message. Please try again.", 'error');
+        this.isSendingDM = false;
+        this.closeDMModal();
       }
     });
   }

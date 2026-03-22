@@ -11,6 +11,8 @@ export class ListingService {
 
   private readonly SAVED_API_URL = 'http://localhost:8080/user/save/';
 
+  private readonly NOTIFICATION_API_URL = 'http://localhost:8080/user/notifications/';
+
   private readonly token = localStorage.getItem('token');
 
   private httpOptions = {
@@ -128,5 +130,9 @@ export class ListingService {
 
   getRoommateById(postId: number) : Observable<any> {
     return this.http.get(`${this.API_URL}roommates/${postId}`, this.httpOptions);
+  }
+
+  contactOwner(type : 'room' | 'roommate', postId: number): Observable<any> {
+    return this.http.post(`${this.NOTIFICATION_API_URL}${type}/${postId}/contact`, {}, this.httpOptions);
   }
 }

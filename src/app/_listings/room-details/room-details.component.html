@@ -117,54 +117,89 @@
       <div class="col-lg-4">
         <div class="position-sticky" style="top: 100px;">
           
-          <div class="glass-card rounded-4 p-4 shadow-lg"> <div class="text-center mb-3">
+          <div class="glass-card rounded-4 p-4 shadow-lg">
+            
+            <div class="text-center mb-3">
               <img [src]="room.userProfileImageUrl" class="rounded-circle border border-2 border-secondary mb-2 shadow-sm" style="width: 70px; height: 70px; object-fit: cover;">
               <h5 class="text-white fw-bold mb-0 d-flex align-items-center justify-content-center gap-2">
                 {{ room.userName }}
                 <i class="bi bi-patch-check-fill text-success" style="font-size: 1.1rem;" title="Verified Owner"></i>
               </h5>
-              <span class="badge bg-secondary bg-opacity-25 text-light rounded-pill px-3 py-1 fw-normal" style="font-size: 0.7rem;">Property Owner</span>
+              <span class="text-secondary small">Property Owner</span>
             </div>
-
+      
             <hr class="custom-border my-3">
-
-            <h6 class="text-secondary small text-uppercase tracking-wide mb-3">Contact Details</h6>
-
-            <div *ngIf="room.showEmail" class="d-flex justify-content-between align-items-center mb-3 p-2 rounded-3" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
-              <span class="text-secondary small"><i class="bi bi-envelope me-2"></i>Email</span>
-              <span class="text-white small fw-medium">{{ room.userEmail }}</span>
-            </div>
-
-            <div class="d-flex justify-content-center gap-3 mt-2">
-              
-              <a *ngIf="room.showPhone" [href]="'https://wa.me/' + room.userPhone" target="_blank" class="contact-action-btn whatsapp" title="Chat on WhatsApp">
-                <i class="bi bi-whatsapp"></i>
-              </a>
-
-              <button *ngIf="room.showPhone" class="contact-action-btn phone" (click)="revealContact()" title="View Phone Number">
-                <i class="bi bi-telephone-fill"></i>
-              </button>
-
-              <button class="contact-action-btn message" title="Send Direct Message">
-                <i class="bi bi-chat-left-text-fill"></i>
-              </button>
-
-            </div>
-
-            <div *ngIf="showContact && room.showPhone" class="mt-3 text-center p-2 rounded-3 border custom-border animate-fade-in" style="background: rgba(25, 135, 84, 0.05);">
-              <span class="text-success fw-bold tracking-wide">{{ room.userPhone }}</span>
-            </div>
-
-            <div *ngIf="!room.showPhone && !room.showEmail" class="text-center p-3 rounded-3 border custom-border mt-3" style="background: rgba(255,255,255,0.02);">
-              <i class="bi bi-shield-lock text-secondary fs-4 mb-2 d-block"></i>
-              <p class="text-secondary small mb-0 lh-sm">The owner has chosen to hide their direct contact details. Please use direct messaging.</p>
-            </div>
+      
+            <ng-container *ngIf="!isOwner">
+              <h6 class="text-secondary small text-uppercase tracking-wide mb-3">Contact Details</h6>
+      
+              <div *ngIf="room.showEmail" class="d-flex justify-content-between align-items-center mb-3 p-2 rounded-3" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);">
+                <span class="text-secondary small"><i class="bi bi-envelope me-2"></i>Email</span>
+                <span class="text-white small fw-medium">{{ room.userEmail }}</span>
+              </div>
+      
+              <div class="d-flex justify-content-center gap-3 mt-2">
+                <a *ngIf="room.showPhone" [href]="'https://wa.me/' + room.userPhone" target="_blank" class="contact-action-btn whatsapp" title="Chat on WhatsApp">
+                  <i class="bi bi-whatsapp"></i>
+                </a>
+                <button *ngIf="room.showPhone" class="contact-action-btn phone" (click)="revealContact()" title="View Phone Number">
+                  <i class="bi bi-telephone-fill"></i>
+                </button>
+                
+                <button class="contact-action-btn message" title="Send Direct Message" (click)="openDMModal()">
+                  <i class="bi bi-chat-left-text-fill"></i>
+                </button>
+              </div>
+      
+              <div *ngIf="showContact && room.showPhone" class="mt-3 text-center p-2 rounded-3 border custom-border animate-fade-in" style="background: rgba(25, 135, 84, 0.05);">
+                <span class="text-success fw-bold tracking-wide">{{ room.userPhone }}</span>
+              </div>
+      
+              <div *ngIf="!room.showPhone && !room.showEmail" class="text-center p-3 rounded-3 border custom-border mt-3" style="background: rgba(255,255,255,0.02);">
+                <i class="bi bi-shield-lock text-secondary fs-4 mb-2 d-block"></i>
+                <p class="text-secondary small mb-0 lh-sm">The owner has chosen to hide their direct contact details. Please use direct messaging.</p>
+              </div>
+            </ng-container>
+      
+            <ng-container *ngIf="isOwner">
+              <div class="text-center p-3 rounded-3 border custom-border mt-2" style="background: rgb(0, 0, 0);">
+                <i class="bi bi-person-badge text-primary fs-3 mb-2 d-block"></i>
+                <h6 class="text-white mb-1">This is your post</h6>
+                <p class="text-secondary mb-3 lh-sm " style="font-size: 0.7rem;">You are currently viewing your own listing as it appears to others.</p>
+                <button class="btn btn-warning w-100 rounded-pill py-2 small button-hover" style="font-size: 0.9rem;" routerLink="/my-posts">
+                  Manage My Posts
+                </button>
+              </div>
+            </ng-container>
             
           </div>
-          
         </div>
       </div>
+    </div>
+  </div>
+</div>
 
+<div class="modal-backdrop" *ngIf="showDMModal">
+  <div class="custom-modal glass-card p-1 shadow-lg">
+    <div class="card-body p-4 p-sm-5 text-center">
+      <div class="mb-3">
+        <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" 
+             style="width: 70px; height: 70px; background-color: rgba(0, 0, 0, 0.15); color: #00a6ff;">
+          <i class="bi bi-chat-left-text-fill" style="font-size: 2rem;"></i>
+        </div>
+      </div>
+      <h4 class="fw-bold text-white">Send Contact Request?</h4>
+      <p class="text-secondary" style="font-size: 0.8rem;">
+        This will notify the owner that you are interested and share your registered email address so they can contact you directly.
+      </p>
+
+      <div class="d-flex flex-column gap-2">
+        <button class="btn py-2 text-white button-hover" style="background-color: #00a6ff;" (click)="confirmSendDM()" [disabled]="isSendingDM">
+          <span *ngIf="isSendingDM" class="spinner-border spinner-border-sm me-2"></span>
+          {{ isSendingDM ? 'Sending...' : 'Yes, Share My Email' }}
+        </button>
+        <button class="btn btn-outline-secondary py-2 border-0 button-hover" (click)="closeDMModal()" [disabled]="isSendingDM">Cancel</button>
+      </div>
     </div>
   </div>
 </div>
