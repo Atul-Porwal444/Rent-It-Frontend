@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
+import { AuthService } from './_services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,12 @@ import { FooterComponent } from './footer/footer.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'rentit-ui';
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.hydrateUser().subscribe();
+  }
 }

@@ -13,15 +13,6 @@ export class ListingService {
 
   private readonly NOTIFICATION_API_URL = 'http://localhost:8080/user/notifications/';
 
-  private readonly token = localStorage.getItem('token');
-
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type' : 'Application/json' ,
-      'Authorization' : `Bearer ${this.token}`
-    })
-  };
-
   constructor(private http: HttpClient) { }
 
   /**
@@ -85,54 +76,54 @@ export class ListingService {
   }
 
   toggleSave(type: 'room' | 'roommate', postId: number): Observable<any> {
-    return this.http.post(`${this.SAVED_API_URL}${type}/${postId}`, {}, this.httpOptions);
+    return this.http.post(`${this.SAVED_API_URL}${type}/${postId}`, {});
   }
 
   checkSaveStatus(type: 'room' | 'roommate', postId: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.SAVED_API_URL}${type}/${postId}/status`, this.httpOptions);
+    return this.http.get<boolean>(`${this.SAVED_API_URL}${type}/${postId}/status`);
   }
 
   getMySavedRooms(): Observable<any> {
-    return this.http.get(this.SAVED_API_URL + 'rooms', this.httpOptions);
+    return this.http.get(this.SAVED_API_URL + 'rooms');
   }
 
   getMySavedRoommates(): Observable<any> {
-    return this.http.get(this.SAVED_API_URL + 'roommates', this.httpOptions);
+    return this.http.get(this.SAVED_API_URL + 'roommates');
   }
 
   getMyRooms(): Observable<any> {
-    return this.http.get(this.API_URL + 'my-rooms', this.httpOptions);
+    return this.http.get(this.API_URL + 'my-rooms');
   }
 
   getMyRoommates(): Observable<any> {
-    return this.http.get(this.API_URL + 'my-roommates', this.httpOptions);
+    return this.http.get(this.API_URL + 'my-roommates');
   }
 
   deleteRoom(id: number): Observable<any> {
-    return this.http.delete(this.API_URL + 'rooms/' + id, this.httpOptions);
+    return this.http.delete(this.API_URL + 'rooms/' + id);
   }
 
   deleteRoommate(id: number): Observable<any> {
-    return this.http.delete(this.API_URL + 'roommates/' + id, this.httpOptions);
+    return this.http.delete(this.API_URL + 'roommates/' + id);
   }
 
   toggleSavedRoom(postId: number) {
-    return this.http.post(`${this.SAVED_API_URL}room/${postId}`, {}, this.httpOptions);
+    return this.http.post(`${this.SAVED_API_URL}room/${postId}`, {});
   }
 
   toggleSavedRoommate(postId: number) {
-    return this.http.post(`${this.SAVED_API_URL}roommate/${postId}`, {}, this.httpOptions);
+    return this.http.post(`${this.SAVED_API_URL}roommate/${postId}`, {});
   }
 
   getRoomById(postId: number) : Observable<any> {
-    return this.http.get(`${this.API_URL}rooms/${postId}`, this.httpOptions);
+    return this.http.get(`${this.API_URL}rooms/${postId}`);
   }
 
   getRoommateById(postId: number) : Observable<any> {
-    return this.http.get(`${this.API_URL}roommates/${postId}`, this.httpOptions);
+    return this.http.get(`${this.API_URL}roommates/${postId}`);
   }
 
   contactOwner(type : 'room' | 'roommate', postId: number): Observable<any> {
-    return this.http.post(`${this.NOTIFICATION_API_URL}${type}/${postId}/contact`, {}, this.httpOptions);
+    return this.http.post(`${this.NOTIFICATION_API_URL}${type}/${postId}/contact`, {});
   }
 }

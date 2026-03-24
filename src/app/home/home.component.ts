@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ListingService } from '../_services/listing.service';
 import { ListingCardComponent } from '../shared/listing-card/listing-card.component';
 import { NgFor, NgIf } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Route, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -16,22 +16,23 @@ export class HomeComponent implements OnInit {
   featuredRooms: any[]= [];
   isLoading = true;
 
-  constructor(private listingService: ListingService, public authService: AuthService) {}
+  constructor(private listingService: ListingService, public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
+    this.authService.currentUser$.subscribe({
+      next: (user) => {
+        // The moment the user data arrives from the backend, redirect them!
+        if (user) {
+          this.router.navigate(['/dashboard']);
+        }
+      }
+    });
     this.loadFeaturedRooms();
   }
 
   loadFeaturedRooms() {
-    const storedUser = localStorage.getItem("user");
-    let user = {
-      searchQuery: ''
-    };
-    if(storedUser) {
-      user.searchQuery = JSON.parse(storedUser).targetCity;
-    }
 
-    this.listingService.getRooms(user, 0, 4, 'postedOn', 'desc').subscribe({
+    this.listingService.getRooms({}, 0, 4, 'postedOn', 'desc').subscribe({
       next: (res) => {
         this.featuredRooms = res.content || [];
         this.isLoading = false;

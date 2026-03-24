@@ -34,34 +34,8 @@ export class LoginComponent {
 
     this.authService.login(this.form).subscribe({
       next: (response: any) => {
-
-        console.log(JSON.stringify(response));
-        
-        if (response.success && response.data?.token) {
-          localStorage.setItem('token', response.data.token);
-
-          const userDetails = {
-            id : response.data.id,
-            name : response.data.name,
-            targetCity: response.data.targetCity,
-            email: response.data.email,
-            profileUrl: response.data.profileUrl,
-            location: response.data.location,
-            gender: response.data.gender,
-            occupation: response.data.occupation,
-            dob: response.data.dob,
-            bio: response.data.bio,
-            phone: response.data.phone
-          }
-
-          localStorage.setItem('user', JSON.stringify(userDetails));
-          
-          this.router.navigate(['/dashboard']);
-        } else {
-          this.isLoginFailed = true;
-          this.errorMessage = "Login succeeded but token was missing.";
-          this.isLoading = false;
-        }
+        this.router.navigate(['/dashboard']);
+        this.isLoading = false;
       },
       error: (err) => {
         this.isLoading = false;

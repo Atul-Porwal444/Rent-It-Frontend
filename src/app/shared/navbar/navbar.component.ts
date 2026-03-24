@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { PostAdComponent } from '../../_post-ad/post-ad/post-ad.component';
 import { ProfileService } from '../../_services/profile.service';
@@ -8,7 +8,7 @@ import { ProfileService } from '../../_services/profile.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [NgIf, RouterLink, PostAdComponent, RouterLinkActive, NgClass, NgFor],
+  imports: [NgIf, RouterLink, PostAdComponent, RouterLinkActive, NgClass, NgFor, AsyncPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

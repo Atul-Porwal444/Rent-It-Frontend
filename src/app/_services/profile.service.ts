@@ -8,43 +8,32 @@ import {map,  Observable } from 'rxjs';
 export class ProfileService {
 
   private readonly API_URL = 'http://localhost:8080/user/update/';
-
   private readonly SETTING_API_URL = 'http://localhost:8080/user/settings/';
-
   private readonly NOTIFICATION_API_URL = 'http://localhost:8080/user/notifications/';
-
-  private readonly token = localStorage.getItem('token');
-
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type' : 'Application/json' ,
-      'Authorization' : `Bearer ${this.token}`
-    })
-  };
 
   constructor(private http: HttpClient) { }
 
   updateProfile(data : any) : Observable<any> {
-    return this.http.put(this.API_URL + 'profile', data, this.httpOptions);
+    return this.http.put(this.API_URL + 'profile', data);
   }
 
   uploadProfileImage(file: File) {
     const formData = new FormData();
     formData.append('image', file); 
 
-    return this.http.post(`${this.API_URL}profile-image`, formData, {headers: new HttpHeaders({'Authorization' : `Bearer ${this.token}`})}); 
+    return this.http.post(`${this.API_URL}profile-image`, formData); 
   }
 
   changePassword(data: any) : Observable<any> {
-    return this.http.post(this.API_URL + 'password', data, this.httpOptions);
+    return this.http.post(this.API_URL + 'password', data);
   }
 
   deleteAccount() : Observable<any> {
-    return this.http.delete(this.API_URL + 'delete-account', this.httpOptions);
+    return this.http.delete(this.API_URL + 'delete-account');
   }
 
   getSettings(): Observable<any> {
-    return this.http.get(`${this.SETTING_API_URL}setting`, this.httpOptions).pipe(
+    return this.http.get(`${this.SETTING_API_URL}setting`).pipe(
       map((dto: any) => {
         return {
           privacy: {
@@ -72,18 +61,18 @@ export class ProfileService {
       promotionalOffers: settings.notifications.promotionalOffers
     };
 
-    return this.http.put(`${this.SETTING_API_URL}update`, payloadDto, this.httpOptions);
+    return this.http.put(`${this.SETTING_API_URL}update`, payloadDto);
   }
 
   getNotifications(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.NOTIFICATION_API_URL}notification`, this.httpOptions);
+    return this.http.get<any[]>(`${this.NOTIFICATION_API_URL}notification`);
   }
 
   checkUnreadNotifications(): Observable<boolean> {
-    return this.http.get<boolean>(`${this.NOTIFICATION_API_URL}has-unread`, this.httpOptions);
+    return this.http.get<boolean>(`${this.NOTIFICATION_API_URL}has-unread`);
   }
 
   markAllNotificationsAsRead(): Observable<any> {
-    return this.http.put(`${this.NOTIFICATION_API_URL}read-all`, {}, this.httpOptions);
+    return this.http.put(`${this.NOTIFICATION_API_URL}read-all`, {});
   }
 }
