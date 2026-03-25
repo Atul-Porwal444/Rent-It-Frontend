@@ -9,9 +9,9 @@ export class AuthService {
 
   private readonly API_URL = 'http://localhost:8080/api/auth/';
 
-  private readonly PROFILE_API_URL = "http://localhost:8080/user/update/";
+  private readonly PROFILE_API_URL = "http://localhost:8080/api/user/";
 
-  private currentUserSubject = new BehaviorSubject<any>(null);
+  private currentUserSubject = new BehaviorSubject<any>(undefined);
 
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -88,6 +88,6 @@ export class AuthService {
   
   clearSession() {
     this.currentUserSubject.next(null);
-    this.http.post(`${this.API_URL}logout`, {});
+    this.http.post(`${this.API_URL}logout`, {}).subscribe();
   }
 }

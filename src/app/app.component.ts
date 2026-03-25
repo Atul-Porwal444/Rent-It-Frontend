@@ -5,17 +5,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { AuthService } from './_services/auth.service';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, HttpClientModule, FormsModule, FooterComponent],
+  imports: [RouterOutlet, NavbarComponent, HttpClientModule, FormsModule, FooterComponent, NgIf, AsyncPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
   title = 'rentit-ui';
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.hydrateUser().subscribe();

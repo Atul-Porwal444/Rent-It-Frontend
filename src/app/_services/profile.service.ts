@@ -7,25 +7,29 @@ import {map,  Observable } from 'rxjs';
 })
 export class ProfileService {
 
-  private readonly API_URL = 'http://localhost:8080/user/update/';
+  private readonly API_URL = 'http://localhost:8080/api/user/';
   private readonly SETTING_API_URL = 'http://localhost:8080/user/settings/';
   private readonly NOTIFICATION_API_URL = 'http://localhost:8080/user/notifications/';
 
   constructor(private http: HttpClient) { }
 
+  getProfile(): Observable<any> {
+    return this.http.get(`${this.API_URL}profile`);
+  }
+
   updateProfile(data : any) : Observable<any> {
-    return this.http.put(this.API_URL + 'profile', data);
+    return this.http.put(this.API_URL + 'update/profile', data);
   }
 
   uploadProfileImage(file: File) {
     const formData = new FormData();
     formData.append('image', file); 
 
-    return this.http.post(`${this.API_URL}profile-image`, formData); 
+    return this.http.post(`${this.API_URL}update/profile-image`, formData); 
   }
 
   changePassword(data: any) : Observable<any> {
-    return this.http.post(this.API_URL + 'password', data);
+    return this.http.post(this.API_URL + 'update/password', data);
   }
 
   deleteAccount() : Observable<any> {

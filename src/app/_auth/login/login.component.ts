@@ -34,8 +34,20 @@ export class LoginComponent {
 
     this.authService.login(this.form).subscribe({
       next: (response: any) => {
-        this.router.navigate(['/dashboard']);
-        this.isLoading = false;
+        
+        this.authService.hydrateUser().subscribe({
+          next: (user) => {
+            if(user) {
+              this.router.navigate(['/dashboard']);
+            }
+            else {
+              this.isLoginFailed = true;
+              this.errorMessage = "Failed to load the user profile";
+            }
+            this.isLoading = false;
+          }
+        })
+
       },
       error: (err) => {
         this.isLoading = false;

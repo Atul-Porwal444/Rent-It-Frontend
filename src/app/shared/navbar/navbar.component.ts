@@ -32,11 +32,11 @@ export class NavbarComponent implements OnInit {
   constructor(public authService: AuthService, private profileService: ProfileService ,private router: Router,) {}
 
   ngOnInit(): void {
-    this.loadUser();
-
-    if (this.authService.isLoggedIn()) { 
-      this.fetchNotificationsSilent(); 
-    }
+    this.authService.currentUser$.subscribe((user) => {
+      if(user) {
+        this.fetchNotificationsSilent();
+      }
+    });
   }
 
   loadUser() : void {

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../_services/profile.service';
 import { UserProfile } from '../../_models/user-profile';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -41,7 +42,7 @@ export class ProfileComponent implements OnInit {
 
   showPassword = false;
 
-  constructor(private profileService: ProfileService, private router: Router) { }
+  constructor(private profileService: ProfileService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.loadUserData();
@@ -49,15 +50,18 @@ export class ProfileComponent implements OnInit {
 
   loadUserData(): void {
     this.isPageLoading = true;
-    
-    // Simulating API delay to show shimmer effect
-    setTimeout(() => {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        this.user = { ...this.user, ...JSON.parse(storedUser) };
+
+    this.profileService.getProfile().subscribe({
+      next: (data : any) => {
+        this.user = { ...this.user, ...data };
+        this.isPageLoading = false;
+      },
+      error: (err) => {
+        this.showToast('Failed to load profile data. Please refresh.', 'error');
+        this.isPageLoading = false;
       }
-      this.isPageLoading = false;
-    }, 800);
+    })
+
   }
 
   // Toast Notification Helper
@@ -117,14 +121,20 @@ export class ProfileComponent implements OnInit {
     }
     
     this.isUpdatingGlobally = true; // Block UI and show bottom-right spinner
-    const payload = { ...this.user, [field]: this.tempValue };
+    const payload = { ...this.user, [field]: finalValue };
     delete (payload as any).email;
 
     this.profileService.updateProfile(payload).subscribe({
       next: (res) => {
-        this.user[field] = this.tempValue;
+        this.user[field] = finalValue as never;
         this.editingField = null;
-        this.updateLocalStorage(this.user);
+        
+        if (field === 'name') {
+          const currentState = this.authService.getCurrentUserValue();
+          if (currentState) {
+            this.authService.setSession({ ...currentState, name: finalValue });
+          }
+        }
         
         this.showToast('Profile updated successfully.', 'success');
         this.isUpdatingGlobally = false;
@@ -163,7 +173,12 @@ export class ProfileComponent implements OnInit {
 
         if (newImageUrl) {
           this.user.profileUrl = newImageUrl;      // Update UI immediately
-          this.updateLocalStorage(this.user);      // Save to local storage
+          
+          const currentState = this.authService.getCurrentUserValue();
+          if (currentState) {
+            this.authService.setSession({ ...currentState, profileUrl: newImageUrl });
+          }
+
           this.showToast("Profile image updated successfully!", 'success');
         } else {
           this.showToast("Image uploaded, but no URL returned.", 'error');
@@ -177,10 +192,6 @@ export class ProfileComponent implements OnInit {
         this.isUpdatingGlobally = false;
       }
     });
-  }
-
-  private updateLocalStorage(user : UserProfile) {
-    localStorage.setItem('user', JSON.stringify(user));
   }
 
  // --- Modal Logic ---

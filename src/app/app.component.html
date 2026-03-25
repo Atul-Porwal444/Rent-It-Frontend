@@ -2,10 +2,23 @@
   
   <app-navbar></app-navbar>
 
-  <main class="flex-grow-1">
-    <router-outlet></router-outlet>
-  </main>
+  <ng-container *ngIf="(authService.currentUser$ | async) !== undefined; else globalLoading">
+    <main class="flex-grow-1">
+      <router-outlet></router-outlet>
+    </main>
+  </ng-container>
 
   <app-footer></app-footer>
+
+  <ng-template #globalLoading>
+    <div class="d-flex flex-column justify-content-center align-items-center" style="min-height: calc(100vh - 200px);">
+      <div class="spinner-border shadow-sm" style="width: 3.5rem; height: 3.5rem; color: #55d1f7;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <h5 class="text-secondary mt-4 fw-bold tracking-wide" style="animation: pulse 1.5s infinite;">
+        Setting things up...
+      </h5>
+    </div>
+  </ng-template>
 
 </div>
