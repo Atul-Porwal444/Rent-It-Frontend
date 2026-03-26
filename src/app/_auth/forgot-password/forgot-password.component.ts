@@ -54,7 +54,6 @@ export class ForgotPasswordComponent implements OnDestroy {
     }, 1000);
   }
 
-  //Function for sending the OTP
   requestOtp(): void {
     this.isLoading = true;
     this.errorMessage = '';
@@ -73,7 +72,6 @@ export class ForgotPasswordComponent implements OnDestroy {
     });
 }
 
-  //Function for verify and reset password
   resetPassword(): void {
     this.errorMessage = '';
 
