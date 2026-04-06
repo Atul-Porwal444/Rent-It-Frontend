@@ -94,15 +94,15 @@
             </div>
           </li>
           
-        <div class="d-none d-lg-block border-end border-secondary mx-2" style="height: 20px;"></div>
+        <div *ngIf="authService.currentUser$ | async" class="d-none d-lg-block border-end border-secondary mx-2" style="height: 20px;"></div>
 
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="authService.currentUser$ | async">
           <button class="btn d-flex align-items-center gap-2 custom-btn-outline" (click)="openPostModal('room')">
             <i class="bi bi-house-add"></i> 
             <span class="d-none d-lg-inline">Post Room</span> 
           </button>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="authService.currentUser$ | async">
           <button class="btn d-flex align-items-center gap-2 custom-btn-filled" (click)="openPostModal('roommate')">
             <i class="bi bi-people"></i>
             <span class="d-none d-lg-inline">Post Roommate</span>

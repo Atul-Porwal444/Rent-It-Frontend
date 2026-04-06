@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
-import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-listing-card',
@@ -16,7 +15,7 @@ export class ListingCardComponent implements OnInit {
 
   currentImageIndex = 0;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
   
   ngOnInit(): void {}
 
@@ -28,10 +27,16 @@ export class ListingCardComponent implements OnInit {
   }
 
   handleClick() {
+
+    if(!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     if (this.type === 'ROOM') {
-      this.router.navigate(['/room-details', this.data.id]);
+      this.router.navigate(['/rooms', this.data.id]);
     } else {
-      this.router.navigate(['/roommate-details', this.data.id]);
+      this.router.navigate(['/roommates', this.data.id]);
     }
   }
 
