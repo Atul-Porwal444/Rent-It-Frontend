@@ -68,11 +68,15 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.room = res;
 
-        const userStr = localStorage.getItem('user');
-        if (userStr) {
-          const currentUser = JSON.parse(userStr);
-          // Assuming your backend returns userEmail or userId to compare
-          this.isOwner = currentUser.id === this.room.userId; 
+        if (!this.room.imageUrls || this.room.imageUrls.length === 0) {
+          this.room.imageUrls = ['https://placehold.co/800x500/1e1e1e/888888?text=No+Image+Provided'];
+        }
+
+        // 2. THE UPGRADE: Use AuthService state instead of localStorage
+        const currentUser = this.authService.getCurrentUserValue();
+        if (currentUser) {
+           // Compare the ID from the global state with the room's userId
+           this.isOwner = currentUser.id === this.room.userId; 
         }
 
         this.finalizeLoading();
