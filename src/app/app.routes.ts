@@ -20,7 +20,7 @@ export const routes: Routes = [
     { path : 'login', component: LoginComponent},
     { path : 'register', component: RegisterComponent},
     { path : 'verify-otp', component: VerifyOtpComponent},
-    { path: 'roommates/:id', component: RoommateDetailsComponent},
+    { path: 'roommates/:id', component: RoommateDetailsComponent, canActivate: [authGuard]},
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path : 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
     { path : 'profile', component: ProfileComponent, canActivate: [authGuard]},

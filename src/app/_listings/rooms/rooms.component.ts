@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ListingCardComponent } from '../../shared/listing-card/listing-card.component';
 import { ListingService } from '../../_services/listing.service';
 import { HorizontalListingCardComponent } from '../../shared/horizontal-listing-card/horizontal-listing-card.component';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-rooms',
@@ -13,23 +14,21 @@ import { HorizontalListingCardComponent } from '../../shared/horizontal-listing-
   styleUrls: ['./rooms.component.css']
 })
 export class RoomsComponent implements OnInit {
-
+  
   rooms: any[] = [];
   isLoading = true;
-
+  
   // Pagination Variables
   currentPage = 0;
   pageSize = 10; // 12 is great for a 4-column or 3-column grid
   totalPages = 0;
   totalElements = 0;
-
-  // Filter Variables (For UI - we can connect these to backend later)
-  searchCity = '';
+  
 
   filters = {
     searchQuery: '',
     bhkType: '',
-    maxRent: 50000,
+    maxRent: 1000000,
     isFurnished: false,
     hasParking: false,
     waterSupply24x7: false,
@@ -51,7 +50,7 @@ export class RoomsComponent implements OnInit {
 
   resetFilters() {
     this.filters = {
-      searchQuery: '', bhkType: '',  maxRent: 50000,
+      searchQuery: '', bhkType: '',  maxRent: 1000000,
       isFurnished: false, hasParking: false, waterSupply24x7: false, electricityBackup: false, sortBy: 'postedOn'
     };
     this.applyFilters();

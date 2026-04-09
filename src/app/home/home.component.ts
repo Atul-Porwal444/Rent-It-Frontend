@@ -32,9 +32,9 @@ export class HomeComponent implements OnInit {
 
   loadFeaturedRooms() {
 
-    this.listingService.getRooms({}, 0, 4, 'postedOn', 'desc').subscribe({
+    this.listingService.getPostCards('', 'room').subscribe({
       next: (res) => {
-        this.featuredRooms = res.content || [];
+        this.featuredRooms = res || [];
         this.isLoading = false;
       },
       error: (err) => {

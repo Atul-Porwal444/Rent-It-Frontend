@@ -75,6 +75,12 @@ export class ListingService {
     return this.http.get(this.API_URL + 'roommates', { params });
   }
 
+  getPostCards(targetCity: string, type: 'room' | 'roommate') : Observable<any> {
+    let params = new HttpParams().set('targetCity', targetCity);
+
+    return this.http.get(`${this.API_URL}${type}-cards`, { params });
+  }
+
   toggleSave(type: 'room' | 'roommate', postId: number): Observable<any> {
     return this.http.post(`${this.SAVED_API_URL}${type}/${postId}`, {});
   }

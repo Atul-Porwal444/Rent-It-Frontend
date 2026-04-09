@@ -3,6 +3,7 @@ import { ListingCardComponent } from '../shared/listing-card/listing-card.compon
 import { NgFor, NgIf } from '@angular/common';
 import { ListingService } from '../_services/listing.service';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,32 +21,23 @@ export class DashboardComponent {
   isLoadingRooms: boolean = true;
   isLoadingRoommates: boolean = true;
 
-  constructor(private listingService: ListingService) {}
+  constructor(private listingService: ListingService, private authService: AuthService) {}
 
   ngOnInit(): void {
-
-    const userStr = localStorage.getItem('user');
-    let filter = {
-      searchQuery: ''
-    };
-    if(userStr) {
-      const user = JSON.parse(userStr);
-      this.userName = user.name ? user.name.split(' ')[0] : 'User';
-      filter.searchQuery = user.targetCity;
-    }
+    const targetCity = this.authService.getCurrentUserValue().targetCity;
 
     // Fetch page 0, size 10 
-    this.listingService.getRooms(filter , 0, 10, 'postedOn', 'desc').subscribe({
+    this.listingService.getPostCards(targetCity, 'room').subscribe({
       next: (res) => {
-        this.featuredRooms = res.content || [];
+        this.featuredRooms = res || [];
         this.isLoadingRooms = false;
       },
       error: () => this.isLoadingRooms = false
     });
 
-    this.listingService.getRoommates(filter, 0, 10, 'postedOn', 'desc').subscribe({
+    this.listingService.getPostCards(targetCity, 'roommate').subscribe({
       next: (res) => {
-        this.featuredRoommates = res.content || [];
+        this.featuredRoommates = res || [];
         this.isLoadingRoommates = false;
       },
       error: () => this.isLoadingRoommates = false

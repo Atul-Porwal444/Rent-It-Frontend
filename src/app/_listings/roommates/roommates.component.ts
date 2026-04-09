@@ -31,7 +31,7 @@ export class RoommatesComponent implements OnInit {
     lookingForGender: '', // For Roommates
     dietaryPreference: '', // For Roommates
     religionPreference: '', // For Roommates
-    maxRent: 50000,
+    maxRent: 1000000,
     isFurnished: false,
     hasParking: false,
     waterSupply24x7: false,   // NEW
@@ -54,7 +54,7 @@ export class RoommatesComponent implements OnInit {
   resetFilters() {
     this.filters = {
       searchQuery: '', bhkType: '', lookingForGender: '', dietaryPreference: '', religionPreference: '', 
-      maxRent: 50000, isFurnished: false, hasParking: false, 
+      maxRent: 1000000, isFurnished: false, hasParking: false, 
       waterSupply24x7: false, electricityBackup: false,
       sortBy: 'postedOn'
     };

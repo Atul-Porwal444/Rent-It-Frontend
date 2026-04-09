@@ -14,9 +14,6 @@ import { ProfileService } from '../../_services/profile.service';
 })
 export class NavbarComponent implements OnInit {
 
-  userName: String = '';
-  userImage: String = '';
-
   isNotificationOpen = false;
   hasUnreadNotifications = true;
 
@@ -37,15 +34,6 @@ export class NavbarComponent implements OnInit {
         this.fetchNotificationsSilent();
       }
     });
-  }
-
-  loadUser() : void {
-    const userStr = localStorage.getItem('user');
-    if(userStr) {
-      const user = JSON.parse(userStr);
-      this.userName = user.name;
-      this.userImage = user.profileUrl || "public/default-avatar.ico";
-    }
   }
 
   // --- Notification Logic ---
@@ -172,7 +160,7 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login'], {replaceUrl: true});
+    this.router.navigate(['/'], {replaceUrl: true});
   }
 
   openPostModal(type: 'room' | 'roommate') {

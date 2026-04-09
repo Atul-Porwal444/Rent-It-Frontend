@@ -55,7 +55,7 @@ export class LoginComponent {
         
         const serverMessage = err.error?.message || "Login failed";
 
-        if (err.status === 403 && serverMessage === "Unverified account") {
+        if (err.status === 403 && serverMessage === "Account is not verified") {
           this.isUnverified = true;
           this.errorMessage = serverMessage;
         } 

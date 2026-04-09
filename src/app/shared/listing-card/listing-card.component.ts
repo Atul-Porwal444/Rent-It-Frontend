@@ -20,8 +20,8 @@ export class ListingCardComponent implements OnInit {
   ngOnInit(): void {}
 
   get currentImage(): string {
-    if (this.data?.imageUrls && this.data.imageUrls.length > 0) {
-      return this.data.imageUrls[0]; // Only fetch the first image
+    if (this.data?.imageUrls) {
+      return this.data.imageUrls; // Only fetch the first image
     }
     return 'https://placehold.co/600x400/1e1e1e/888888?text=No+Image';
   }
