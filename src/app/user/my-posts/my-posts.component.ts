@@ -22,6 +22,7 @@ export class MyPostsComponent implements OnInit {
   // UI States
   isLoading = true;
   isDeletingGlobally = false;
+  isUpdatingStatusGlobally = false;
 
   // Toast Variables
   toastMessage: string = '';
@@ -121,6 +122,42 @@ export class MyPostsComponent implements OnInit {
 
   stopPropagation(event: Event) {
     event.stopPropagation();
+  }
+
+  toggleStatus(type: 'room' | 'roommate', post: any, event: Event) {
+    this.stopPropagation(event);
+    this.isUpdatingStatusGlobally = true; // Block UI
+
+    if (type === 'room') {
+      this.listingService.updateRoomStatus(post.id).subscribe({
+        next: () => {
+          // Flip the status locally so the UI updates instantly
+          post.availabilityStatus = !post.availabilityStatus;
+          
+          const statusText = post.availabilityStatus ? 'Available' : 'Unavailable';
+          this.showToast(`Room marked as ${statusText}.`, 'success');
+          this.isUpdatingStatusGlobally = false;
+        },
+        error: (err) => {
+          this.showToast("Failed to update status. Please try again.", 'error');
+          this.isUpdatingStatusGlobally = false;
+        }
+      });
+    } else {
+      this.listingService.updateRoommateStatus(post.id).subscribe({
+        next: () => {
+          post.availabilityStatus = !post.availabilityStatus;
+          
+          const statusText = post.availabilityStatus ? 'Available' : 'Unavailable';
+          this.showToast(`Roommate post marked as ${statusText}.`, 'success');
+          this.isUpdatingStatusGlobally = false;
+        },
+        error: (err) => {
+          this.showToast("Failed to update status. Please try again.", 'error');
+          this.isUpdatingStatusGlobally = false;
+        }
+      });
+    }
   }
 
   deletePost(type: 'room' | 'roommate', id: number, event: Event) {

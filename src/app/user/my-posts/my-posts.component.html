@@ -1,9 +1,14 @@
 <div class="page-wrapper position-relative">
   
-  <div class="global-blocker" *ngIf="isDeletingGlobally"></div>
+  <div class="global-blocker" *ngIf="isDeletingGlobally || isUpdatingStatusGlobally"></div>
   <div class="updating-toast glass-card d-flex align-items-center gap-2" *ngIf="isDeletingGlobally">
     <span class="spinner-border spinner-border-sm text-danger"></span>
     <span class="text-white small fw-bold tracking-wide text-uppercase">Deleting...</span>
+  </div>
+
+  <div class="updating-toast glass-card d-flex align-items-center gap-2" *ngIf="isUpdatingStatusGlobally">
+    <span class="spinner-border spinner-border-sm text-primary"></span>
+    <span class="text-white small fw-bold tracking-wide text-uppercase">Updating Status...</span>
   </div>
 
   <div class="custom-toast glass-card d-flex align-items-center gap-2" [ngClass]="toastType" *ngIf="toastMessage">
@@ -84,8 +89,20 @@
       <div class="row g-4 justify-content-center" *ngIf="myRooms.length > 0">
         <div class="col-12" *ngFor="let room of paginatedRooms">
           <div class="position-relative hover-overlay-wrapper">
-            <app-horizontal-listing-card [data]="room" type="ROOM"></app-horizontal-listing-card>
             
+            <div [style.opacity]="room.availabilityStatus ? '1' : '0.6'" style="transition: opacity 0.3s;">
+              <app-horizontal-listing-card [data]="room" type="ROOM"></app-horizontal-listing-card>
+            </div>
+            
+            <button class="btn btn-sm shadow-lg position-absolute rounded-pill fw-bold d-flex align-items-center gap-2"
+                    [ngClass]="room.availabilityStatus ? 'btn-success' : 'btn-secondary'"
+                    style="top: 15px; left: 15px; z-index: 10; font-size: 0.75rem;"
+                    (click)="toggleStatus('room', room, $event)" 
+                    [title]="room.availabilityStatus ? 'Mark as Unavailable' : 'Mark as Available'">
+              <i class="bi" [ngClass]="room.availabilityStatus ? 'bi-eye-fill' : 'bi-eye-slash-fill'"></i>
+              {{ room.availabilityStatus ? 'Active' : 'Hidden' }}
+            </button>
+
             <button class="sleek-delete-btn shadow-lg" (click)="deletePost('room', room.id, $event)" title="Delete Post">
               <i class="bi bi-trash3-fill"></i>
             </button>
@@ -122,8 +139,20 @@
       <div class="row g-4 justify-content-center" *ngIf="myRoommates.length > 0">
         <div class="col-12" *ngFor="let person of paginatedRoommates">
           <div class="position-relative hover-overlay-wrapper">
-            <app-horizontal-listing-card [data]="person" type="ROOMMATE"></app-horizontal-listing-card>
             
+            <div [style.opacity]="person.availabilityStatus ? '1' : '0.6'" style="transition: opacity 0.3s;">
+               <app-horizontal-listing-card [data]="person" type="ROOMMATE"></app-horizontal-listing-card>
+            </div>
+            
+            <button class="btn btn-sm shadow-lg position-absolute rounded-pill fw-bold d-flex align-items-center gap-2"
+                    [ngClass]="person.availabilityStatus ? 'btn-success' : 'btn-secondary'"
+                    style="top: 15px; left: 15px; z-index: 10; font-size: 0.75rem;"
+                    (click)="toggleStatus('roommate', person, $event)" 
+                    [title]="person.availabilityStatus ? 'Mark as Unavailable' : 'Mark as Available'">
+              <i class="bi" [ngClass]="person.availabilityStatus ? 'bi-eye-fill' : 'bi-eye-slash-fill'"></i>
+              {{ person.availabilityStatus ? 'Active' : 'Hidden' }}
+            </button>
+
             <button class="sleek-delete-btn shadow-lg" (click)="deletePost('roommate', person.id, $event)" title="Delete Post">
               <i class="bi bi-trash3-fill"></i>
             </button>

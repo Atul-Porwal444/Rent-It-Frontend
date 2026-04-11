@@ -60,8 +60,8 @@
         <div class="mb-5 pb-4 border-bottom custom-border">
           <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
             <span class="badge bg-dark border border-secondary text-light px-3 py-2 rounded-pill">{{ roommate.bhkType }}</span>
-            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2">
-              <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> Roommate Needed
+            <span class="badge rounded-pill px-3 py-2" [ngClass]=" roommate.availabilityStatus ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
+              <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i> {{ roommate.availabilityStatus ? "Available" : "Unavailable"}}
             </span>
             <span class="text-secondary small ms-md-auto"><i class="bi bi-clock-history me-1"></i> Posted on {{ roommate.postedOn | date:'mediumDate' }}</span>
           </div>

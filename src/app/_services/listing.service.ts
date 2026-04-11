@@ -105,6 +105,14 @@ export class ListingService {
     return this.http.get(this.API_URL + 'my-roommates');
   }
 
+  updateRoomStatus(id: number): Observable<boolean> {
+    return this.http.put<boolean>(`${this.API_URL}update-room-status/${id}`, {});
+  }
+
+  updateRoommateStatus(id: number): Observable<boolean> {
+    return this.http.put<boolean>(`${this.API_URL}update-roommate-status/${id}`, {});
+  }
+
   deleteRoom(id: number): Observable<any> {
     return this.http.delete(this.API_URL + 'rooms/' + id);
   }
