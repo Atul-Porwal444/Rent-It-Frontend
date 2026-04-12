@@ -1,15 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private readonly API_URL = 'http://localhost:8080/api/auth/';
+  private readonly API_URL = `${environment.apiUrl}/api/auth/`;
 
-  private readonly PROFILE_API_URL = "http://localhost:8080/api/user/";
+  private readonly PROFILE_API_URL = `${environment.apiUrl}/api/user/`;
 
   private currentUserSubject = new BehaviorSubject<any>(undefined);
 

@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-listing-card',
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './listing-card.component.html',
   styleUrl: './listing-card.component.css'
 })

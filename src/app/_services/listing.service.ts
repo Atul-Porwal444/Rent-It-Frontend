@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, retry } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListingService {
 
-  private readonly API_URL = 'http://localhost:8080/user/list/';
+  private readonly API_URL = `${environment.apiUrl}/user/list/`;
 
-  private readonly SAVED_API_URL = 'http://localhost:8080/user/save/';
+  private readonly SAVED_API_URL = `${environment.apiUrl}/user/save/`;
 
-  private readonly NOTIFICATION_API_URL = 'http://localhost:8080/user/notifications/';
+  private readonly NOTIFICATION_API_URL = `${environment.apiUrl}/user/notifications/`;
 
   constructor(private http: HttpClient) { }
 

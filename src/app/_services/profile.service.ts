@@ -1,15 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {map,  Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
-  private readonly API_URL = 'http://localhost:8080/api/user/';
-  private readonly SETTING_API_URL = 'http://localhost:8080/user/settings/';
-  private readonly NOTIFICATION_API_URL = 'http://localhost:8080/user/notifications/';
+  private readonly API_URL = `${environment.apiUrl}/api/user/`;
+  private readonly SETTING_API_URL = `${environment.apiUrl}/user/settings/`;
+  private readonly NOTIFICATION_API_URL = `${environment.apiUrl}/user/notifications/`;
 
   constructor(private http: HttpClient) { }
 
