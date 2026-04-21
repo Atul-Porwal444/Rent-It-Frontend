@@ -54,8 +54,6 @@
             <span><i class="bi bi-lamp text-warning me-1"></i> {{ data.isFurnished ? 'Furnished' : 'Unfurnished' }}</span>
             <span class="text-secondary">•</span>
             <span><i class="bi bi-car-front text-info me-1"></i> {{ data.hasParking ? 'Parking' : 'No Parking' }}</span>
-            <span class="text-secondary">•</span>
-            <span><i class="bi bi-gender-ambiguous text-primary me-1"></i> {{ data.lookingForGender || 'Any' }} Allowed</span>
           </div>
   
           <div *ngIf="type === 'ROOMMATE'" class="d-flex flex-wrap align-items-center gap-3 text-light small fw-medium">

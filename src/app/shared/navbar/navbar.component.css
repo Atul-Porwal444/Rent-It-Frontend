@@ -1,3 +1,10 @@
+/* Prevent background scrolling when the mobile drawer is open */
+body:has(#navbarNav.show),
+body:has(#navbarNav.collapsing) {
+  overflow: hidden !important;
+}
+
+
 /* 1. The Main Dropdown Container */
 .custom-dropdown {
     width: 340px;          /* Match the width from the image */
@@ -308,19 +315,6 @@
 .text-purple { color: #a855f7; }
 .bg-purple-subtle { background-color: rgba(168, 85, 247, 0.15); }
 
-/* MOBILE MEDIA QUERY */
-@media (max-width: 768px) {
-  .notification-dropdown {
-    /* Pull it inward on mobile so it doesn't clip off the right edge */
-    right: -10px; 
-    
-    /* Optional: make it slightly shorter on mobile for a better feel */
-    height: 400px; 
-    
-    /* Change the animation origin since the position changed */
-    transform-origin: top center; 
-  }
-}
 
 .notification-dropdown.show {
   opacity: 1;
@@ -365,4 +359,89 @@
 /* Slight fix to ensure text doesn't overflow */
 .flex-grow-1 p {
   word-break: break-word;
+}
+
+/* ========================================= */
+/* --- MOBILE RESPONSIVE OPTIMIZATIONS --- */
+/* ========================================= */
+
+@media (max-width: 991.98px) {
+  
+  /* 1. Turn Bootstrap Collapse into a Smooth Right-Side Drawer */
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    right: -100%; 
+    width: 300px;
+    max-width: 85vw;
+    height: 100vh !important;
+    background-color: #0c0c0c; 
+    border-left: 1px solid #222;
+    z-index: 1045;
+    /* Adjusted padding to account for the new internal close button */
+    padding: 30px 20px 30px 20px; 
+    transition: right 0.3s ease-in-out !important;
+    display: block !important;
+    
+    /* SCROLL LOCK ENHANCEMENT */
+    overflow-y: auto;
+    overscroll-behavior: contain; /* Prevents scroll chaining to the body */
+    -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
+    
+    box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+  }
+  
+  .navbar-collapse.show,
+  .navbar-collapse.collapsing {
+    right: 0;
+  }
+
+  .navbar-toggler {
+    z-index: 1040;
+    position: relative;
+  }
+
+  /* 2. Format standard links */
+  .custom-link {
+    font-size: 0.8rem;
+    padding: 12px 10px !important;
+    display: block;
+    border-radius: 8px;
+    margin: 0 0 5px 0;
+  }
+  
+  .custom-link::after { display: none; }
+  .custom-link:hover { background-color: rgba(255, 255, 255, 0.05); }
+  
+  .custom-link.active-link {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    border-left: 4px solid #ffffff; 
+  }
+
+  /* 3. Outside Notification Dropdown */
+  .notification-dropdown {
+    position: fixed;
+    top: 70px;
+    left: 5%;
+    right: 5%;
+    width: 90vw !important;
+    max-width: none;
+    height: 60vh;
+    max-height: none;
+    z-index: 1060;
+    transform-origin: top center;
+  }
+
+  .mobile-notif-dropdown {
+    position: fixed;
+    top: 70px;
+    right: 5%; 
+    width: 90vw !important;
+    max-width: 400px; 
+    height: 60vh;
+    max-height: none;
+    z-index: 1060;
+    transform-origin: top right;
+  }
 }

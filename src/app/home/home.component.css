@@ -135,3 +135,67 @@
     background-position: -100% 0;
   }
 }
+
+/* ========================================= */
+/* --- MOBILE RESPONSIVE OPTIMIZATIONS --- */
+/* ========================================= */
+
+@media (max-width: 767.98px) {
+  
+  /* 1. Reduce Text Sizes */
+  .hero-title {
+    font-size: 2.25rem !important; 
+  }
+  .hero-subtitle {
+    font-size: 1rem !important;
+  }
+  .section-title {
+    font-size: 1.75rem !important;
+  }
+  .hero-section {
+    min-height: 60vh;
+    padding-top: 40px;
+  }
+
+  /* 2. Button Size Adjustments (Layout handled in HTML via Flexbox) */
+  .primary-btn, 
+  .custom-outline-btn {
+    font-size: 0.9rem !important;
+    white-space: nowrap; /* Prevents text from breaking into two lines */
+  }
+
+  /* 3 & 4. Horizontal Smooth Sliding for Cards */
+  .mobile-scroll-row {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+    scroll-snap-type: x mandatory;     /* Snaps cards into place */
+    padding-bottom: 1.5rem;            /* Space for shadow & scrollbar */
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Hide the ugly default scrollbar but keep functionality */
+  .mobile-scroll-row::-webkit-scrollbar {
+    display: none;
+  }
+  .mobile-scroll-row {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Force columns to act as horizontally scrolling cards */
+  .mobile-scroll-row > [class*="col-"] {
+    flex: 0 0 85% !important; /* Cards take up 85% of screen width */
+    max-width: 85% !important;
+    scroll-snap-align: center; /* Snaps the card to the center of the screen */
+  }
+
+  /* Add padding to the start/end so cards don't stick to screen edges */
+  .mobile-scroll-row::before,
+  .mobile-scroll-row::after {
+    content: '';
+    flex: 0 0 5%; 
+  }
+}
