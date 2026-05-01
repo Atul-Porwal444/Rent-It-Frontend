@@ -444,4 +444,8 @@ body:has(#navbarNav.collapsing) {
     z-index: 1060;
     transform-origin: top right;
   }
+
+  .mobile-full-btn {
+    width: 100% !important;
+  }
 }
