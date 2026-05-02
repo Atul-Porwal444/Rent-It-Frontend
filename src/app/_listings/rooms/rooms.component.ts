@@ -44,8 +44,9 @@ export class RoomsComponent implements OnInit {
 
   // Triggers automatically when any filter changes
   applyFilters() {
-    this.currentPage = 0; // Always reset to page 1 when filtering
+    this.currentPage = 0;
     this.loadRooms();
+    this.closeMobileFilters(); 
   }
 
   resetFilters() {
@@ -54,6 +55,30 @@ export class RoomsComponent implements OnInit {
       isFurnished: false, hasParking: false, waterSupply24x7: false, electricityBackup: false, sortBy: 'postedOn'
     };
     this.applyFilters();
+  }
+
+  closeMobileFilters() {
+    if (window.innerWidth < 992) {
+      const filterSidebar = document.getElementById('filterSidebarCollapse');
+      if (filterSidebar && filterSidebar.classList.contains('show')) {
+        // Clicks the hidden backdrop/toggle to trigger Bootstrap's close animation
+        const toggleBtn = document.querySelector('[data-bs-target="#filterSidebarCollapse"]') as HTMLElement;
+        if (toggleBtn) toggleBtn.click();
+      }
+    }
+  }
+
+  setSort(value: string) {
+    this.filters.sortBy = value;
+    this.sortDataFrontend();
+  }
+
+  // NEW: Helper for modern Sort Dropdown UI
+  getSortLabel() {
+    if (this.filters.sortBy === 'postedOn') return 'Newest First';
+    if (this.filters.sortBy === 'rentAmountAsc') return 'Price: Low to High';
+    if (this.filters.sortBy === 'rentAmountDesc') return 'Price: High to Low';
+    return 'Sort By';
   }
 
   loadRooms() {

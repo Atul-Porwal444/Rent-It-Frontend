@@ -1,26 +1,22 @@
 <div class="page-wrapper">
   
-  <div class="search-header-section border-bottom custom-border pb-4 pt-5 px-4">
+  <div class="search-header-section border-bottom custom-border pb-4 pt-5 px-3 px-md-4">
     <div class="container-fluid max-w-custom">
       <div class="row align-items-center">
-        <div class="col-md-5">
-          <h2 class="fw-bold text-white mb-1">Find Rooms</h2>
-          <p class="text-secondary small mb-md-0">Showing {{ totalElements }} available properties</p>
+        <div class="col-md-5 mb-3 mb-md-0">
+          <h2 class="fw-bold text-white mb-1 mobile-page-title">Find Rooms</h2>
+          <p class="text-secondary small mb-0 mobile-page-subtitle">Showing {{ totalElements }} available properties</p>
         </div>
+        
         <div class="col-md-7">
-          <div class="position-relative">
-            <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary fs-5"></i>
-            
-            <input type="text" 
-                   class="form-control form-control-lg custom-search-input ps-5 rounded-pill" 
-                   placeholder="Search by city" 
-                   [(ngModel)]="filters.searchQuery"
-                   (keyup.enter)="applyFilters()">
-            
-            <button class="btn btn-light position-absolute top-50 end-0 translate-middle-y me-2 rounded-pill px-4 fw-bold" 
-                    style="padding: 0.4rem;" 
-                    (click)="applyFilters()">
-              Search
+          <div class="d-flex gap-2 align-items-center">
+            <div class="position-relative flex-grow-1">
+              <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary fs-5"></i>
+              <input type="text" class="form-control form-control-lg custom-search-input ps-5 rounded-pill" placeholder="Search by city" [(ngModel)]="filters.searchQuery" (keyup.enter)="applyFilters()">
+              <button class="btn btn-light position-absolute top-50 end-0 translate-middle-y me-1 me-md-2 rounded-pill px-3 px-md-4 fw-bold mobile-search-btn" style="padding: 0.4rem;" (click)="applyFilters()">Search</button>
+            </div>
+            <button class="btn border border-secondary text-secondary rounded-circle d-lg-none flex-shrink-0 d-flex align-items-center justify-content-center hover-lift bg-darker" style="width: 48px; height: 48px;" type="button" data-bs-toggle="collapse" data-bs-target="#filterSidebarCollapse" aria-expanded="false" aria-controls="filterSidebarCollapse">
+              <i class="bi bi-sliders fs-5"></i>
             </button>
           </div>
         </div>
@@ -28,98 +24,103 @@
     </div>
   </div>
 
-  <div class="container-fluid max-w-custom py-4 px-4">
+  <div class="container-fluid max-w-custom py-4 px-3 px-md-4">
     <div class="row g-4">
       
       <div class="col-lg-3">
-        <div class="filter-sidebar p-4 rounded-4 sticky-top" style="top: 20px; z-index: 10;">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h6 class="fw-bold text-white mb-0"><i class="bi bi-sliders me-2"></i> Filters</h6>
-            <button class="btn btn-link text-secondary p-0 text-decoration-none small" (click)="resetFilters()">Clear All</button>
-          </div>
+        <div class="collapse d-lg-block" id="filterSidebarCollapse">
+          <!-- UPDATED: Added sticky-pc class -->
+          <div class="filter-sidebar p-4 rounded-4 mb-4 mb-lg-0 sticky-pc">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h6 class="fw-bold text-white mb-0"><i class="bi bi-sliders me-2"></i> Filters</h6>
+              <!-- UPDATED: Triggers resetFilters which now auto-closes drawer -->
+              <button class="btn btn-link text-secondary p-0 text-decoration-none small" (click)="resetFilters()">Clear All</button>
+            </div>
 
-          <div class="mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <label class="text-secondary small fw-bold text-uppercase tracking-wide mb-0">Max Rent</label>
-              <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">
-                Up to ₹{{ filters.maxRent }}
-              </span>
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="text-secondary small fw-bold text-uppercase tracking-wide mb-0">Max Rent</label>
+                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">Up to ₹{{ filters.maxRent }}</span>
+              </div>
+              <!-- UPDATED: (change) calls applyFilters which now auto-closes drawer -->
+              <input type="range" class="form-range custom-range" min="1000" max="100000" step="500" [(ngModel)]="filters.maxRent" (change)="applyFilters()"> 
+              <div class="d-flex justify-content-between mt-1">
+                <small class="text-secondary" style="font-size: 0.7rem;">₹1k</small>
+                <small class="text-secondary" style="font-size: 0.7rem;">₹100k</small>
+              </div>
             </div>
-            <input type="range" class="form-range custom-range" min="1000" max="100000" step="500" 
-                   [(ngModel)]="filters.maxRent" 
-                   (change)="applyFilters()"> <div class="d-flex justify-content-between mt-1">
-              <small class="text-secondary" style="font-size: 0.7rem;">₹1k</small>
-              <small class="text-secondary" style="font-size: 0.7rem;">₹1000k</small>
-            </div>
-          </div>
 
-          <div class="mb-4">
-            <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">BHK Type</label>
-            <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.bhkType" (ngModelChange)="applyFilters()">
-              <option value="">Any Configuration</option>
-              <option value="1RK">1 RK</option>
-              <option value="1BHK">1 BHK</option>
-              <option value="2BHK">2 BHK</option>
-              <option value="3BHK">3 BHK+</option>
-            </select>
-          </div>
+            <div class="mb-4">
+              <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">BHK Type</label>
+              <select class="form-select form-select-sm custom-input" [(ngModel)]="filters.bhkType" (ngModelChange)="applyFilters()">
+                <option value="">Any Configuration</option>
+                <option value="1RK">1 RK</option>
+                <option value="1BHK">1 BHK</option>
+                <option value="2BHK">2 BHK</option>
+                <option value="3BHK">3 BHK+</option>
+              </select>
+            </div>
 
-          <div class="mb-4">
-            <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Furnishing</label>
-            <div class="form-check custom-checkbox mb-2">
-              <input class="form-check-input" type="checkbox" id="furn1" [(ngModel)]="filters.isFurnished" (ngModelChange)="applyFilters()">
-              <label class="form-check-label text-light small" for="furn1">Fully Furnished</label>
+            <div class="mb-4">
+              <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Furnishing</label>
+              <div class="form-check custom-checkbox mb-2">
+                <input class="form-check-input" type="checkbox" id="furn1" [(ngModel)]="filters.isFurnished" (ngModelChange)="applyFilters()">
+                <label class="form-check-label text-light small" for="furn1">Fully Furnished</label>
+              </div>
             </div>
-          </div>
 
-          <div class="mb-4">
-            <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Amenities</label>
-            <div class="form-check custom-checkbox mb-2">
-              <input class="form-check-input" type="checkbox" id="am1" [(ngModel)]="filters.hasParking" (ngModelChange)="applyFilters()">
-              <label class="form-check-label text-light small" for="am1">Parking Available</label>
+            <div class="mb-4">
+              <label class="text-secondary small fw-bold mb-2 text-uppercase tracking-wide">Amenities</label>
+              <div class="form-check custom-checkbox mb-2">
+                <input class="form-check-input" type="checkbox" id="am1" [(ngModel)]="filters.hasParking" (ngModelChange)="applyFilters()">
+                <label class="form-check-label text-light small" for="am1">Parking Available</label>
+              </div>
+              <div class="form-check custom-checkbox mb-2">
+                <input class="form-check-input" type="checkbox" id="am2" [(ngModel)]="filters.waterSupply24x7" (ngModelChange)="applyFilters()">
+                <label class="form-check-label text-light small" for="am2">24x7 Water Supply</label>
+              </div>
+              <div class="form-check custom-checkbox mb-2">
+                <input class="form-check-input" type="checkbox" id="am3" [(ngModel)]="filters.electricityBackup" (ngModelChange)="applyFilters()">
+                <label class="form-check-label text-light small" for="am3">Power Backup</label>
+              </div>
             </div>
-            <div class="form-check custom-checkbox mb-2">
-              <input class="form-check-input" type="checkbox" id="am2" [(ngModel)]="filters.waterSupply24x7" (ngModelChange)="applyFilters()">
-              <label class="form-check-label text-light small" for="am2">24x7 Water Supply</label>
-            </div>
-            <div class="form-check custom-checkbox mb-2">
-              <input class="form-check-input" type="checkbox" id="am3" [(ngModel)]="filters.electricityBackup" (ngModelChange)="applyFilters()">
-              <label class="form-check-label text-light small" for="am3">Power Backup</label>
-            </div>
+            
+            <button class="btn custom-btn-filled w-100 d-lg-none mt-2 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#filterSidebarCollapse">
+              Apply & Close
+            </button>
+            
           </div>
-          
-          </div>
+        </div>
       </div>
 
       <div class="col-lg-9">
         
         <div class="d-flex justify-content-between align-items-center mb-3">
           <p class="text-secondary small mb-0">Showing results for your criteria</p>
+          
           <div class="d-flex align-items-center gap-2">
-            <label class="text-secondary small mb-0">Sort:</label>
+            <label class="text-secondary small mb-0 d-none d-sm-block">Sort:</label>
             
-            <select class="form-select form-select-sm custom-input border-0 bg-transparent text-white fw-bold shadow-none" 
-                    style="width: auto; cursor: pointer;" 
-                    [(ngModel)]="filters.sortBy" 
-                    (ngModelChange)="sortDataFrontend()">
-              <option value="postedOn" class="bg-dark text-white">Newest First</option>
-              <option value="rentAmountAsc" class="bg-dark text-white">Price: Low to High</option>
-              <option value="rentAmountDesc" class="bg-dark text-white">Price: High to Low</option>
-            </select>
+            <!-- NEW: Premium Sort Dropdown UI -->
+            <div class="dropdown">
+              <button class="btn custom-sort-btn dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-sort-down"></i> {{ getSortLabel() }}
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end custom-sort-menu shadow-lg border-0 mt-2">
+                <li><a class="dropdown-item d-flex justify-content-between align-items-center" (click)="setSort('postedOn')" [class.active-sort]="filters.sortBy === 'postedOn'">Newest First <i *ngIf="filters.sortBy === 'postedOn'" class="bi bi-check-lg text-primary"></i></a></li>
+                <li><a class="dropdown-item d-flex justify-content-between align-items-center" (click)="setSort('rentAmountAsc')" [class.active-sort]="filters.sortBy === 'rentAmountAsc'">Price: Low to High <i *ngIf="filters.sortBy === 'rentAmountAsc'" class="bi bi-check-lg text-primary"></i></a></li>
+                <li><a class="dropdown-item d-flex justify-content-between align-items-center" (click)="setSort('rentAmountDesc')" [class.active-sort]="filters.sortBy === 'rentAmountDesc'">Price: High to Low <i *ngIf="filters.sortBy === 'rentAmountDesc'" class="bi bi-check-lg text-primary"></i></a></li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div class="row g-4 justify-content-center mb-5" *ngIf="isLoading">
-          
           <div class="col-12" *ngFor="let item of [1,2,3,4]">
-            
             <div class="horizontal-card" style="background-color: rgba(20, 20, 20, 0.6);">
               <div class="row g-0 h-100">
-                
                 <div class="col-md-5 col-lg-4 image-section skeleton" style="border-radius: 0;"></div>
-                
                 <div class="col-md-7 col-lg-8 d-flex flex-column p-4 detail-section">
-                  
                   <div class="d-flex justify-content-between align-items-start mb-4">
                     <div class="d-flex gap-2">
                       <div class="skeleton" style="width: 50px; height: 24px; border-radius: 6px;"></div>
@@ -127,60 +128,39 @@
                     </div>
                     <div class="skeleton" style="width: 100px; height: 16px; border-radius: 4px;"></div>
                   </div>
-                  
                   <div class="skeleton mb-3" style="height: 32px; width: 35%; border-radius: 6px;"></div>
-                  
                   <div class="skeleton mb-4" style="height: 16px; width: 65%; border-radius: 4px;"></div>
-                  
                   <div class="skeleton mb-2" style="height: 12px; width: 90%; border-radius: 4px;"></div>
                   <div class="skeleton mb-4" style="height: 12px; width: 50%; border-radius: 4px;"></div>
-                  
                   <div class="mt-auto pt-3 border-top custom-border d-flex flex-wrap gap-3">
                     <div class="skeleton" style="height: 16px; width: 90px; border-radius: 4px;"></div>
                     <div class="skeleton" style="height: 16px; width: 110px; border-radius: 4px;"></div>
                     <div class="skeleton" style="height: 16px; width: 100px; border-radius: 4px;"></div>
                   </div>
-
                 </div>
-
               </div>
             </div>
-            
           </div>
-
         </div>
 
         <div class="row g-4 justify-content-center" *ngIf="!isLoading">
           <div class="col-12" *ngFor="let room of rooms">
-            <app-horizontal-listing-card 
-              [data]="room" 
-              [type]="'ROOM'">
-            </app-horizontal-listing-card>
+            <app-horizontal-listing-card [data]="room" [type]="'ROOM'"></app-horizontal-listing-card>
           </div>
           
           <div *ngIf="rooms.length === 0" class="col-12 text-center py-5 my-5 bg-darker rounded-4 border custom-border animate-fade-in">
             <i class="bi bi-search text-secondary opacity-50 mb-3 d-block" style="font-size: 3rem;"></i>
             <h4 class="text-white fw-bold">No rooms match your filters</h4>
-            <p class="text-secondary">Try broadening your search criteria, like increasing the max rent.</p>
+            <p class="text-secondary">Try broadening your search criteria.</p>
             <button class="btn btn-outline-light mt-3 px-4 rounded-pill" (click)="resetFilters()">Clear Filters</button>
           </div>
         </div>
 
         <div class="d-flex justify-content-center mt-4" *ngIf="totalPages > 1 && !isLoading">
           <ul class="pagination custom-pagination gap-2">
-            <li class="page-item" [class.disabled]="currentPage === 0">
-              <button class="page-link" (click)="prevPage()"><i class="bi bi-chevron-left"></i></button>
-            </li>
-            
-            <li class="page-item" *ngFor="let page of visiblePageNumbers" [class.active]="currentPage === page" [class.disabled]="page === '...'">
-              <button class="page-link" (click)="goToPage(page)">
-                {{ page === '...' ? '...' : $any(page) + 1 }}
-              </button>
-            </li>
-            
-            <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
-              <button class="page-link" (click)="nextPage()"><i class="bi bi-chevron-right"></i></button>
-            </li>
+            <li class="page-item" [class.disabled]="currentPage === 0"><button class="page-link" (click)="prevPage()"><i class="bi bi-chevron-left"></i></button></li>
+            <li class="page-item" *ngFor="let page of visiblePageNumbers" [class.active]="currentPage === page" [class.disabled]="page === '...'"><button class="page-link" (click)="goToPage(page)">{{ page === '...' ? '...' : $any(page) + 1 }}</button></li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages - 1"><button class="page-link" (click)="nextPage()"><i class="bi bi-chevron-right"></i></button></li>
           </ul>
         </div>
 

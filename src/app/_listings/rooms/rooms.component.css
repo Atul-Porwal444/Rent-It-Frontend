@@ -244,4 +244,93 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* --- PC STICKY FILTER --- */
+@media (min-width: 992px) {
+  .sticky-pc {
+    position: sticky !important;
+    top: 90px !important; /* Offset for your top navbar */
+    height: fit-content;
+  }
+}
+
+/* --- PREMIUM SORT DROPDOWN --- */
+.custom-sort-btn {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  transition: all 0.2s ease;
+}
+.custom-sort-btn:hover, .custom-sort-btn:focus {
+  background-color: #252525;
+  border-color: #555;
+  color: white;
+}
+.custom-sort-menu {
+  background-color: #1a1a1a;
+  border: 1px solid #333 !important;
+  border-radius: 12px;
+  min-width: 200px;
+}
+.custom-sort-menu .dropdown-item {
+  color: #b0b0b0;
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.custom-sort-menu .dropdown-item:hover {
+  background-color: #252525;
+  color: #ffffff;
+}
+.active-sort {
+  background-color: rgba(13, 110, 253, 0.1) !important;
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
 /* ... Keep rest of your custom checkboxes and pagination CSS ... */
+
+/* ========================================= */
+/* --- MOBILE RESPONSIVE OPTIMIZATIONS --- */
+/* ========================================= */
+
+@media (max-width: 991.98px) {
+  
+  /* 1. Reduce Font Sizes in the Header */
+  .mobile-page-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .mobile-page-subtitle {
+    font-size: 0.85rem !important;
+  }
+
+  /* Reduce overall header height padding */
+  .search-header-section {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  /* 2. Search Bar Adjustments to fit next to the filter button */
+  .custom-search-input {
+    font-size: 0.9rem !important;
+  }
+
+  /* Shrink the search button slightly so it doesn't overlap text */
+  .mobile-search-btn {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* 3. Disable sticky behavior on mobile so the collapse scrolls naturally */
+  .filter-sidebar {
+    position: relative !important;
+    top: 0 !important;
+    z-index: 1 !important;
+  }
+}

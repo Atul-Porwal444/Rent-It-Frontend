@@ -4,7 +4,7 @@
       <div class="col-md-5 col-lg-4 position-relative image-section">
         <div class="blurred-backdrop" [style.background-image]="'url(' + currentImage + ')'"></div>
         
-        <img [src]="currentImage" class="main-image position-relative z-1" alt="Listing Image">
+        <img [src]="currentImage" [hidden]="false" class="main-image position-relative z-1" alt="Listing Image">
         
         <div class="type-badge">{{ type === 'ROOM' ? 'Room' : 'Roommate Needed' }}</div>
   

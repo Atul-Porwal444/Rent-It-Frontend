@@ -46,11 +46,12 @@ export class RoommatesComponent implements OnInit {
   }
 
   applyFilters() {
-    this.currentPage = 0; // Always reset to page 1 when filtering
+    this.currentPage = 0; 
     this.loadRoommates();
+    this.closeMobileFilters();
   }
 
-  // 3. Clear all filters
+  // UPDATED: Added mobile auto-close logic
   resetFilters() {
     this.filters = {
       searchQuery: '', bhkType: '', lookingForGender: '', dietaryPreference: '', religionPreference: '', 
@@ -59,6 +60,31 @@ export class RoommatesComponent implements OnInit {
       sortBy: 'postedOn'
     };
     this.applyFilters();
+  }
+
+  // NEW: Closes the mobile filter drawer gracefully
+  closeMobileFilters() {
+    if (window.innerWidth < 992) {
+      const filterSidebar = document.getElementById('filterSidebarCollapse');
+      if (filterSidebar && filterSidebar.classList.contains('show')) {
+        const toggleBtn = document.querySelector('[data-bs-target="#filterSidebarCollapse"]') as HTMLElement;
+        if (toggleBtn) toggleBtn.click();
+      }
+    }
+  }
+
+  // NEW: Helper for modern Sort Dropdown UI
+  setSort(value: string) {
+    this.filters.sortBy = value;
+    this.sortDataFrontend();
+  }
+
+  // NEW: Helper for modern Sort Dropdown UI
+  getSortLabel() {
+    if (this.filters.sortBy === 'postedOn') return 'Newest First';
+    if (this.filters.sortBy === 'rentAmountAsc') return 'Budget: Low to High';
+    if (this.filters.sortBy === 'rentAmountDesc') return 'Budget: High to Low';
+    return 'Sort By';
   }
 
 
