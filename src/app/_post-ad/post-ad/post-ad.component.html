@@ -22,6 +22,7 @@
     <div class="modal-body p-4 text-white custom-scrollbar">
       <form (ngSubmit)="onSubmit()" #adForm="ngForm" autocomplete="off">
 
+        <!-- Image Upload Section -->
         <div class="mb-4">
           <label class="form-label text-secondary small fw-bold text-uppercase tracking-wide mb-2">
             <i class="bi bi-images text-light me-1"></i> Upload Photos (Max 5)
@@ -45,16 +46,23 @@
         </div>
 
         <div class="row g-4 mb-4">
+          <!-- UPDATED: Custom Dropdown for State -->
           <div class="col-md-6">
             <label class="form-label text-secondary small mb-1">State</label>
-            <select class="form-select custom-modal-input" [(ngModel)]="formData.state" name="state" required>
-              <option value="" disabled selected>Select State</option>
-              <option *ngFor="let state of indianStates" [value]="state">{{state}}</option>
-            </select>
+            <div class="dropdown custom-dropdown-container">
+              <button class="btn dropdown-toggle w-100 text-start custom-modal-input d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="{'text-white-50': !formData.state}">
+                {{ formData.state || 'Select State' }}
+              </button>
+              <ul class="dropdown-menu w-100 custom-sort-menu custom-scrollbar" style="max-height: 250px; overflow-y: auto;">
+                <li><a class="dropdown-item" (click)="formData.state = state" *ngFor="let state of indianStates">{{state}}</a></li>
+              </ul>
+            </div>
+            <!-- Hidden input to maintain required validation -->
+            <input type="hidden" name="state" [(ngModel)]="formData.state" required>
           </div>
+          
           <div class="col-md-6 position-relative">
             <label class="form-label text-secondary small mb-1">City</label>
-            
             <input type="text" class="form-control custom-modal-input" 
                    [(ngModel)]="formData.city" name="city" 
                    placeholder="e.g. Indore" required
@@ -62,7 +70,6 @@
                    (input)="filterCities()"
                    (focus)="filterCities()"
                    (blur)="hideDropdownDelay()">
-            
             <ul class="city-dropdown custom-scrollbar" *ngIf="showCityDropdown">
               <li class="city-item" *ngFor="let city of filteredCities" (click)="selectCity(city)">
                 <i class="bi bi-geo me-2 text-secondary"></i> {{ city }}
@@ -87,16 +94,23 @@
         </div>
 
         <div class="row g-4 mb-4 border-top custom-border pt-4 mt-1">
+          <!-- UPDATED: Custom Dropdown for BHK Type -->
           <div class="col-md-4">
             <label class="form-label text-secondary small mb-1">BHK Type</label>
-            <select class="form-select custom-modal-input" [(ngModel)]="formData.bhkType" name="bhkType" required>
-              <option value="" disabled selected>Select Type</option>
-              <option value="1RK">1 RK</option>
-              <option value="1BHK">1 BHK</option>
-              <option value="2BHK">2 BHK</option>
-              <option value="3BHK">3 BHK+</option>
-            </select>
+            <div class="dropdown custom-dropdown-container">
+              <button class="btn dropdown-toggle w-100 text-start custom-modal-input d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="{'text-white-50': !formData.bhkType}">
+                {{ formData.bhkType || 'Select Type' }}
+              </button>
+              <ul class="dropdown-menu w-100 custom-sort-menu">
+                <li><a class="dropdown-item" (click)="formData.bhkType = '1RK'">1 RK</a></li>
+                <li><a class="dropdown-item" (click)="formData.bhkType = '1BHK'">1 BHK</a></li>
+                <li><a class="dropdown-item" (click)="formData.bhkType = '2BHK'">2 BHK</a></li>
+                <li><a class="dropdown-item" (click)="formData.bhkType = '3BHK'">3 BHK+</a></li>
+              </ul>
+            </div>
+            <input type="hidden" name="bhkType" [(ngModel)]="formData.bhkType" required>
           </div>
+
           <div class="col-md-6">
             <label class="form-label text-secondary small mb-1"><i class="bi bi-layers text-info me-1"></i> Floor No.</label>
             <input type="number" min="0" max="200" class="form-control custom-modal-input" 
@@ -128,37 +142,55 @@
               <input type="number" class="form-control custom-modal-input" [(ngModel)]="formData.neededRoommates" name="need" required (keydown)="preventNegative($event)">
               <small class="text-danger d-block mt-1" style="font-size: 0.7rem;" *ngIf="(formData.neededRoommates > 20 || formData.neededRoommates < 1) && formData.neededRoommates !== ''">Value must be 1-20</small>
             </div>
+            <!-- UPDATED: Custom Dropdown for Gender -->
             <div class="col-md-4">
               <label class="form-label text-secondary small mb-1">Gender</label>
-              <select class="form-select custom-modal-input" [(ngModel)]="formData.lookingForGender" name="gen" required>
-                <option value="" disabled selected>Preference</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
+              <div class="dropdown custom-dropdown-container">
+                <button class="btn dropdown-toggle w-100 text-start custom-modal-input d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="{'text-white-50': !formData.lookingForGender}">
+                  {{ formData.lookingForGender || 'Preference' }}
+                </button>
+                <ul class="dropdown-menu w-100 custom-sort-menu">
+                  <li><a class="dropdown-item" (click)="formData.lookingForGender = 'Male'">Male</a></li>
+                  <li><a class="dropdown-item" (click)="formData.lookingForGender = 'Female'">Female</a></li>
+                </ul>
+              </div>
+              <input type="hidden" name="gen" [(ngModel)]="formData.lookingForGender" required>
             </div>
           </div>
           <div class="row g-4 mb-4">
+            <!-- UPDATED: Custom Dropdown for Diet -->
             <div class="col-md-6">
               <label class="form-label text-secondary small mb-1">Dietary Preference</label>
-              <select class="form-select custom-modal-input" [(ngModel)]="formData.dietaryPreference" name="diet" required>
-                <option value="" disabled selected>Preference</option>
-                <option value="Vegetarian">Vegetarian</option>
-                <option value="Non-Vegetarian">Non-Vegetarian</option>
-                <option value="Vegan">Vegan</option>
-                <option value="Any">No Preference</option>
-              </select>
+              <div class="dropdown custom-dropdown-container">
+                <button class="btn dropdown-toggle w-100 text-start custom-modal-input d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="{'text-white-50': !formData.dietaryPreference}">
+                  {{ formData.dietaryPreference || 'Preference' }}
+                </button>
+                <ul class="dropdown-menu w-100 custom-sort-menu">
+                  <li><a class="dropdown-item" (click)="formData.dietaryPreference = 'Vegetarian'">Vegetarian</a></li>
+                  <li><a class="dropdown-item" (click)="formData.dietaryPreference = 'Non-Vegetarian'">Non-Vegetarian</a></li>
+                  <li><a class="dropdown-item" (click)="formData.dietaryPreference = 'Vegan'">Vegan</a></li>
+                  <li><a class="dropdown-item" (click)="formData.dietaryPreference = 'Any'">No Preference</a></li>
+                </ul>
+              </div>
+              <input type="hidden" name="diet" [(ngModel)]="formData.dietaryPreference" required>
             </div>
+            <!-- UPDATED: Custom Dropdown for Religion -->
             <div class="col-md-6">
               <label class="form-label text-secondary small mb-1">Religion Preference</label>
-              <select class="form-select custom-modal-input" [(ngModel)]="formData.religionPreference" name="rel" required>
-                <option value="" disabled selected>Preference</option>
-                <option value="Hindu">Hindu</option>
-                <option value="Muslim">Muslim</option>
-                <option value="Sikh">Sikh</option>
-                <option value="Christian">Christian</option>
-                <option value="Other">Other</option>
-                <option value="Any">No Preference</option>
-              </select>
+              <div class="dropdown custom-dropdown-container">
+                <button class="btn dropdown-toggle w-100 text-start custom-modal-input d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" [ngClass]="{'text-white-50': !formData.religionPreference}">
+                  {{ formData.religionPreference || 'Preference' }}
+                </button>
+                <ul class="dropdown-menu w-100 custom-sort-menu">
+                  <li><a class="dropdown-item" (click)="formData.religionPreference = 'Hindu'">Hindu</a></li>
+                  <li><a class="dropdown-item" (click)="formData.religionPreference = 'Muslim'">Muslim</a></li>
+                  <li><a class="dropdown-item" (click)="formData.religionPreference = 'Sikh'">Sikh</a></li>
+                  <li><a class="dropdown-item" (click)="formData.religionPreference = 'Christian'">Christian</a></li>
+                  <li><a class="dropdown-item" (click)="formData.religionPreference = 'Other'">Other</a></li>
+                  <li><a class="dropdown-item" (click)="formData.religionPreference = 'Any'">No Preference</a></li>
+                </ul>
+              </div>
+              <input type="hidden" name="rel" [(ngModel)]="formData.religionPreference" required>
             </div>
           </div>
         </ng-container>

@@ -56,7 +56,8 @@
   transition: all 0.3s ease;
 }
 
-.custom-modal-input:focus {
+.custom-modal-input:focus,
+.custom-modal-input[aria-expanded="true"] {
   border-bottom: 2px solid #ffffff;
   box-shadow: none;
   outline: none;
@@ -66,10 +67,43 @@
   color: rgba(255, 255, 255, 0.3);
 }
 
-/* Ensure <select> dropdown items are readable against black */
-.custom-modal-input option {
-  background-color: #1e1e1e;
-  color: #ffffff;
+/* --- CUSTOM DROPDOWN MENUS (Replacing <select>) --- */
+/* Remove default Bootstrap dropdown toggle arrow */
+.custom-dropdown-container .dropdown-toggle::after {
+  display: none;
+}
+
+/* Add custom white chevron */
+.custom-dropdown-container .dropdown-toggle {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.2rem center;
+  background-size: 16px 12px;
+  padding-right: 1.5rem !important; /* Make room for the arrow */
+}
+
+/* Premium Dark Dropdown Menu Styling */
+.custom-sort-menu {
+  background-color: #1a1a1a;
+  border: 1px solid #333 !important;
+  border-radius: 12px;
+  margin-top: 5px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  z-index: 1060;
+}
+
+.custom-sort-menu .dropdown-item {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.custom-sort-menu .dropdown-item:hover,
+.custom-sort-menu .dropdown-item:focus {
+  background-color: rgba(13, 110, 253, 0.15) !important; /* Sleek blue highlight */
+  color: #ffffff !important;
 }
 
 /* Chrome/Safari Autocomplete fix */
@@ -163,7 +197,7 @@ input[type="number"] {
   top: 100%;
   left: 0;
   width: 100%;
-  max-height: 180px; /* Fits about 5 items before scrolling */
+  max-height: 180px;
   overflow-y: auto;
   background-color: #1a1a1a;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -171,7 +205,7 @@ input[type="number"] {
   padding: 0;
   margin-top: 4px;
   list-style: none;
-  z-index: 1060; /* Ensures it floats above the lower input fields */
+  z-index: 1060;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.2s ease-in-out;
 }
@@ -190,6 +224,37 @@ input[type="number"] {
 }
 
 .city-item:hover {
-  background-color: rgba(13, 110, 253, 0.15); /* Sleek blue highlight */
+  background-color: rgba(13, 110, 253, 0.15);
   color: #ffffff;
+}
+
+/* ========================================= */
+/* --- MOBILE RESPONSIVE OPTIMIZATIONS --- */
+/* ========================================= */
+
+@media (max-width: 991.98px) {
+  
+  /* Fix Toast Position (Center-Bottom full width) */
+  .custom-toast {
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: 90vw !important;
+    justify-content: center;
+    bottom: 30px !important;
+    animation: slideInBottomMobile 0.3s ease-out !important;
+  }
+
+  /* Make Delete Buttons Always Visible & Easier to Tap on Mobile */
+  .delete-btn {
+    opacity: 1 !important;
+    width: 28px !important;  
+    height: 28px !important;
+  }
+}
+
+/* Custom Centered Animation for the Mobile Toast */
+@keyframes slideInBottomMobile {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
 }
