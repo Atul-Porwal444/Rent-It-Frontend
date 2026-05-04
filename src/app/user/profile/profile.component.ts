@@ -132,7 +132,7 @@ export class ProfileComponent implements OnInit {
         if (field === 'name') {
           const currentState = this.authService.getCurrentUserValue();
           if (currentState) {
-            this.authService.setSession({ ...currentState, name: finalValue });
+            currentState.name = finalValue;
           }
         }
         
@@ -176,7 +176,7 @@ export class ProfileComponent implements OnInit {
           
           const currentState = this.authService.getCurrentUserValue();
           if (currentState) {
-            this.authService.setSession({ ...currentState, profileUrl: newImageUrl });
+            currentState.profileUrl = newImageUrl;
           }
 
           this.showToast("Profile image updated successfully!", 'success');

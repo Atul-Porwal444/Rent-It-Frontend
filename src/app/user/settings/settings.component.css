@@ -170,3 +170,78 @@
   from { transform: scale(0.95); opacity: 0; } 
   to { transform: scale(1); opacity: 1; } 
 }
+
+/* --- PC TAB STYLING --- */
+@media (min-width: 768px) {
+  .danger-zone-tab {
+    margin-top: 1rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding-top: 1rem !important;
+    border-radius: 0 !important;
+  }
+}
+
+/* ========================================= */
+/* --- MOBILE RESPONSIVE OPTIMIZATIONS --- */
+/* ========================================= */
+
+@media (max-width: 767.98px) {
+  
+  /* Hide scrollbar for the mobile tab row */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Make tabs small, beautiful pill buttons side-by-side */
+  .capsule-tab {
+    border-radius: 50px !important;
+    padding: 8px 16px !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+  }
+
+  /* Reduce overall padding inside the main card blocks */
+  .mobile-card-body {
+    padding: 1.25rem 1rem !important;
+  }
+
+  /* Shrink Page Headers */
+  .mobile-header-text h2 {
+    font-size: 1.5rem !important;
+  }
+  .mobile-header-text p {
+    font-size: 0.85rem !important;
+  }
+  .mobile-card-title {
+    font-size: 1.1rem !important;
+  }
+
+  /* Shrink Inner Setting Items (Titles and Descriptions) */
+  .setting-item h6 {
+    font-size: 0.95rem !important;
+  }
+  .setting-item p {
+    font-size: 0.75rem !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Scale down the toggle switches slightly to save horizontal space */
+  .custom-switch {
+    padding-left: 2.25rem !important;
+  }
+  .custom-switch .form-check-input {
+    width: 2.5rem !important;
+    height: 1.25rem !important;
+    margin-left: -2.5rem !important;
+  }
+
+  /* Button sizing adjustments for the Danger Zone */
+  .btn {
+    font-size: 0.85rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+}

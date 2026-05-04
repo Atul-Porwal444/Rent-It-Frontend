@@ -33,7 +33,7 @@
           
           <ng-container *ngIf="!isPageLoading">
             <h3 class="mb-0 fw-bold">{{ user.name }}</h3>
-            <p class="text-secondary small mb-0"><i class="bi bi-envelope-fill text-primary me-1"></i> {{ user.email }}</p>
+            <p class="text-secondary small mb-0 text-break"><i class="bi bi-envelope-fill text-primary me-1"></i> {{ user.email }}</p>
           </ng-container>
         </div>
       </div>
@@ -43,15 +43,16 @@
   <div class="container mt-4 pb-5">
     <div class="row g-4">
       
+      <!-- UPDATED: Flex-row on mobile, Column on PC for the tabs -->
       <div class="col-md-4 col-lg-3">
         <div class="card glass-card border-0 shadow-lg">
-          <div class="card-body p-3">
-            <div class="nav flex-column nav-pills gap-1">
-              <button class="nav-link custom-nav-link d-flex align-items-center gap-3" 
+          <div class="card-body p-2 p-md-3">
+            <div class="nav flex-row flex-md-column nav-pills gap-2 gap-md-1">
+              <button class="nav-link custom-nav-link capsule-tab flex-fill justify-content-center justify-content-md-start d-flex align-items-center gap-2" 
                       [class.active]="activeTab === 'basic'" (click)="setActiveTab('basic')">
-                <i class="bi bi-person-vcard fs-6 text-primary"></i> Basic Info
+                <i class="bi bi-person-vcard fs-6 text-primary"></i> <span class="d-none d-sm-inline d-md-inline">Basic Info</span><span class="d-inline d-sm-none">Basic</span>
               </button>
-              <button class="nav-link custom-nav-link d-flex align-items-center gap-3" 
+              <button class="nav-link custom-nav-link capsule-tab flex-fill justify-content-center justify-content-md-start d-flex align-items-center gap-2" 
                       [class.active]="activeTab === 'account'" (click)="setActiveTab('account')">
                 <i class="bi bi-shield-lock fs-6 text-danger"></i> Account
               </button>
@@ -94,7 +95,7 @@
                     </div>
                   </ng-container>
 
-                  <div *ngIf="editingField === field.key" class="flex-grow-1 pe-3">
+                  <div *ngIf="editingField === field.key" class="flex-grow-1 pe-3 w-100">
                     
                     <input *ngIf="field.key !== 'phone'" [type]="field.type" class="form-control custom-profile-input mb-2" [(ngModel)]="tempValue">
 
@@ -133,7 +134,7 @@
                     <button class="btn-icon" (click)="startEdit('gender')"><i class="bi bi-pencil"></i></button>
                   </div>
                 </ng-container>
-                <div *ngIf="editingField === 'gender'" class="flex-grow-1 pe-3">
+                <div *ngIf="editingField === 'gender'" class="flex-grow-1 pe-3 w-100">
                   <select class="form-select custom-profile-input mb-2" [(ngModel)]="tempValue">
                     <option value="" disabled>Select Gender</option>
                     <option value="Male" class="bg-dark text-white">Male</option>
@@ -157,7 +158,7 @@
                     <button class="btn-icon" (click)="startEdit('bio')"><i class="bi bi-pencil"></i></button>
                   </div>
                 </ng-container>
-                <div *ngIf="editingField === 'bio'" class="flex-grow-1 pe-3">
+                <div *ngIf="editingField === 'bio'" class="flex-grow-1 pe-3 w-100">
                   <textarea class="form-control custom-profile-input mb-2" rows="3" maxlength="300" [(ngModel)]="tempValue"></textarea>
                   <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary primary-btn px-3 fw-medium" (click)="saveEdit('bio')">Save</button>
@@ -174,9 +175,10 @@
             </div>
             
             <div class="card-body p-4">
+              <!-- UPDATED: text-break class prevents long emails from overflowing -->
               <div class="info-row border-bottom-0">
                  <div class="label text-secondary small text-uppercase tracking-wide">Email</div>
-                 <div class="value text-white small fw-medium">{{ user.email }}</div>
+                 <div class="value text-white small fw-medium text-break">{{ user.email }}</div>
                  <div class="action">
                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1" style="font-size: 0.65rem;">Verified</span>
                  </div>
@@ -193,12 +195,12 @@
               </div>
 
               <div class="mt-5 pt-4 border-top border-danger border-opacity-25">
-                <div class="d-flex justify-content-between align-items-center p-3 rounded-4" style="background: rgba(220, 53, 69, 0.05); border: 1px solid rgba(220, 53, 69, 0.2);">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center p-3 rounded-4 gap-3" style="background: rgba(220, 53, 69, 0.05); border: 1px solid rgba(220, 53, 69, 0.2);">
                   <div>
                     <strong class="text-danger d-block mb-1 small">Delete Account</strong>
                     <div class="text-secondary" style="font-size: 0.75rem;">Once deleted, there is no going back.</div>
                   </div>
-                  <button class="btn btn-danger btn-sm fw-bold px-3" (click)="openDeleteModal()">Delete</button>
+                  <button class="btn btn-danger btn-sm fw-bold px-3 w-sm-auto" (click)="openDeleteModal()">Delete</button>
                 </div>
               </div>
             </div>

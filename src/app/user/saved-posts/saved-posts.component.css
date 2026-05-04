@@ -145,3 +145,25 @@
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0px); }
 }
+
+/* ========================================= */
+/* --- MOBILE RESPONSIVE OPTIMIZATIONS --- */
+/* ========================================= */
+
+@media (max-width: 991.98px) {
+  
+  /* Create transparent space below the card on mobile */
+  .hover-overlay-wrapper {
+    padding-bottom: 45px; 
+    margin-bottom: 15px;
+  }
+  
+  /* Force the unsave button to be visible and drop it into the new space */
+  .sleek-unsave-btn {
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important;
+    top: auto !important;
+    bottom: 0 !important;
+    right: 10px !important;
+  }
+}
