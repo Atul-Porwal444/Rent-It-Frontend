@@ -1,82 +1,130 @@
-<div class="auth-wrapper d-flex align-items-center justify-content-center">
-  <div class="auth-card p-4 rounded-4 shadow-lg text-center">
-    
-    <div class="mb-4">
-      <div class="mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" 
-           style="width: 60px; height: 60px; background-color: rgba(13, 110, 253, 0.15); color: #6ea8fe;">
-        <i class="bi bi-envelope-check-fill" style="font-size: 1.8rem;"></i>
-      </div>
-      <h4 class="fw-bold text-white mt-2">Verify Your Email</h4>
-      <p class="text-secondary small mb-2">
-        We have sent a 6-digit code to <br> 
-        <span class="fw-bold text-white">{{ form.email || 'your email' }}</span>
-      </p>
-    </div>
+<div class="auth-wrapper d-flex align-items-center justify-content-center p-3 p-md-4">
+  <div class="auth-card shadow-lg rounded-4 overflow-hidden">
+    <div class="row g-0 h-100">
 
-    <div *ngIf="isVerified" class="alert alert-success bg-success bg-opacity-10 border-success border-opacity-25 text-success py-2 mb-4 d-flex justify-content-center align-items-center small fw-medium">
-      <i class="bi bi-check-circle-fill me-2"></i> Account Verified! Redirecting...
-    </div>
-
-    <form *ngIf="!isVerified" (ngSubmit)="onSubmit()" #otpForm="ngForm">
-      
-      <div class="mb-3 text-start">
-        <input 
-          type="text" 
-          class="form-control custom-auth-input text-center fw-bold letter-spacing-2" 
-          [(ngModel)]="form.otp" 
-          name="otp" 
-          #otp="ngModel"
-          [ngClass]="{'is-invalid': otp.invalid && otp.touched}"
-          pattern="^[0-9]{6}$"
-          placeholder="••••••" 
-          maxlength="6"
-          required>
+      <!-- LEFT SIDE: Branding Carousel Panel (Hidden on Mobile) -->
+      <div class="col-md-5 col-lg-6 d-none d-md-flex flex-column justify-content-center align-items-center brand-panel position-relative p-4 p-lg-5">
+        <div class="brand-glow position-absolute top-50 start-50 translate-middle"></div>
+        
+        <div class="carousel-container w-100 position-relative z-1 mt-3" style="min-height: 250px;">
           
-          <div *ngIf="otp.invalid && otp.touched" class="text-danger mt-1 text-center" style="font-size: 0.75rem;">
-            Please enter a valid 6-digit numeric code.
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 100px; height: 100px; background: rgba(13, 110, 253, 0.1); color: #0d6efd;">
+              <i class="bi bi-houses-fill display-4"></i>
+            </div>
+            <h2 class="text-white fw-bold mb-3 tracking-wide">RentIt</h2>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.6;">
+              Discover your perfect living space and connect with verified roommates in your city instantly.
+            </p>
           </div>
+
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 100px; height: 100px; background: rgba(25, 135, 84, 0.1); color: #198754;">
+              <i class="bi bi-people-fill display-4"></i>
+            </div>
+            <h2 class="text-white fw-bold mb-3 tracking-wide">Find Roommates</h2>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.6;">
+              Connect with verified, like-minded people to share your space and split your living costs effortlessly.
+            </p>
+          </div>
+
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 100px; height: 100px; background: rgba(168, 85, 247, 0.1); color: #a855f7;">
+              <i class="bi bi-shield-check display-4"></i>
+            </div>
+            <h2 class="text-white fw-bold mb-3 tracking-wide">Secure & Verified</h2>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.6;">
+              Browse with confidence. Our strict verification process ensures a safe environment for everyone.
+            </p>
+          </div>
+
+        </div>
+          
+        <div class="d-flex justify-content-center gap-2 mt-5 z-1">
+          <span class="nav-dot"></span>
+          <span class="nav-dot"></span>
+          <span class="nav-dot"></span>
+        </div>
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger py-2 small mb-3">
-        <i class="bi bi-exclamation-circle-fill me-1"></i> {{ errorMessage }}
-      </div>
-
-      <div class="d-grid mt-2">
-        <button 
-          type="submit" 
-          class="btn btn-primary primary-btn fw-bold py-1" 
-          [disabled]="otpForm.invalid || isLoading"> 
-          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          <span *ngIf="isLoading">Verifying...</span>
-          <span *ngIf="!isLoading">Verify Code</span>
-        </button>
-      </div>
-
-    </form>
-
-    <div class="mt-4">
-      <p class="text-secondary small mb-2">Didn't receive the code?</p>
-      
-      <button 
-        class="btn btn-link text-decoration-none fw-medium p-0" 
-        (click)="onResend()" 
-        [disabled]="isResending || countdown > 0"
-        [ngClass]="countdown > 0 ? 'text-secondary' : 'text-white'">
+      <!-- RIGHT SIDE: OTP Form Panel -->
+      <div class="col-md-7 col-lg-6 form-panel d-flex flex-column justify-content-center px-4 py-4 p-sm-5">
         
-        <span *ngIf="isResending" class="spinner-border spinner-border-sm me-1"></span>
-        
-        <ng-container *ngIf="!isResending">
-          {{ countdown > 0 ? 'Resend in ' + countdown + 's' : 'Resend OTP' }}
-        </ng-container>
-        <ng-container *ngIf="isResending">Sending...</ng-container>
+        <div class="text-center mb-4">
+          <h3 class="fw-bold text-primary mb-2 d-md-none">RentIt</h3>
+          <h4 class="text-white fw-bold mb-1 card-title">Verify Your Email</h4>
+          <p class="text-secondary small-text mb-0">We have sent a 6-digit code to <br> <span class="text-white fw-bold">{{ form.email || 'your email address' }}</span></p>
+        </div>
 
-      </button>
-    
-      <div *ngIf="resendMessage" class="small mt-2 fw-medium" 
-           [ngClass]="resendMessage.includes('sent') ? 'text-success' : 'text-danger'">
-        {{ resendMessage }}
+        <div *ngIf="isVerified" class="alert alert-success bg-success bg-opacity-10 border-success border-opacity-25 text-success py-3 px-3 small-text mb-4 d-flex justify-content-center align-items-center fw-medium rounded-3">
+          <i class="bi bi-check-circle-fill me-2 fs-5"></i> Account Verified! Redirecting...
+        </div>
+
+        <form *ngIf="!isVerified" (ngSubmit)="onSubmit()" #otpForm="ngForm" autocomplete="off">
+          
+          <div class="mb-4 text-center position-relative">
+            <label class="form-label text-secondary input-label mb-0 text-start w-100">6-Digit OTP Code</label>
+            <input 
+              type="text" 
+              class="form-control custom-auth-input text-center fw-bold letter-spacing-2 mt-1" 
+              [(ngModel)]="form.otp" 
+              name="otp" 
+              #otp="ngModel"
+              [ngClass]="{'is-invalid': otp.invalid && otp.touched}"
+              pattern="^[0-9]{6}$"
+              placeholder="••••••" 
+              maxlength="6"
+              required>
+              
+            <div *ngIf="otp.invalid && otp.touched" class="text-danger mt-1 small-text position-absolute w-100 text-start">
+              Please enter a valid 6-digit numeric code.
+            </div>
+          </div>
+
+          <div *ngIf="errorMessage" class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger py-2 px-3 small-text mb-4 text-start d-flex align-items-center rounded-3">
+            <i class="bi bi-exclamation-circle-fill me-2 fs-6"></i> <div>{{ errorMessage }}</div>
+          </div>
+
+          <div class="d-grid mt-2">
+            <button type="submit" class="btn btn-primary primary-btn fw-bold py-2 shadow-lg" [disabled]="otpForm.invalid || isLoading"> 
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              <span *ngIf="isLoading">Verifying...</span>
+              <span *ngIf="!isLoading">Verify Code</span>
+            </button>
+          </div>
+
+        </form>
+
+        <!-- Resend Block -->
+        <div class="mt-4 text-center" *ngIf="!isVerified">
+          <p class="text-secondary small-text mb-1">Didn't receive the code?</p>
+          <button 
+            class="btn btn-link text-decoration-none fw-bold p-0 small-text transition-all hover-text-primary border-0 bg-transparent" 
+            (click)="onResend()" 
+            [disabled]="isResending || countdown > 0"
+            [ngClass]="countdown > 0 ? 'text-secondary' : 'text-white'">
+            
+            <span *ngIf="isResending" class="spinner-border spinner-border-sm me-1" style="width: 0.8rem; height: 0.8rem;"></span>
+            
+            <ng-container *ngIf="!isResending">
+              {{ countdown > 0 ? 'Resend in ' + countdown + 's' : 'Resend OTP' }}
+            </ng-container>
+            <ng-container *ngIf="isResending">Sending...</ng-container>
+          </button>
+        
+          <div *ngIf="resendMessage" class="small-text mt-1 fw-medium" 
+               [ngClass]="resendMessage.includes('sent') ? 'text-success' : 'text-danger'">
+            {{ resendMessage }}
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <a routerLink="/login" class="text-secondary small-text text-decoration-none hover-text-white transition-all">
+            <i class="bi bi-arrow-left me-1"></i> Back to Login
+          </a>
+        </div>
+
       </div>
     </div>
-
   </div>
 </div>

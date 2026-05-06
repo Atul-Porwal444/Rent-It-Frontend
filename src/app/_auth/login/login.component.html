@@ -1,82 +1,142 @@
-<div class="auth-wrapper d-flex align-items-center justify-content-center">
-  <div class="auth-card p-3 p-sm-4 rounded-4 shadow-lg text-center">
-    
-    <div class="mb-4">
-      <h3 class="fw-bold text-white mb-1 card-title">Login to your account</h3>
-    </div>
+<div class="auth-wrapper d-flex align-items-center justify-content-center p-3 p-md-4">
+  <div class="auth-card shadow-lg rounded-4 overflow-hidden">
+    <div class="row g-0 h-100">
 
-    <form (ngSubmit)="onSubmit()" #f="ngForm">
-      
-      <div class="mb-3 text-start">
-        <label class="form-label text-light input-label mb-1">Email</label>
-        <input 
-          type="email" 
-          class="form-control custom-auth-input" 
-          name="email"
-          [(ngModel)]="form.email" 
-          #email="ngModel"
-          [ngClass]="{'is-invalid': email.invalid && email.touched}"
-          required
-          email
-          placeholder="name@example.com">
+      <!-- LEFT SIDE: Branding Carousel Panel (Hidden on Mobile) -->
+      <div class="col-md-5 col-lg-6 d-none d-md-flex flex-column justify-content-center align-items-center brand-panel position-relative p-5">
+        <div class="brand-glow position-absolute top-50 start-50 translate-middle"></div>
         
-        <div *ngIf="email.invalid && email.touched" class="text-danger mt-1 small-text">
-          <span *ngIf="email.errors?.['required']">Email is required.</span>
-          <span *ngIf="email.errors?.['email']">Please enter a valid email address.</span>
+        <div class="carousel-container w-100 position-relative z-1 mt-4" style="min-height: 250px;">
+          
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 100px; height: 100px; background: rgba(13, 110, 253, 0.1); color: #0d6efd;">
+              <i class="bi bi-houses-fill display-4"></i>
+            </div>
+            <h2 class="text-white fw-bold mb-3 tracking-wide">RentIt</h2>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.6;">
+              Discover your perfect living space and connect with verified roommates in your city instantly.
+            </p>
+          </div>
+
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 100px; height: 100px; background: rgba(25, 135, 84, 0.1); color: #198754;">
+              <i class="bi bi-people-fill display-4"></i>
+            </div>
+            <h2 class="text-white fw-bold mb-3 tracking-wide">Find Roommates</h2>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.6;">
+              Connect with verified, like-minded people to share your space and split your living costs effortlessly.
+            </p>
+          </div>
+
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 100px; height: 100px; background: rgba(168, 85, 247, 0.1); color: #a855f7;">
+              <i class="bi bi-shield-check display-4"></i>
+            </div>
+            <h2 class="text-white fw-bold mb-3 tracking-wide">Secure & Verified</h2>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.6;">
+              Browse with confidence. Our strict verification process ensures a safe environment for everyone.
+            </p>
+          </div>
+
+        </div>
+          
+        <div class="d-flex justify-content-center gap-2 mt-5 z-1">
+          <span class="nav-dot"></span>
+          <span class="nav-dot"></span>
+          <span class="nav-dot"></span>
         </div>
       </div>
 
-      <div class="mb-3 text-start">
-        <div class="d-flex justify-content-between align-items-end mb-1">
-          <label class="form-label text-light input-label mb-0">Password</label>
-          <a routerLink="/forgot-password" class="text-secondary small-text text-decoration-none hover-text-white">Forgot?</a>
+      <!-- RIGHT SIDE: Login Form Panel -->
+      <div class="col-md-7 col-lg-6 form-panel d-flex flex-column justify-content-center px-4 py-5 p-sm-5">
+        
+        <div class="text-center mb-5">
+          <h3 class="fw-bold text-primary mb-2 d-md-none">RentIt</h3>
+          <h4 class="text-white fw-bold mb-1 card-title">Welcome Back</h4>
+          <p class="text-secondary small-text mb-0">Please enter your details to sign in</p>
         </div>
-        <div class="position-relative">
-          <input 
-            [type]="showPassword ? 'text' : 'password'" 
-            class="form-control custom-auth-input pe-5" 
-            name="password"
-            [(ngModel)]="form.password" 
-            #password="ngModel"
-            [ngClass]="{'is-invalid': password.invalid && password.touched}"
-            required
-            placeholder="Enter your password">
+
+        <form (ngSubmit)="onSubmit()" #f="ngForm" autocomplete="off">
+          
+          <div class="mb-4 text-start position-relative">
+            <label class="form-label text-secondary input-label mb-0">Email Address</label>
+            <input 
+              type="email" 
+              class="form-control custom-auth-input" 
+              name="email"
+              [(ngModel)]="form.email" 
+              #email="ngModel"
+              [ngClass]="{'is-invalid': email.invalid && email.touched}"
+              required
+              email
+              placeholder="e.g. name@example.com">
             
-            <i class="bi position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" 
-               style="cursor: pointer; z-index: 10;"
-               [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" 
-               (click)="showPassword = !showPassword"></i>
-        </div>
+            <div *ngIf="email.invalid && email.touched" class="text-danger mt-1 small-text position-absolute">
+              <span *ngIf="email.errors?.['required']">Email is required.</span>
+              <span *ngIf="email.errors?.['email']">Enter a valid email.</span>
+            </div>
+          </div>
 
-        <div *ngIf="password.invalid && password.touched" class="text-danger mt-1 small-text">
-          <span *ngIf="password.errors?.['required']">Password is required.</span>
-        </div>
+          <div class="mb-5 text-start position-relative">
+            <div class="d-flex justify-content-between align-items-end mb-0">
+              <label class="form-label text-secondary input-label mb-0">Password</label>
+              <a routerLink="/forgot-password" class="text-secondary small-text text-decoration-none hover-text-primary transition-all">Forgot password?</a>
+            </div>
+            <div class="position-relative mt-1">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                class="form-control custom-auth-input pe-5" 
+                name="password"
+                [(ngModel)]="form.password" 
+                #password="ngModel"
+                [ngClass]="{'is-invalid': password.invalid && password.touched}"
+                required
+                placeholder="Enter your password">
+                
+                <i class="bi position-absolute top-50 end-0 translate-middle-y text-secondary transition-all hover-text-white" 
+                   style="cursor: pointer; z-index: 10; margin-top: -2px;"
+                   [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" 
+                   (click)="showPassword = !showPassword"></i>
+            </div>
+
+            <div *ngIf="password.invalid && password.touched" class="text-danger mt-1 small-text position-absolute">
+              <span *ngIf="password.errors?.['required']">Password is required.</span>
+            </div>
+          </div>
+
+          <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger d-flex align-items-center py-2 px-3 small-text mb-4 text-start rounded-3" *ngIf="isLoginFailed && !isUnverified">
+            <i class="bi bi-exclamation-circle-fill me-2 fs-6"></i>
+            <div>{{ errorMessage }}</div>
+          </div>
+
+          <div class="alert alert-warning bg-warning bg-opacity-10 border-warning border-opacity-25 text-warning text-center py-2 px-3 small-text mb-4 rounded-3" *ngIf="isUnverified">
+            <p class="mb-2 fw-bold"><i class="bi bi-shield-lock"></i> Email Not Verified</p>
+            <!-- UPDATED: Button handles double clicks automatically -->
+            <button type="button" class="btn btn-warning btn-sm w-100 fw-bold rounded-pill shadow-sm" 
+                    (click)="verifyClicked = true; navigateToVerify()" 
+                    [disabled]="verifyClicked">
+              <span *ngIf="verifyClicked" class="spinner-border spinner-border-sm me-2"></span>
+              {{ verifyClicked ? 'Sending OTP...' : 'Verify Email' }}
+            </button>
+          </div>
+
+          <div class="d-grid mt-2">
+            <button type="submit" class="btn btn-primary primary-btn fw-bold py-2 shadow-lg" [disabled]="f.invalid || isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" style="width: 1rem; height: 1rem;"></span>
+              <span *ngIf="!isLoading">Sign In</span>
+              <span *ngIf="isLoading">Verifying...</span>
+            </button>
+          </div>
+
+          <div class="text-center mt-5">
+            <span class="text-secondary small-text">New to RentIt? 
+              <a routerLink="/register" class="text-white text-decoration-none fw-bold hover-text-primary transition-all border-bottom border-secondary pb-1">Create Account</a>
+            </span>
+          </div>
+
+        </form>
       </div>
-
-      <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger d-flex align-items-center py-2 px-3 small-text mb-3 text-start" *ngIf="isLoginFailed && !isUnverified">
-        <i class="bi bi-exclamation-circle-fill me-2 fs-6"></i>
-        <div>{{ errorMessage }}</div>
-      </div>
-
-      <div class="alert alert-warning bg-warning bg-opacity-10 border-warning border-opacity-25 text-warning text-center py-2 px-3 small-text mb-3" *ngIf="isUnverified">
-        <p class="mb-2 fw-bold"><i class="bi bi-shield-lock"></i> Email Not Verified</p>
-        <button type="button" class="btn btn-warning btn-sm w-100 fw-bold" (click)="navigateToVerify()">
-          Verify Email
-        </button>
-      </div>
-
-      <div class="d-grid mt-2">
-        <button type="submit" class="btn btn-primary primary-btn fw-bold py-1" [disabled]="f.invalid || isLoading">
-          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" style="width: 1rem; height: 1rem;"></span>
-          <span *ngIf="!isLoading">Login</span>
-          <span *ngIf="isLoading">Verifying...</span>
-        </button>
-      </div>
-
-      <div class="text-center mt-3">
-        <span class="text-secondary small-text">Don't have an account? <a routerLink="/register" class="text-white text-decoration-none fw-medium hover-text-white">Sign up</a></span>
-      </div>
-
-    </form>
+      
+    </div>
   </div>
 </div>

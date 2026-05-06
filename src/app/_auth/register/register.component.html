@@ -1,125 +1,141 @@
-<div class="auth-wrapper d-flex align-items-center justify-content-center">
-  <div class="auth-card p-4 p-sm-5 rounded-4 shadow-lg">
-    
-    <div class="text-center mb-4">
-      <h3 class="fw-bold text-white mb-1">Create an Account</h3>
-    </div>
+<div class="auth-wrapper d-flex align-items-center justify-content-center p-3 p-md-4">
+  <div class="auth-card shadow-lg rounded-4 overflow-hidden">
+    <div class="row g-0 h-100">
 
-    <form (ngSubmit)="onSubmit()" #f="ngForm">
-      
-      <div class="mb-3">
-        <label class="form-label text-light small mb-2">Full Name</label>
-        <input 
-          type="text" 
-          class="form-control custom-auth-input" 
-          name="name"
-          [(ngModel)]="form.name" 
-          #name="ngModel"
-          [ngClass]="{'is-invalid': name.invalid && name.touched}"
-          required
-          minlength="3"
-          maxlength="50"
-          placeholder="Enter name">
-          <div *ngIf="name.invalid && name.touched" class="text-danger mt-1" style="font-size: 0.75rem;">
-            <span *ngIf="name.errors?.['required']">Name is required.</span>
-            <span *ngIf="name.errors?.['minlength']">Name must be at least 3 characters.</span>
-          </div>
-      </div>
-
-
-      <div class="mb-3">
-        <label class="form-label text-light small mb-2">Email</label>
-        <input 
-          type="email" 
-          class="form-control custom-auth-input" 
-          name="email"
-          [(ngModel)]="form.email" 
-          #email="ngModel"
-          [ngClass]="{'is-invalid': email.invalid && email.touched}"
-          required
-          email
-          placeholder="Enter email">
-          <div *ngIf="email.invalid && email.touched" class="text-danger mt-1" style="font-size: 0.75rem;">
-            <span *ngIf="email.errors?.['required']">Email is required.</span>
-            <span *ngIf="email.errors?.['email']">Please enter a valid email address.</span>
-          </div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label text-light small mb-2">Password</label>
-        <div class="position-relative">
-          <input 
-            [type]="showPassword ? 'text' : 'password'" 
-            class="form-control custom-auth-input pe-5" 
-            name="password"
-            [(ngModel)]="form.password" 
-            #password="ngModel"
-            [ngClass]="{'is-invalid': password.invalid && password.touched}"
-            required
-            minlength="8"
-            maxlength="15"
-            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,15}$"
-            placeholder="Enter your password">
-            
-            <i class="bi position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" 
-               style="cursor: pointer; z-index: 10;"
-               [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" 
-               (click)="showPassword = !showPassword"></i>
-        </div>
+      <!-- LEFT SIDE: Branding Carousel Panel -->
+      <div class="col-md-5 col-lg-6 d-none d-md-flex flex-column justify-content-center align-items-center brand-panel position-relative p-4">
+        <div class="brand-glow position-absolute top-50 start-50 translate-middle"></div>
         
-        <div *ngIf="password.invalid && password.touched" class="text-danger mt-1" style="font-size: 0.75rem; line-height: 1.4;">
-          <span *ngIf="password.errors?.['required']">Password is required.</span>
-          <span *ngIf="password.errors?.['minlength'] || password.errors?.['pattern']">
-            Password must be 8-15 characters and contain at least: <br>
-            • One uppercase letter <br>
-            • One lowercase letter <br>
-            • One number <br>
-            • One special character
-          </span>
+        <div class="carousel-container w-100 position-relative z-1 mt-3" style="min-height: 220px;">
+          
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 80px; height: 80px; background: rgba(13, 110, 253, 0.1); color: #0d6efd;">
+              <i class="bi bi-houses-fill fs-1"></i>
+            </div>
+            <h3 class="text-white fw-bold mb-2 tracking-wide">RentIt</h3>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.5;">
+              Discover your perfect living space and connect with verified roommates in your city instantly.
+            </p>
+          </div>
+
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 80px; height: 80px; background: rgba(25, 135, 84, 0.1); color: #198754;">
+              <i class="bi bi-people-fill fs-1"></i>
+            </div>
+            <h3 class="text-white fw-bold mb-2 tracking-wide">Find Roommates</h3>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.5;">
+              Connect with verified, like-minded people to share your space and split your living costs.
+            </p>
+          </div>
+
+          <div class="carousel-slide text-center w-100 position-absolute">
+            <div class="icon-circle mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 80px; height: 80px; background: rgba(168, 85, 247, 0.1); color: #a855f7;">
+              <i class="bi bi-shield-check fs-1"></i>
+            </div>
+            <h3 class="text-white fw-bold mb-2 tracking-wide">Secure & Verified</h3>
+            <p class="text-secondary small mb-0 px-3" style="line-height: 1.5;">
+              Browse with confidence. Our strict verification process ensures a safe environment for everyone.
+            </p>
+          </div>
+
+        </div>
+          
+        <div class="d-flex justify-content-center gap-2 mt-4 z-1">
+          <span class="nav-dot"></span>
+          <span class="nav-dot"></span>
+          <span class="nav-dot"></span>
         </div>
       </div>
 
-      <div class="mb-4">
-        <label class="form-label text-light small mb-0">Target City</label><br>
-            <small class="text-info" style="font-size: 0.7rem;"> *Select preferred city of property </small>
-            <input type="text" class="form-control custom-auth-input pe-5" 
-                   [(ngModel)]="form.targetCity"
-                   name="targetCity" 
-                   #targetCity="ngModel"
-                   placeholder="e.g Indore" required
-                   autocomplete="off"
-                   required="Choose a city"
-                   (input)="filterCities()"
-                   (focus)="filterCities()"
-                   (blur)="hideDropdownDelay()">
+      <!-- RIGHT SIDE: Register Form Panel -->
+      <div class="col-md-7 col-lg-6 form-panel d-flex flex-column justify-content-center px-4 py-4 p-sm-4">
+        
+        <div class="text-center mb-4">
+          <h3 class="fw-bold text-primary mb-1 d-md-none">RentIt</h3>
+          <h4 class="text-white fw-bold mb-1 card-title">Create an Account</h4>
+          <p class="text-secondary small-text mb-0">Please enter your details to sign up</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #f="ngForm" autocomplete="off">
+          
+          <div class="mb-3 text-start position-relative">
+            <label class="form-label text-secondary input-label mb-0">Full Name</label>
+            <input type="text" class="form-control custom-auth-input" name="name" [(ngModel)]="form.name" #name="ngModel"
+              [ngClass]="{'is-invalid': name.invalid && name.touched}" required minlength="3" maxlength="50" placeholder="e.g. John Doe">
+            <div *ngIf="name.invalid && name.touched" class="text-danger mt-1 small-text position-absolute">
+              <span *ngIf="name.errors?.['required']">Name is required.</span>
+            </div>
+          </div>
+
+          <div class="mb-3 text-start position-relative">
+            <label class="form-label text-secondary input-label mb-0">Email Address</label>
+            <input type="email" class="form-control custom-auth-input" name="email" [(ngModel)]="form.email" #email="ngModel"
+              [ngClass]="{'is-invalid': email.invalid && email.touched}" required email placeholder="e.g. name@example.com">
+            <div *ngIf="email.invalid && email.touched" class="text-danger mt-1 small-text position-absolute">
+              <span *ngIf="email.errors?.['required']">Email is required.</span>
+              <span *ngIf="email.errors?.['email']">Enter a valid email.</span>
+            </div>
+          </div>
+
+          <div class="mb-3 text-start position-relative">
+            <label class="form-label text-secondary input-label mb-0">Password</label>
+            <div class="position-relative mt-1">
+              <input [type]="showPassword ? 'text' : 'password'" class="form-control custom-auth-input pe-5" name="password"
+                [(ngModel)]="form.password" #password="ngModel" [ngClass]="{'is-invalid': password.invalid && password.touched}"
+                required minlength="8" maxlength="15" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,15}$" placeholder="Create a strong password">
+                <i class="bi position-absolute top-50 end-0 translate-middle-y text-secondary transition-all hover-text-white" 
+                   style="cursor: pointer; z-index: 10; margin-top: -2px;" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" (click)="showPassword = !showPassword"></i>
+            </div>
             
-            <ul class="city-dropdown custom-scrollbar" *ngIf="showCityDropdown">
-              <li class="city-item" *ngFor="let city of filteredCities" (click)="selectCity(city)">
-                <i class="bi bi-geo me-2 text-secondary"></i> {{ city }}
-              </li>
-            </ul>
-            <div *ngIf="targetCity.invalid && targetCity.touched" class="text-danger mt-1" style="font-size: 0.75rem;">
+            <div *ngIf="password.invalid && password.touched" class="text-danger mt-1 small-text position-absolute" style="line-height: 1.2;">
+              <span *ngIf="password.errors?.['required']">Password is required.</span>
+              <span *ngIf="password.errors?.['minlength'] || password.errors?.['pattern']">
+                Req: 8-15 chars, 1 upper, 1 lower, 1 num, 1 special.
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-4 text-start position-relative">
+            <div class="d-flex justify-content-between align-items-end mb-0">
+              <label class="form-label text-secondary input-label mb-0">Target City</label>
+              <small class="text-info" style="font-size: 0.65rem;">*Preferred city</small>
+            </div>
+            <div class="position-relative mt-1">
+              <input type="text" class="form-control custom-auth-input pe-5" [(ngModel)]="form.targetCity" name="targetCity" #targetCity="ngModel"
+                     placeholder="e.g Indore" required autocomplete="off" (input)="filterCities()" (focus)="filterCities()" (blur)="hideDropdownDelay()">
+              <ul class="city-dropdown custom-scrollbar" *ngIf="showCityDropdown">
+                <li class="city-item" *ngFor="let city of filteredCities" (click)="selectCity(city)">
+                  <i class="bi bi-geo me-2 text-secondary"></i> {{ city }}
+                </li>
+              </ul>
+            </div>
+            <div *ngIf="targetCity.invalid && targetCity.touched" class="text-danger mt-1 small-text position-absolute">
               <span *ngIf="targetCity.errors?.['required']">Target City is required.</span>
             </div>
-      </div>
+          </div>
 
-      <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger d-flex align-items-center py-2 small mb-3" *ngIf="errorMessage">
-        <i class="bi bi-exclamation-circle-fill me-2"></i>
-        <div>{{ errorMessage }}</div>
-      </div>
+          <div class="alert alert-danger bg-danger bg-opacity-10 border-danger border-opacity-25 text-danger d-flex align-items-center py-2 px-3 small-text mb-3 text-start rounded-3" *ngIf="errorMessage">
+            <i class="bi bi-exclamation-circle-fill me-2 fs-6"></i>
+            <div>{{ errorMessage }}</div>
+          </div>
 
-      <div class="d-grid mt-2">
-        <button type="submit" class="btn btn-primary primary-btn fw-bold py-2" [disabled]="f.invalid || isLoading">
-          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          <span *ngIf="!isLoading">Create account</span>
-          <span *ngIf="isLoading">Creating...</span>
-        </button>
-      </div>
+          <div class="d-grid mt-2">
+            <button type="submit" class="btn btn-primary primary-btn fw-bold py-2 shadow-lg" [disabled]="f.invalid || isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span *ngIf="!isLoading">Create Account</span>
+              <span *ngIf="isLoading">Creating...</span>
+            </button>
+          </div>
 
-      <div class="text-center mt-4">
-        <small class="text-secondary">Already Have An Account ? <a routerLink="/login" class="text-white text-decoration-none fw-medium">Log In</a></small>
-      </div>
+          <div class="text-center mt-4">
+            <span class="text-secondary small-text">Already Have An Account? 
+              <a routerLink="/login" class="text-white text-decoration-none fw-bold hover-text-primary transition-all border-bottom border-secondary pb-1">Log In</a>
+            </span>
+          </div>
 
-    </form>
+        </form>
+      </div>
+      
+    </div>
   </div>
 </div>

@@ -1,130 +1,168 @@
-/* Wrapper to center the card */
+/* Wrapper Background */
 .auth-wrapper {
-    min-height: calc(100vh - 65px); /* Adjust if your navbar height is different */
-    width: 100%;
-    /* Optional: Adds a subtle radial glow behind the card to mimic the galaxy feel */
-    background: radial-gradient(circle at 50% 50%, rgba(30, 20, 60, 0.4) 0%, transparent 60%);
-  }
-  
-  /* The Main Card */
-  .auth-card {
-    width: 100%;
-    max-width: 500px;
-    background-color: #111111; /* Very dark gray, almost black */
-    border: 1px solid #222222;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    border-radius: 16px;
-  }
-  
-  /* Social Buttons */
-  .social-btn {
-    background-color: #1a1a1a;
-    color: #cccccc;
-    border: 1px solid #2a2a2a;
-    transition: all 0.2s ease;
-  }
-  
-  .social-btn:hover {
-    background-color: #222222;
-    color: #ffffff;
-    border-color: #444444;
-  }
-  
-  /* 'Or' Divider */
-  .divider .line {
-    height: 1px;
-    background-color: #2a2a2a;
-  }
-  
-  /* Custom Inputs */
-  .custom-auth-input {
-    background-color: #0a0a0a !important; /* Extremely dark background for inputs */
-    border: 1px solid #2a2a2a;
-    color: #ffffff !important;
-    font-size: 0.9rem;
-    padding: 0.6rem 1rem;
-    transition: all 0.2s ease;
-  }
-  
-  /* Focus State (The glowing blue border from the image) */
-  .custom-auth-input:focus {
-    background-color: #0a0a0a !important;
-    border-color: #0d6efd; /* Bootstrap Primary Blue */
-    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); /* Soft blue glow */
-  }
-  
-  /* Input Placeholder */
-  .custom-auth-input::placeholder {
-    color: #555555;
-  }
-  
-  /* Webkit Autofill fix (prevents browser autofill from turning inputs white) */
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover, 
-  input:-webkit-autofill:focus, 
-  input:-webkit-autofill:active {
-      -webkit-box-shadow: 0 0 0 30px #0a0a0a inset !important;
-      -webkit-text-fill-color: white !important;
-      transition: background-color 5000s ease-in-out 0s;
-  }
-  
-  /* The bright blue primary button */
-  .primary-btn {
-    background-color: #1a73e8; /* Vibrant blue */
-    border: none;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease;
-  }
-  
-  .primary-btn:hover {
-    background-color: #155dbb;
-  }
-  
-  .primary-btn:disabled {
-    background-color: #1a73e8;
-    opacity: 0.6;
-  }
-
-  /* Invalid Input State Styling */
-.custom-auth-input.is-invalid {
-  border-color: #dc3545 !important; /* Bootstrap Red */
-  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important; /* Red glow */
-  background-image: none !important;
+  min-height: calc(100vh - 65px); 
+  width: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(30, 20, 60, 0.4) 0%, transparent 60%);
 }
 
-/* Ensure the red border stays red even on focus if invalid */
-.custom-auth-input.is-invalid:focus {
-  background-color: #0a0a0a !important;
+/* The Main Card - Removed massive min-height to prevent scrolling */
+.auth-card {
+  width: 100%;
+  max-width: 1000px; 
+  min-height: 600px; /* Reduced from 600px */
+  background-color: #0c0c0c; 
+  border: 1px solid #222222;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
-.custom-modal-input {
-  background-color: transparent !important;
+/* --- LEFT PANEL: BRANDING --- */
+.brand-panel {
+  background-color: #111111;
+  border-right: 1px solid #222222;
+  overflow: hidden;
+}
+
+.brand-glow {
+  width: 300px; /* Shrunk slightly to save space */
+  height: 300px;
+  background: radial-gradient(circle, rgba(13, 110, 253, 0.15) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.tracking-wide { letter-spacing: 0.05em; }
+
+/* ============================================== */
+/* --- OPTIMIZED CAROUSEL ANIMATIONS --- */
+/* ============================================== */
+
+.carousel-slide {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+  animation: fadeSlide 15s infinite;
+  will-change: opacity, transform; 
+}
+
+.carousel-slide:nth-child(1) { animation-delay: 0s; }
+.carousel-slide:nth-child(2) { animation-delay: 5s; }
+.carousel-slide:nth-child(3) { animation-delay: 10s; }
+
+@keyframes fadeSlide {
+  0% { opacity: 0; visibility: visible; transform: translateY(15px); }
+  4% { opacity: 1; transform: translateY(0); }
+  29% { opacity: 1; transform: translateY(0); }
+  33% { opacity: 0; transform: translateY(-15px); }
+  34%, 100% { opacity: 0; visibility: hidden; transform: translateY(-15px); }
+}
+
+/* Animated Navigation Dots */
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #333333;
+  animation: dotActive 15s infinite;
+  will-change: background-color, width;
+}
+
+.nav-dot:nth-child(1) { animation-delay: 0s; }
+.nav-dot:nth-child(2) { animation-delay: 5s; }
+.nav-dot:nth-child(3) { animation-delay: 10s; }
+
+@keyframes dotActive {
+  0% { background-color: #333333; width: 8px; border-radius: 50%; }
+  4% { background-color: #0d6efd; width: 24px; border-radius: 4px; }
+  29% { background-color: #0d6efd; width: 24px; border-radius: 4px; }
+  33%, 100% { background-color: #333333; width: 8px; border-radius: 50%; }
+}
+
+/* --- RIGHT PANEL: FORM --- */
+.form-panel { background-color: transparent; }
+
+/* Font Sizes */
+.card-title { font-size: 1.35rem; }
+.small-text { font-size: 0.75rem; }
+.input-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;}
+
+/* Sleek Minimal Inputs - Tighter Vertical Padding */
+.custom-auth-input {
+  background-color: transparent !important; 
   border: none;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
   border-radius: 0;
   color: #ffffff !important;
-  font-size: 0.95rem;
-  padding: 0.5rem 0.2rem;
+  font-size: 0.9rem;
+  padding: 0.4rem 0; /* Reduced padding to pull fields closer */
   transition: all 0.3s ease;
 }
 
-.custom-modal-input:focus {
-  border-bottom: 2px solid #ffffff;
-  box-shadow: none;
+.custom-auth-input:focus {
+  border-bottom: 2px solid #0d6efd; 
+  box-shadow: none; 
   outline: none;
 }
+.custom-auth-input::placeholder { color: #444444; font-size: 0.85rem; }
 
-/* 2. Scrollbar */
+/* Invalid Input State Styling */
+.custom-auth-input.is-invalid {
+  border-color: #dc3545 !important; 
+  background-image: none !important; 
+}
+.custom-auth-input.is-invalid:focus { box-shadow: none !important; }
+
+/* Webkit Autocomplete fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #0c0c0c inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Pill Shaped Primary Button */
+.primary-btn {
+  background-color: #333333; 
+  color: #ffffff;
+  border: none;
+  font-size: 0.9rem;
+  border-radius: 50px !important; 
+  transition: all 0.3s ease;
+}
+
+.primary-btn:hover:not(:disabled) { 
+  background-color: #0d6efd; 
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3) !important;
+}
+
+.primary-btn:disabled { 
+  background-color: #222222; 
+  color: #555555; 
+  opacity: 1; 
+}
+
+/* Hover Utilities */
+.transition-all { transition: all 0.2s ease; }
+.hover-text-primary:hover { color: #0d6efd !important; border-color: #0d6efd !important; }
+.hover-text-white:hover { color: #ffffff !important; }
+
+
+/* --- CITY AUTOCOMPLETE DROPDOWN --- */
 .custom-scrollbar::-webkit-scrollbar { width: 6px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; margin: 10px 0; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 
 .city-dropdown {
+  position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  max-height: 180px; /* Fits about 5 items before scrolling */
+  max-height: 180px; 
   overflow-y: auto;
   background-color: #1a1a1a;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -132,15 +170,15 @@
   padding: 0;
   margin-top: 4px;
   list-style: none;
-  z-index: 1060; /* Ensures it floats above the lower input fields */
+  z-index: 1060; 
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-  animation: fadeIn 0.2s ease-in-out;
+  animation: fadeInDropdown 0.2s ease-in-out;
 }
 
 .city-item {
-  padding: 10px 15px;
+  padding: 8px 15px;
   color: #e0e0e0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: background-color 0.2s;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -151,6 +189,19 @@
 }
 
 .city-item:hover {
-  background-color: rgba(13, 110, 253, 0.15); /* Sleek blue highlight */
+  background-color: rgba(13, 110, 253, 0.15); 
   color: #ffffff;
+}
+
+@keyframes fadeInDropdown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 767.98px) {
+  .auth-card {
+    max-width: 400px; 
+    min-height: auto;
+  }
 }

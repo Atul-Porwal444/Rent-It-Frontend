@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-verify-otp',
-  imports: [NgIf, FormsModule, NgClass],
+  imports: [NgIf, FormsModule, NgClass, RouterLink],
   templateUrl: './verify-otp.component.html',
   styleUrl: './verify-otp.component.css'
 })
@@ -27,11 +27,19 @@ export class VerifyOtpComponent implements OnInit {
   countdown: number = 60;
   timerInterval: any;
 
-  constructor(
-    private route: ActivatedRoute,
-    private auth: AuthService,
-    private router: Router
-  ) {}
+  constructor(private route: ActivatedRoute, private auth: AuthService, private router: Router) {
+    const currentNav = this.router.getCurrentNavigation();
+    
+    // Security Check: 
+    // 1. Did they type the URL or refresh? (currentNav is null)
+    // 2. Did they use the browser's Back/Forward button? (trigger === 'popstate')
+    // 3. Is our hidden 'fromLogin' flag missing?
+    if (!currentNav || currentNav.trigger === 'popstate' || !currentNav.extras.state?.['fromLogin']) {
+      
+      // If any of the above are true, kick them back to login immediately
+      this.router.navigate(['/login']);
+  }
+}
 
   ngOnInit() : void {
     // the email will be passed from the register page

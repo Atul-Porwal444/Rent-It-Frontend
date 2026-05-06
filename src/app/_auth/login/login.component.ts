@@ -23,6 +23,7 @@ export class LoginComponent {
   isLoginFailed : boolean = false;
   errorMessage : string = '';
   isUnverified: boolean = false;
+  verifyClicked: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -77,7 +78,7 @@ export class LoginComponent {
       next: (res) => {
         this.router.navigate(['/verify-otp'], {
           queryParams: {email : this.form.email},
-          replaceUrl: true
+          state: { fromLogin: true }
         });
       },
       error: (err) => {
