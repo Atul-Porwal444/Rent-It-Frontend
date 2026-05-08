@@ -14,14 +14,17 @@ import { MyPostsComponent } from './user/my-posts/my-posts.component';
 import { HomeComponent } from './home/home.component';
 import { ForgotPasswordComponent } from './_auth/forgot-password/forgot-password.component';
 import { authGuard } from './_guards/auth.guard';
+import { noAuthGuard } from './_guards/no-auth.guard';
 
 export const routes: Routes = [
-    { path : '', component: HomeComponent},
-    { path : 'login', component: LoginComponent},
-    { path : 'register', component: RegisterComponent},
-    { path : 'verify-otp', component: VerifyOtpComponent},
+    { path : '', component: HomeComponent, canActivate: [noAuthGuard]},
+    { path : 'login', component: LoginComponent, canActivate: [noAuthGuard]},
+    { path : 'register', component: RegisterComponent, canActivate: [noAuthGuard]},
+    { path : 'verify-otp', component: VerifyOtpComponent, canActivate: [noAuthGuard]},
+    { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [noAuthGuard] },
+
+
     { path: 'roommates/:id', component: RoommateDetailsComponent, canActivate: [authGuard]},
-    { path: 'forgot-password', component: ForgotPasswordComponent },
     { path : 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
     { path : 'profile', component: ProfileComponent, canActivate: [authGuard]},
     { path : 'rooms', component: RoomsComponent, canActivate: [authGuard]},
