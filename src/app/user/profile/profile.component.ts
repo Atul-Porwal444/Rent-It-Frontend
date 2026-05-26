@@ -187,7 +187,6 @@ export class ProfileComponent implements OnInit {
         this.isUpdatingGlobally = false;
       },
       error: (err: any) => {
-        console.error("Upload error:", err);
         this.showToast(err.error?.message || "Failed to upload image.", 'error');
         this.isUpdatingGlobally = false;
       }

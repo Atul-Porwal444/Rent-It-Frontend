@@ -134,11 +134,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
   }
 
   toggleSave() {
-    if (!this.authService.isLoggedIn()) {
-      this.showToast("Please login to save posts.", 'error');
-      this.router.navigate(['/login']);
-      return;
-    }
 
     if (this.isSaving) return;
     this.isSaving = true;
@@ -154,7 +149,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy {
         this.isSaving = false;
       },
       error: (err) => {
-        console.error("Failed to toggle save status", err);
         this.showToast("Unable to update saved status. Please try again.", 'error');
         this.isSaving = false;
       }

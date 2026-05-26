@@ -95,7 +95,6 @@ export class SavedPostsComponent implements OnInit {
         checkCompletion();
       },
       error: (err) => {
-        console.error(err);
         this.apiError = "Failed to load your saved posts. Please try again later.";
         checkCompletion();
       }
@@ -107,7 +106,6 @@ export class SavedPostsComponent implements OnInit {
         checkCompletion();
       },
       error: (err) => {
-        console.error(err);
         this.apiError = "Failed to load your saved posts. Please try again later.";
         checkCompletion();
       }
@@ -142,7 +140,6 @@ export class SavedPostsComponent implements OnInit {
           this.isProcessingGlobally = false;
         },
         error: (err) => {
-          console.error(err);
           this.showToast(err.error?.message || "Failed to unsave room. Please try again.", 'error');
           this.isProcessingGlobally = false;
         }
@@ -164,7 +161,6 @@ export class SavedPostsComponent implements OnInit {
           this.isProcessingGlobally = false;
         },
         error: (err) => {
-          console.error(err);
           this.showToast(err.error?.message || "Failed to unsave roommate. Please try again.", 'error');
           this.isProcessingGlobally = false;
         }

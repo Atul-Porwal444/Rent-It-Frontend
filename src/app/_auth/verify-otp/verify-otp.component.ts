@@ -94,7 +94,7 @@ export class VerifyOtpComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Invalid or Expired OTP. Please try again.'
+        this.errorMessage = 'Invalid or Expired OTP. Please try again.'
       }
     });
   }

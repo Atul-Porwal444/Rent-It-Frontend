@@ -96,7 +96,6 @@ export class RoomsComponent implements OnInit {
           window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
         },
         error: (err) => {
-          console.error('Failed to load rooms', err);
           this.isLoading = false;
         }
       });

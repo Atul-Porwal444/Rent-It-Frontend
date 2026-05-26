@@ -15,7 +15,7 @@ export class ForgotPasswordComponent implements OnDestroy {
   step: number = 1; // 1-> Enter email, and 2 -> Enter the OTP and new Password
 
   form: any = {
-    email: 'temp@gmail.com',
+    email: '',
     otp: '',
     newPassword: '',
     confirmPassword: ''
@@ -67,7 +67,7 @@ export class ForgotPasswordComponent implements OnDestroy {
       },
       error: (err: any) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || "Failed to send reset code. Try again.";
+        this.errorMessage = "Failed to send reset code. Try again.";
       }
     });
 }

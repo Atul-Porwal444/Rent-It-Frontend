@@ -56,7 +56,6 @@ export class SettingsComponent {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error("Failed to load settings", err);
         this.showToast("Failed to load your preferences. Please refresh.", 'error');
         this.isLoading = false;
       }
@@ -83,7 +82,6 @@ export class SettingsComponent {
         this.isProcessingGlobally = false;
       },
       error: (err) => {
-        console.error("Failed to save settings", err);
         this.showToast('Failed to update setting. Please try again.', 'error');
         
         this.isProcessingGlobally = false;

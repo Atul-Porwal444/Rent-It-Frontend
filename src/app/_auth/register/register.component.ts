@@ -5221,16 +5221,14 @@ export class RegisterComponent {
 
     this.authService.register(this.form).subscribe({
       next: (response) => {
-        console.log("User registered successfully");
-      
         this.router.navigate(['/verify-otp'], {
           queryParams: {email : this.form.email},
-          replaceUrl: true
+          state: { fromLogin: true }
         });
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || "Registration failed. Please try again.";
+        this.errorMessage = "Registration failed. Please try again.";
       }
     });
   }

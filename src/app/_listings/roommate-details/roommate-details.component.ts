@@ -81,7 +81,6 @@ export class RoommateDetailsComponent implements OnInit, OnDestroy {
         this.finalizeLoading();
       },
       error: (err) => {
-        console.error("Failed to load roommate details", err);
         this.apiError = "Unable to fetch the roommate details. The post may have been removed.";
         this.isLoading = false;
       }
@@ -128,12 +127,6 @@ export class RoommateDetailsComponent implements OnInit, OnDestroy {
   }
 
   toggleSave() {
-    if (!this.authService.isLoggedIn()) {
-      this.showToast("Please login to save posts.", 'error');
-      this.router.navigate(['/login']);
-      return;
-    }
-
     if (this.isSaving) return;
     this.isSaving = true;
 
@@ -148,7 +141,6 @@ export class RoommateDetailsComponent implements OnInit, OnDestroy {
         this.isSaving = false;
       },
       error: (err) => {
-        console.error("Failed to toggle save status", err);
         this.showToast("Unable to update saved status. Please try again.", 'error');
         this.isSaving = false;
       }

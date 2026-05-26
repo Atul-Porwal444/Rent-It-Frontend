@@ -106,7 +106,6 @@ export class NavbarComponent implements OnInit {
         this.isLoadingNotifications = false;
       },
       error: (err) => {
-        console.error("Error fetching notifications", err);
         this.notificationsError = true;
         this.isLoadingNotifications = false;
       }

@@ -24,7 +24,6 @@ export class HorizontalListingCardComponent {
     return 'https://placehold.co/600x400/1e1e1e/888888?text=No+Image';
   }
 
-  // Add this inside your component class
   get currentImage(): string {
     // Check if data exists and has at least one image
     if (this.data?.imageUrls && this.data.imageUrls.length > 0) {

@@ -5336,7 +5336,7 @@ export class PostAdComponent implements OnInit, OnDestroy {
           this.isSubmitting = false;
           this.isProcessingGlobally = false;
           this.closeModal();
-        }, 2000);
+        }, 1000);
       },
       error: (err) => {
         this.showToast(err.error?.message || "Failed to create post. Please try again.", 'error');
@@ -5345,7 +5345,7 @@ export class PostAdComponent implements OnInit, OnDestroy {
           this.isSubmitting = false;
           this.isProcessingGlobally = false;
           this.closeModal();
-        }, 2000);
+        }, 1000);
       }
     });
   }
